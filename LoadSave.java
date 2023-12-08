@@ -1,5 +1,4 @@
 public interface LoadSave {
     public String toString();
-    public LoadSave fromString() throws IllegalArgumentException;
-
+    public LoadSave fromString(String s) throws IllegalArgumentException;
 }
