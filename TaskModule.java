@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+
 public class TaskModule extends Module {
     Employee currentEmployee;
     Project project;
@@ -12,6 +14,9 @@ public class TaskModule extends Module {
 
     public void manageTasks() {}
 
-    public TaskLog createTaskLog(Task task, DateTime fromTime, DateTime toTime) {}
+    public TaskLog createTaskLog(Task task, LocalDateTime fromTime, LocalDateTime toTime) {
+        // TODO
+        return null;
+    }
 
 }
