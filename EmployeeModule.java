@@ -2,10 +2,11 @@ import java.util.Scanner;
 public class EmployeeModule extends Module {
     Employee currentEmployee;
     
-    public static void main(String[] args) {
-        EmployeeModule employeeModule = new EmployeeModule();
-        employeeModule.startModule();
-    }
+    public EmployeeModule(Employee currentEmployee)
+    {
+        this.currentEmployee = currentEmployee;
+        this.currentUser = currentEmployee;
+    }   
 
     @Override
     public void startModule(){

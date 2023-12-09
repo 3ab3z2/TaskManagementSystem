@@ -37,13 +37,14 @@ public class Application {
 	}
 
 	public static void login() {
-		// TODO
 		String username = "";
 		String pass = "";
 
+		// credentials input
 		while (true) {
 			System.out.print("Enter username: ");
 			username = input.next();
+			// delete the if statements (idk)
 			if (username.equals("")) {
 				System.out.println("Username can not be empty!");
 				continue;
@@ -51,32 +52,104 @@ public class Application {
 
 			System.out.print("\nEnter password: ");
 			pass = input.next();
+			// delete the if statements (idk)
 			if (pass.equals("")) {
 				System.out.println("Password can not be empty!");
 				continue;
 			}
 			break;
 		}
-		//for(int i =0 ; i < userDataHandler)
-
+		
+		//check user's credentials
+		boolean foundUser = false;
+		for (int i = 0; i < userDataHandler.getLength(); i++) {
+			if (userDataHandler.get(i).canlogin(username, pass)) {
+				user = userDataHandler.get(i);
+				startModule();
+				foundUser = true;
+				break;
+			}
+		}
+		if (!foundUser)
+			System.out.println("Username or password is incorrect!\n");
 	}
-	
 
 	public static void startModule() {
-		// TODO
-	}
+		//admin module path
+		if (user.getUserType() == User.utype.admin) {
+			currentModule = new AdminModule(user);
+			currentModule.startModule();
+		}else {
+			Employee employee = null;
+			for (int i = 0; i < employeeDataHandler.getLength(); i++) {
+				if (employeeDataHandler.get(i).canlogin(user.getUsername(), user.getPassword())) {
+					employee = employeeDataHandler.get(i);
+					user = employee;
+					break;
+				}
+			}
+			if (employee != null) {
+				int choice;
+				boolean exit = false;
+				while (!exit) {
+					System.out.println("Please choose the module\n1-Employee Moudle\n2-Tasks Module\n3-Go back");
+					System.out.print("Choice: ");
+					choice = input.nextInt();
 
+					switch (choice) {
+						case 1:
+							// abdelaziz
+							currentModule = new EmployeeModule(employee);
+							currentModule.startModule();
+							break;
+						case 2:
+							
+							int projchoice;
+							boolean projexit = false;
+							while (!projexit) {
+								System.out.println("Please choose the project\n0-Go back");
+								for (int i = 0; i < projectDataHandler.getLength(); i++) {
+									System.out.println((i + 1) + "-Project: " + projectDataHandler.get(i).getName());
+								}
+								System.out.print("Choice: ");
+								projchoice = input.nextInt();
+								if (projchoice == 0)
+									projexit = true;
+								else if (projchoice > projectDataHandler.getLength() || projchoice < 0) 
+									System.out.println("\nUnknown Choice!\nTry again!\n");
+								else {
+									// ali
+									currentModule = new TaskModule(employee, projectDataHandler.get(projchoice - 1));
+									currentModule.startModule();
+									projexit = true;
+								}
+							}
+							break;
+						case 3:
+							exit = true;
+							break;
+						default:
+							System.out.println("\nUnknown Choice!\nTry again!\n");
+							break;
+
+					}
+				}
+			}
+
+		}
+	}
 	public static void main(String[] args) {
-		// TODO: start the project lol
+	
 		initializeData();
 
 		// menu
 		input = new Scanner(System.in);
 
+		System.out.println("Task Managment System");
 		int choice;
 		boolean exit = false;
 		while (!exit) {
-			System.out.println("Task Managment System");
+			System.out.println("Please Choose");
 			System.out.println("1-login\n2-exit");
 			choice = input.nextInt();
 			switch (choice) {
