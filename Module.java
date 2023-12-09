@@ -1,7 +1,5 @@
-public class Module {
+public abstract class Module {
     User currentUser;
     
-    public void startModule() {
-        //TODO
-    }
+    public abstract void startModule();
 }

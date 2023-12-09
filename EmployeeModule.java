@@ -1,5 +1,7 @@
 public class EmployeeModule extends Module {
     Employee currentEmployee;
+    @Override
+    public void startModule(){} 
 
     public void viewTimeCards() {
         //TODO
