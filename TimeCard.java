@@ -5,6 +5,7 @@ public class TimeCard implements LoadSave {
     Employee employee;
     LocalDateTime attendance;
     LocalTime departure;
+    
     public TimeCard(Employee employee, LocalDateTime attendance, LocalTime departure) {
         this.employee = employee;
         this.attendance = attendance;

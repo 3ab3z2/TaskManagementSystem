@@ -3,11 +3,13 @@ public class User implements LoadSave {
     private String password;
     public enum utype{admin,employee};
     private utype userType;
+
     public User(String username, String password, User.utype userType) {
         this.username = username;
         this.password = password;
         this.userType = userType;
     }
+    
     public String getUsername() {
         return username;
     }

@@ -4,16 +4,21 @@ public class TaskModule extends Module {
     Employee currentEmployee;
     Project project;
 
-    public void viewTasks() {}
-
-    public void viewTask(Task task) {}
-
-    public void viewTasklogs(Task task) {}
-
-    public void viewTasklog(TaskLog taskLog) {}
-
-    public void manageTasks() {}
-
+    public void viewTasks() {
+        //TODO
+    }
+    public void viewTask(Task task) {
+        //TODO
+    }
+    public void viewTasklogs(Task task) {
+        //TODO
+    }
+    public void viewTasklog(TaskLog taskLog) {
+        //TODO
+    }
+    public void manageTasks() {
+        //TODO
+    }
     public TaskLog createTaskLog(Task task, LocalDateTime fromTime, LocalDateTime toTime) {
         // TODO
         return null;

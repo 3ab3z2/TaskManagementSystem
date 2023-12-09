@@ -1,15 +1,15 @@
 public class Application
 {
-	DataHandler<User> userDataHandler;
-	DataHandler<Employee> employeeDataHandler;
-	DataHandler<Task> taskDataHandler;
-	DataHandler<LeaveRequest> leaveRequestDataHandler;
-	DataHandler<EmpType> empTypeDataHandler;
-	//DataHandler<TaskPhase> taskPhaseDataHandler;
-	DataHandler<Request> requestDataHandler;
-	DataHandler<TimeCard> timeCardDataHandler;
-	DataHandler<TaskLog> taskLogDataHandler;
-	DataHandler<Project> projectDataHandler;
+	static DataHandler<User> userDataHandler;
+	static DataHandler<Employee> employeeDataHandler;
+	static DataHandler<Task> taskDataHandler;
+	static DataHandler<LeaveRequest> leaveRequestDataHandler;
+	static DataHandler<EmpType> empTypeDataHandler;
+	//static DataHandler<TaskPhase> taskPhaseDataHandler;
+	static DataHandler<Request> requestDataHandler;
+	static DataHandler<TimeCard> timeCardDataHandler;
+	static DataHandler<TaskLog> taskLogDataHandler;
+	static DataHandler<Project> projectDataHandler;
 	Module currentModule;
 	User user;
 
