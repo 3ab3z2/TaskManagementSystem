@@ -98,7 +98,6 @@ public class Application {
 
 					switch (choice) {
 						case 1:
-							// abdelaziz
 							currentModule = new EmployeeModule(employee);
 							currentModule.startModule();
 							break;
@@ -115,7 +114,7 @@ public class Application {
 								projchoice = input.nextInt();
 								if (projchoice == 0)
 									projexit = true;
-								else if (projchoice > projectDataHandler.getLength() || projchoice < 0) 
+								else if (projchoice >= projectDataHandler.getLength() || projchoice < 0) 
 									System.out.println("\nUnknown Choice!\nTry again!\n");
 								else {
 									// ali
@@ -151,6 +150,7 @@ public class Application {
 		while (!exit) {
 			System.out.println("Please Choose");
 			System.out.println("1-login\n2-exit");
+			System.out.print("Choice: ");
 			choice = input.nextInt();
 			switch (choice) {
 				case 1:
