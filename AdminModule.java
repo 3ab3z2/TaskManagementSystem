@@ -5,9 +5,9 @@ public class AdminModule extends Module {
 
     public void manageEmployees() {}
 
-    public void mangeProjects() {}
+    public void manageProjects() {}
 
-    public void mangeEmpType() {}
+    public void manageEmpType() {}
 
     public void manageTaskPhases() {}
 

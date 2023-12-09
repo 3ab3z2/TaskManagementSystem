@@ -1,7 +1,58 @@
-public class Project extends LoadSave {
+import java.util.ArrayList;
+
+public class Project implements LoadSave {
     String name;
     String description;
-    List<Task> listOfTasks;
-    List<TaskLog> listOfTaskLogs;
+    ArrayList<Task> listOfTasks;
+    ArrayList<TaskLog> listOfTaskLogs;
     Employee Leader;
+    public Project(String name, String description, ArrayList<Task> listOfTasks, ArrayList<TaskLog> listOfTaskLogs,
+            Employee leader) {
+        this.name = name;
+        this.description = description;
+        this.listOfTasks = listOfTasks;
+        this.listOfTaskLogs = listOfTaskLogs;
+        Leader = leader;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public ArrayList<Task> getListOfTasks() {
+        return listOfTasks;
+    }
+    public void setListOfTasks(ArrayList<Task> listOfTasks) {
+        this.listOfTasks = listOfTasks;
+    }
+    public ArrayList<TaskLog> getListOfTaskLogs() {
+        return listOfTaskLogs;
+    }
+    public void setListOfTaskLogs(ArrayList<TaskLog> listOfTaskLogs) {
+        this.listOfTaskLogs = listOfTaskLogs;
+    }
+    public Employee getLeader() {
+        return Leader;
+    }
+    public void setLeader(Employee leader) {
+        Leader = leader;
+    }
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return super.toString();
+    }
+    @Override
+    public LoadSave fromString(String s) throws IllegalArgumentException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    
 }
