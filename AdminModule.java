@@ -1,5 +1,8 @@
 
 public class AdminModule extends Module {
+    
+    @Override
+    public void startModule(){} 
 
     public void manageUsers() {}
 
