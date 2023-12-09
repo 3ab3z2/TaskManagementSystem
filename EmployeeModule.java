@@ -1,6 +1,8 @@
 import java.util.Scanner;
 public class EmployeeModule extends Module {
     Employee currentEmployee;
+    @Override
+    public void startModule(){} 
 
     public static void main(String[] args) {
         EmployeeModule employeeModule = new EmployeeModule();

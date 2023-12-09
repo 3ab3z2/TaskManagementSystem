@@ -4,6 +4,9 @@ public class TaskModule extends Module {
     Employee currentEmployee;
     Project project;
 
+    @Override
+    public void startModule(){} 
+    
     public void viewTasks() {
         //TODO
     }
