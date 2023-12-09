@@ -37,32 +37,28 @@ public class Application
 		{
 			System.out.println("Exception:" + ex.getMessage());
 		}
-
 	}
-	
 	public static void menu()
 	{
 		int choice;
-		boolean loop = true;
-		
-		while (loop)
+		do
 		{
 			System.out.println("Task Managment System");
 			System.out.println("1-login\n2-exit");
 			choice = input.nextInt();
-			switch (choice) 
+			switch(choice) 
 			{
-				case 1:
-					login();
-				case 2:
-					loop = false;
-					break;
-				default:
-					System.out.println("\nWrong Choice!\nChoose again!\n");
-					break;
+			case 1:
+				login();
+				break;
+			case 2:
+				break;
+			default:
+				System.out.println("\nWrong Choice!\nChoose again!\n");
+				break;
 			}
 			
-		}
+		} while(choice!=2);
 	}
 
 	public static void login()
