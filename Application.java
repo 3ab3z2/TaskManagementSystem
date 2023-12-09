@@ -15,25 +15,21 @@ public class Application {
 	public static User user;
 	public static Scanner input;
 
-	public static void initializeData() {
-		// TODO
-		try {
-			// TODO: what to put in the generic part paramater in the following methods
-			userDataHandler = new DataHandler<User>("files/User.txt", new User(null, null, null));
-			employeeDataHandler = new DataHandler<Employee>("files/Employee.txt", new Employee(null, null, null, null));
-			taskDataHandler = new DataHandler<Task>("files/Task.txt",
-					new Task(null, null, null, null, null, null, null, null, null, null, 0));
-			leaveRequestDataHandler = new DataHandler<LeaveRequest>("files/LeaveRequest.txt",
-					new LeaveRequest(null, null, null, 0, null));
-			empTypeDataHandler = new DataHandler<EmpType>("files/EmpType.txt", new EmpType(null, false));
-			requestDataHandler = new DataHandler<Request>("files/Request.txt", new Request(null, null, null));
-			timeCardDataHandler = new DataHandler<TimeCard>("files/TimeCard.txt", new TimeCard(null, null, null));
-			taskLogDataHandler = new DataHandler<TaskLog>("files/TaskLog.txt", new TaskLog(null, null, null, null));
-			projectDataHandler = new DataHandler<Project>("files/Project.txt",
-					new Project(null, null, null, null, null));
-		} catch (Exception ex) {
-			System.out.println("Exception:" + ex.getMessage());
-		}
+	public static void initializeData() throws IOException {
+
+		userDataHandler = new DataHandler<User>("files/User.txt", new User(null, null, null));
+		employeeDataHandler = new DataHandler<Employee>("files/Employee.txt", new Employee(null, null, null, null));
+		taskDataHandler = new DataHandler<Task>("files/Task.txt",
+				new Task(null, null, null, null, null, null, null, null, null, null, 0));
+		leaveRequestDataHandler = new DataHandler<LeaveRequest>("files/LeaveRequest.txt",
+				new LeaveRequest(null, null, null, 0, null));
+		empTypeDataHandler = new DataHandler<EmpType>("files/EmpType.txt", new EmpType(null, false));
+		requestDataHandler = new DataHandler<Request>("files/Request.txt", new Request(null, null, null));
+		timeCardDataHandler = new DataHandler<TimeCard>("files/TimeCard.txt", new TimeCard(null, null, null));
+		taskLogDataHandler = new DataHandler<TaskLog>("files/TaskLog.txt", new TaskLog(null, null, null, null));
+		projectDataHandler = new DataHandler<Project>("files/Project.txt",
+				new Project(null, null, null, null, null));
+
 	}
 
 	public static void login() {
@@ -59,8 +55,8 @@ public class Application {
 			}
 			break;
 		}
-		
-		//check user's credentials
+
+		// check user's credentials
 		boolean foundUser = false;
 		for (int i = 0; i < userDataHandler.getLength(); i++) {
 			if (userDataHandler.get(i).canlogin(username, pass)) {
@@ -75,11 +71,11 @@ public class Application {
 	}
 
 	public static void startModule() {
-		//admin module path
+		// admin module path
 		if (user.getUserType() == User.utype.admin) {
 			currentModule = new AdminModule(user);
 			currentModule.startModule();
-		}else {
+		} else {
 			Employee employee = null;
 			for (int i = 0; i < employeeDataHandler.getLength(); i++) {
 				if (employeeDataHandler.get(i).canlogin(user.getUsername(), user.getPassword())) {
@@ -102,7 +98,7 @@ public class Application {
 							currentModule.startModule();
 							break;
 						case 2:
-							
+
 							int projchoice;
 							boolean projexit = false;
 							while (!projexit) {
@@ -114,10 +110,9 @@ public class Application {
 								projchoice = input.nextInt();
 								if (projchoice == 0)
 									projexit = true;
-								else if (projchoice >= projectDataHandler.getLength() || projchoice < 0) 
+								else if (projchoice >= projectDataHandler.getLength() || projchoice < 0)
 									System.out.println("\nUnknown Choice!\nTry again!\n");
 								else {
-									// ali
 									currentModule = new TaskModule(employee, projectDataHandler.get(projchoice - 1));
 									currentModule.startModule();
 									projexit = true;
@@ -137,9 +132,13 @@ public class Application {
 
 		}
 	}
+
 	public static void main(String[] args) {
-	
-		initializeData();
+		try {
+			initializeData();
+		} catch (IOException ex) {
+			System.out.println("Exception:" + ex.getMessage());
+		}
 
 		// menu
 		input = new Scanner(System.in);
