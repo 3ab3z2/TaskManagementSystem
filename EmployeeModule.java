@@ -1,8 +1,6 @@
 import java.util.Scanner;
 public class EmployeeModule extends Module {
     Employee currentEmployee;
-    @Override
-    public void startModule(){} 
     
     public static void main(String[] args) {
         EmployeeModule employeeModule = new EmployeeModule();
@@ -15,7 +13,7 @@ public class EmployeeModule extends Module {
         int choice;
 
         Scanner input = new Scanner(System.in);
-        
+
         System.out.println("\n ---------------------Employee Module---------------------\n");
         System.out.println("\t\t\tHi " +currentEmployee.getUsername()+ " !");
         do{
