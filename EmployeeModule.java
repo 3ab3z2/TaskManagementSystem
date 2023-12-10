@@ -142,7 +142,7 @@ public class EmployeeModule extends Module {
     }
 
     public void manageRequests() {
-        //TODO
+        //TODOs
     }
 
     public void manageRequest(Request request) {
