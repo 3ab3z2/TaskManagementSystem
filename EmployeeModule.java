@@ -104,21 +104,27 @@ public class EmployeeModule extends Module {
     }
 
     public void viewTimeCards() {
-        //try {
-        //  DataHandler<TimeCard> timeCardDataHandler = new DataHandler<>("/files/TimeCard.txt", new TimeCard());
-        //  List<TimeCard> timeCards = timeCardDataHandler.getAll();
-
-        //  for (TimeCard timeCard : timeCards) {
-        //      if (timeCard.getEmployee().equals(currentEmployee.getUsername())) {
-        //          System.out.println(timeCard);
-        //          System.out.println("----------------------------------------------------------");
-        //      }
-        //  }
-        //} catch (IOException e) {
-        //    System.out.println("An error occurred while reading TimeCard.txt");
-        //    e.printStackTrace();
-        //}
-        startModule();
+        System.out.println("==========================================================");
+        System.out.println("|| \u001B[43m"+"These are your time cards:\u001B[0m\t\t\t||\n");
+        for(int i = 0; i < Application.timeCardDataHandler.getLength(); i++){
+            if(Application.timeCardDataHandler.get(i).getEmployee().equals(currentEmployee.getUsername())){
+                System.out.println(Application.timeCardDataHandler.get(i));
+                System.out.println("----------------------------------------------------------");
+            }
+        }
+        System.out.println("==========================================================");
+        System.out.println("Return to menu? (y/n)");
+        Scanner input = new Scanner(System.in);
+        String choice = input.nextLine();
+        if(choice.equals("y")){
+            startModule();
+        }
+        else if(choice.equals("n")){
+            System.out.println("Returning to menu...");
+            viewTimeCards();}
+        else{
+            System.out.println("Invalid choice, please try again.");
+        }
     }
 
     public void createTimeCard() {
@@ -132,7 +138,7 @@ public class EmployeeModule extends Module {
         String date = input.nextLine();
         System.out.print("|| \u001B[43m"+"Time: \u001B[0m");
         String time = input.nextLine();
-        String dateTime = date + " " + time;
+        String dateTime = date + "T" + time;
         attendance = LocalDateTime.parse(dateTime);
 
         System.out.println("==========================================================");
@@ -142,9 +148,8 @@ public class EmployeeModule extends Module {
 
         System.out.println("");
         try {
-            DataHandler<TimeCard> timeCardDataHandler = new DataHandler<>("TimeCard.txt", new TimeCard(currentEmployee, attendance, departure));
             TimeCard newTimeCard = new TimeCard(currentEmployee, attendance, departure);
-            timeCardDataHandler.add(newTimeCard);
+            Application.timeCardDataHandler.add(newTimeCard);
         } catch (IOException e) {
             System.out.println("An error occurred while writing to TimeCard.txt");
             e.printStackTrace();
@@ -154,11 +159,20 @@ public class EmployeeModule extends Module {
 
     public void viewRequests() {
         //try {
+        for(int i = 0 , j = 0; i < Application.requestDataHandler.getLength(); i++){
+            Employee employee = Application.requestDataHandler.get(i).getEmployee();
+            if (currentEmployee.getUsername().equals(employee.getUsername())) {
+                  System.out.println((j+1) +"- " + Application.requestDataHandler.get(i).toString());
+                  j++;
+                  System.out.println("----------------------------------------------------------");
+              }
+            };
+        }
         //  DataHandler<Request> requestDataHandler = new DataHandler<>("/files/Request.txt", new Request());
         //  List<Request> request = requestDataHandler.getAll();
 
         //  for (Request request : request) {
-        //      if (Request.getEmployee().equals(currentEmployee.getUsername())) {
+        //      if (Request.getEmployee().getusername().equals(currentEmployee.getUsername())) {
         //          System.out.println(Request);
         //          System.out.println("----------------------------------------------------------");
         //      }
