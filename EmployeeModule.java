@@ -1,7 +1,5 @@
-import java.util.List;
 import java.util.Scanner;
 import java.io.*;
-import java.security.cert.CertPathValidatorException.Reason;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -101,13 +99,15 @@ public class EmployeeModule extends Module {
                     break;
             }
         } while (choice != 8);
+        input.close();
     }
 
     public void viewTimeCards() {
         System.out.println("==========================================================");
         System.out.println("|| \u001B[43m"+"These are your time cards:\u001B[0m\t\t\t||\n");
         for(int i = 0; i < Application.timeCardDataHandler.getLength(); i++){
-            if(Application.timeCardDataHandler.get(i).getEmployee().equals(currentEmployee.getUsername())){
+            Employee employee = Application.requestDataHandler.get(i).getEmployee();
+            if(currentEmployee.getUsername().equals(employee.getUsername())){
                 System.out.println(Application.timeCardDataHandler.get(i));
                 System.out.println("----------------------------------------------------------");
             }
@@ -125,6 +125,7 @@ public class EmployeeModule extends Module {
         else{
             System.out.println("Invalid choice, please try again.");
         }
+        input.close();
     }
 
     public void createTimeCard() {
@@ -158,31 +159,18 @@ public class EmployeeModule extends Module {
     }
 
     public void viewRequests() {
-        //try {
-        for(int i = 0 , j = 0; i < Application.requestDataHandler.getLength(); i++){
+        System.out.println("==========================================================");
+        for(int i = 0 , j = 0; i < Application.requestDataHandler.getLength(); i++, j++){
             Employee employee = Application.requestDataHandler.get(i).getEmployee();
             if (currentEmployee.getUsername().equals(employee.getUsername())) {
-                  System.out.println((j+1) +"- " + Application.requestDataHandler.get(i).toString());
+                  System.out.println("|| "+(j+1) +") " + Application.requestDataHandler.get(i).toString());
                   j++;
                   System.out.println("----------------------------------------------------------");
               }
             };
-        }
-        //  DataHandler<Request> requestDataHandler = new DataHandler<>("/files/Request.txt", new Request());
-        //  List<Request> request = requestDataHandler.getAll();
-
-        //  for (Request request : request) {
-        //      if (Request.getEmployee().getusername().equals(currentEmployee.getUsername())) {
-        //          System.out.println(Request);
-        //          System.out.println("----------------------------------------------------------");
-        //      }
-        //  }
-        //} catch (IOException e) {
-        //    System.out.println("An error occurred while reading request.txt");
-        //    e.printStackTrace();
-        //}
+        System.out.println("==========================================================");
         startModule();
-    }
+        }
 
     public void makeRequest(Request request) {
 
@@ -195,9 +183,8 @@ public class EmployeeModule extends Module {
 
         System.out.println("");
         try {
-            DataHandler<Request> requestDataHandler = new DataHandler<>("/files/Request.txt", new Request(currentEmployee, reason, approval));
             Request newrequest = new Request(currentEmployee, reason, approval);
-            requestDataHandler.add(newrequest);
+            Application.requestDataHandler.add(newrequest);
         } catch (IOException e) {
             System.out.println("An error occurred while writing to request.txt");
             e.printStackTrace();
@@ -223,9 +210,8 @@ public class EmployeeModule extends Module {
         System.out.println("");
         
         try {
-            DataHandler<LeaveRequest> leaveRequestDataHandler = new DataHandler<>("/files/LeaveRequest.txt", new LeaveRequest(currentEmployee, LeaveReason, approval, duration, leaveType));
             LeaveRequest newleaverequest = new LeaveRequest(currentEmployee, LeaveReason, approval, duration, leaveType);
-            leaveRequestDataHandler.add(newleaverequest);
+            Application.leaveRequestDataHandler.add(newleaverequest);
         } catch (IOException e) {
             System.out.println("An error occurred while writing to LeaveRequest.txt");
             e.printStackTrace();
@@ -240,13 +226,47 @@ public class EmployeeModule extends Module {
         System.out.println("==========================================================");
         System.out.println("|| \u001B[43m"+"These are your open requests:\u001B[0m\t\t\t||\n");
         viewRequests();
-        System.out.println("|| \u001B[43m"+"Please enter the ID of the request you want to manage:\u001B[0m||\n" +"||  \t\t\t\t\t\t\t||");
-        //there is no ID in the request class yet
+        System.out.println("|| \u001B[43m"+"Please enter the number of the request you want to manage:\u001B[0m||\n");
         int ID = input.nextInt();
-        manageRequest(null);
+        Request request = Application.requestDataHandler.get(ID);
+        System.out.println("==========================================================");
+        manageRequest(request);
+        input.close();
+        
     }
 
     public void manageRequest(Request request) {
-        //shoud add the remove, change duration, change reason, and change type
+        Scanner input = new Scanner(System.in);
+        System.out.println("|| \u001B[43m"+"Please Choose what you want to do with the request:\u001B[0m\t||\n|| 1)\u001B[35m\tChange the reason.\u001B[0m\t\t\t\t||\n" +"|| 2)\u001B[35m\tReturn to menu.\u001B[0m\t\t\t\t||\n");
+        int choice = input.nextInt();
+        switch (choice) {
+            case 1:
+                System.out.println("|| \u001B[43m"+"Please enter the new reason for your request:\u001B[0m\t\t||\n" +"||  \t\t\t\t\t\t\t||");
+                String reason = input.nextLine();
+                System.out.println("==========================================================");
+                System.out.println("");
+                request.setReason(reason);
+                System.out.println("|| \u001B[43m"+"Your request has been updated: (enter \"ok\" to return to home page)\u001B[0m\t\t\t||\n");
+                System.out.println(request.toString());
+                System.out.println("----------------------------------------------------------");
+                System.out.println("==========================================================");
+                String ok = input.nextLine();
+                if(ok.equals("ok")){
+                    startModule();
+                }
+                else{
+                    System.out.println("Invalid choice, please try again.");
+                }
+                break;
+
+            case 2:
+                startModule();
+                break;
+
+            default:
+                System.out.println("Invalid choice, please try again.");
+                break;
+        }
+        input.close();
     }
 }
