@@ -1,6 +1,7 @@
 import java.util.List;
 import java.util.Scanner;
 import java.io.*;
+import java.security.cert.CertPathValidatorException.Reason;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -68,7 +69,7 @@ public class EmployeeModule extends Module {
                     break;
 
                 case 2:
-                    createTimeCard(LocalDateTime attendance, LocalTime departure);
+                    createTimeCard();
                     break;
 
                 case 3:
@@ -110,6 +111,7 @@ public class EmployeeModule extends Module {
         //  for (TimeCard timeCard : timeCards) {
         //      if (timeCard.getEmployee().equals(currentEmployee.getUsername())) {
         //          System.out.println(timeCard);
+        //          System.out.println("----------------------------------------------------------");
         //      }
         //  }
         //} catch (IOException e) {
@@ -118,39 +120,100 @@ public class EmployeeModule extends Module {
         //}
     }
 
-    public void createTimeCard(LocalDateTime attendance, LocalTime departure) {
-        //try {
-        //    DataHandler<TimeCard> timeCardDataHandler = new DataHandler<>("TimeCard.txt", new TimeCard());
-        //    TimeCard newTimeCard = new TimeCard(currentEmployee, attendance, departure);
-        //    timeCardDataHandler.add(newTimeCard);
-        //} catch (IOException e) {
-        //    System.out.println("An error occurred while writing to TimeCard.txt");
-        //    e.printStackTrace();
-        //}
+    public void createTimeCard() {
+        Scanner input = new Scanner(System.in);
+        LocalTime departure = null;
+        LocalDateTime attendance = LocalDateTime.now();
+
+        System.out.println("==========================================================");
+        System.out.println("|| \u001B[43m"+"Please enter the date and time of your attendance\u001B[0m\t||\n|| \u001B[43m(yyyy-MM-dd HH:mm:ss): \u001B[0m\t\t\t\t||\n" +"||  \t\t\t\t\t\t\t||");
+        System.out.print("|| \u001B[43m"+"Date: \u001B[0m");
+        String date = input.nextLine();
+        System.out.print("|| \u001B[43m"+"Time: \u001B[0m");
+        String time = input.nextLine();
+        String dateTime = date + " " + time;
+        attendance = LocalDateTime.parse(dateTime);
+
+        System.out.println("==========================================================");
+
+        input.close();
+        
+
+        System.out.println("");
+        try {
+            DataHandler<TimeCard> timeCardDataHandler = new DataHandler<>("TimeCard.txt", new TimeCard(currentEmployee, attendance, departure));
+            TimeCard newTimeCard = new TimeCard(currentEmployee, attendance, departure);
+            timeCardDataHandler.add(newTimeCard);
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to TimeCard.txt");
+            e.printStackTrace();
+        }
     }
 
     public void viewRequests() {
         //try {
         //  DataHandler<Request> requestDataHandler = new DataHandler<>("/files/Request.txt", new Request());
-        //  List<Request> request = timeCardDataHandler.getAll();
+        //  List<Request> request = requestDataHandler.getAll();
 
         //  for (Request request : request) {
         //      if (Request.getEmployee().equals(currentEmployee.getUsername())) {
         //          System.out.println(Request);
+        //          System.out.println("----------------------------------------------------------");
         //      }
         //  }
         //} catch (IOException e) {
-        //    System.out.println("An error occurred while reading TimeCard.txt");
+        //    System.out.println("An error occurred while reading request.txt");
         //    e.printStackTrace();
         //}
     }
 
     public void makeRequest(Request request) {
-        //TODO
+
+        Request.Approval approval = null;
+        Scanner input = new Scanner(System.in);
+        System.out.println("==========================================================");
+        System.out.println("|| \u001B[43m"+"Please enter the reason for your request:\u001B[0m\t\t||\n" +"||  \t\t\t\t\t\t\t||");
+        String reason = input.nextLine();
+        System.out.println("==========================================================");
+
+        System.out.println("");
+        try {
+            DataHandler<Request> requestDataHandler = new DataHandler<>("/files/Request.txt", new Request(currentEmployee, reason, approval));
+            Request newrequest = new Request(currentEmployee, reason, approval);
+            requestDataHandler.add(newrequest);
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to request.txt");
+            e.printStackTrace();
+        }
+
+        input.close();
     }
 
     public void makeLeaveRequest(LeaveRequest leaveRequest) {
-        //TODO
+        Request.Approval approval = null;
+        Scanner input = new Scanner(System.in);
+        System.out.println("==========================================================");
+        System.out.println("|| \u001B[43m"+"Please enter the reason for your leave request:\u001B[0m\t||\n" +"||  \t\t\t\t\t\t\t||");
+        String LeaveReason = input.nextLine();
+        System.out.println("|| \u001B[43m"+"Please enter the duration of your leave request:\u001B[0m\t||\n" +"||  \t\t\t\t\t\t\t||");
+        int duration = input.nextInt();
+        System.out.println("|| \u001B[43m"+"Please enter the type of your leave request:\u001B[0m\t||\n" +"||  \t\t\t\t\t\t\t||");
+        String leaveTypeString = input.nextLine();
+        LeaveRequest.LeaveType leaveType = LeaveRequest.LeaveType.valueOf(leaveTypeString);    
+        System.out.println("==========================================================");
+
+        System.out.println("");
+        
+        try {
+            DataHandler<LeaveRequest> leaveRequestDataHandler = new DataHandler<>("/files/LeaveRequest.txt", new LeaveRequest(currentEmployee, LeaveReason, approval, duration, leaveType));
+            LeaveRequest newleaverequest = new LeaveRequest(currentEmployee, LeaveReason, approval, duration, leaveType);
+            leaveRequestDataHandler.add(newleaverequest);
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to LeaveRequest.txt");
+            e.printStackTrace();
+        }
+
+        input.close();
     }
 
     public void manageRequests() {
