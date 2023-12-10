@@ -7,7 +7,7 @@ public class Task implements LoadSave {
     Employee assignedEmployee;
     String taskPhase;
     Project project;
-    public enum Priority{high,normal,easy};
+    public enum Priority{easy,normal,high};
     Priority priority;
     Employee creator;
     LocalDate startDate;
