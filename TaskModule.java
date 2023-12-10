@@ -192,11 +192,11 @@ public class TaskModule extends Module {
             }
     }
     public void viewTasklogs(Task task) {
-        //display all task logs
+        //display all task logs and store all relative tasklogs in an array for usage
         TaskLog[] arr = new TaskLog[Application.taskLogDataHandler.getLength()];
         for(int i = 0, j =0; i < Application.taskLogDataHandler.getLength(); i++)
         {
-            //check if == or equals
+            //TODO: check if == or equals
             if(Application.taskLogDataHandler.get(i).getTask() == task)
             {
                 System.out.println((i+1) + ".\nfromtime:" + Application.taskLogDataHandler.get(i).getFromTime().toString());
@@ -205,7 +205,7 @@ public class TaskModule extends Module {
             }
         }
 
-            
+            //display view task logs menu
             boolean exit = false;
             while (!exit)
             {
@@ -229,6 +229,7 @@ public class TaskModule extends Module {
             }
         }    
     public void viewTasklog(TaskLog taskLog) {
+        //display tasklog
         System.out.println("Task: "+ taskLog.getTask().toString());
         System.out.println("From time:" + taskLog.getFromTime().toString());
         System.out.println("To time:" + taskLog.getToTime().toString());
