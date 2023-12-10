@@ -92,7 +92,7 @@ public class EmployeeModule extends Module {
                     break;
 
                 case 8:
-                    System.out.println("Logging out...");
+                    System.out.println("\u001B[41m Logging out...");
                     break;
 
                 default:
