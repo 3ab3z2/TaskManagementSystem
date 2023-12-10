@@ -130,7 +130,19 @@ public class EmployeeModule extends Module {
     }
 
     public void viewRequests() {
-        //TODO
+        //try {
+        //  DataHandler<LeaveRequest> leaverequestDataHandler = new DataHandler<>("/files/Request.txt", new LeaveRequest());
+        //  List<LeaveRequest> leaverequest = timeCardDataHandler.getAll();
+
+        //  for (LeaveRequest leaveRequest : leaverequest) {
+        //      if (leaveRequest.getEmployee().equals(currentEmployee.getUsername())) {
+        //          System.out.println(leaveRequest);
+        //      }
+        //  }
+        //} catch (IOException e) {
+        //    System.out.println("An error occurred while reading TimeCard.txt");
+        //    e.printStackTrace();
+        //}
     }
 
     public void makeRequest(Request request) {
