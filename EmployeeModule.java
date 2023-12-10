@@ -34,25 +34,31 @@ import java.time.LocalTime;
 
 public class EmployeeModule extends Module {
     Employee currentEmployee;
-    
-    public EmployeeModule(Employee currentEmployee)
-    {
+
+    public EmployeeModule(Employee currentEmployee) {
         this.currentEmployee = currentEmployee;
         this.currentUser = currentEmployee;
-    }   
+    }
 
     @Override
-    public void startModule(){
-
+    public void startModule() {
         int choice;
-
         Scanner input = new Scanner(System.in);
 
-        System.out.println("\u001B[41m" +"\n ---------------------Employee Module---------------------\n");
-        System.out.println("\t\t\tHi " +currentEmployee.getUsername()+ " !");
-        do{
+        System.out.println("\u001B[41m" + "\n ---------------------Employee Module---------------------\n");
+        System.out.println("\t\t\tHi " + currentEmployee.getUsername() + " !");
+
+        do {
             System.out.println("==========================================================");
-            System.out.println("|| Please choose one of the following options:\t\t||\n|| 1)\tView time cards.\t\t\t\t||\n|| 2)\tCreate a time card.\t\t\t\t||\n|| 3)\tView requests.\t\t\t\t\t||\n|| 4)\tMake a request.\t\t\t\t\t||\n|| 5)\tMake a leave request.\t\t\t\t||\n|| 6)\tManage requests.\t\t\t\t||\n|| 7)\tManage a request.\t\t\t\t||\n|| 8)\tLogout.\t\t\t\t\t\t||");
+            System.out.println("|| Please choose one of the following options:\t\t||\n" +
+                    "|| 1)\tView time cards.\t\t\t\t||\n" +
+                    "|| 2)\tCreate a time card.\t\t\t\t||\n" +
+                    "|| 3)\tView requests.\t\t\t\t\t||\n" +
+                    "|| 4)\tMake a request.\t\t\t\t\t||\n" +
+                    "|| 5)\tMake a leave request.\t\t\t\t||\n" +
+                    "|| 6)\tManage requests.\t\t\t\t||\n" +
+                    "|| 7)\tManage a request.\t\t\t\t||\n" +
+                    "|| 8)\tLogout.\t\t\t\t\t\t||");
             System.out.println("==========================================================");
             choice = input.nextInt();
 
@@ -62,9 +68,9 @@ public class EmployeeModule extends Module {
                     break;
 
                 case 2:
-                    createTimeCard(null);
+                    createTimeCard(LocalDateTime attendance, LocalTime departure);
                     break;
-                
+
                 case 3:
                     viewRequests();
                     break;
@@ -93,47 +99,52 @@ public class EmployeeModule extends Module {
                     System.out.println("Invalid choice, please try again.");
                     break;
             }
-        } while(choice!=8);
-
+        } while (choice != 8);
     }
 
     public void viewTimeCards() {
-    //try {
-    //  DataHandler<TimeCard> timeCardDataHandler = new DataHandler<>("/files/TimeCard.txt", new TimeCard());
-    //  List<TimeCard> timeCards = timeCardDataHandler.getAll();
+        //try {
+        //  DataHandler<TimeCard> timeCardDataHandler = new DataHandler<>("/files/TimeCard.txt", new TimeCard());
+        //  List<TimeCard> timeCards = timeCardDataHandler.getAll();
 
-    //  for (TimeCard timeCard : timeCards) {
-    //      if (timeCard.getEmployee().equals(currentEmployee.getUsername())) {
-    //          System.out.println(timeCard);
-    //      }
-    //  }
-    //} catch (IOException e) {
-    //    System.out.println("An error occurred while reading TimeCard.txt");
-    //    e.printStackTrace();
-    //}
-}
+        //  for (TimeCard timeCard : timeCards) {
+        //      if (timeCard.getEmployee().equals(currentEmployee.getUsername())) {
+        //          System.out.println(timeCard);
+        //      }
+        //  }
+        //} catch (IOException e) {
+        //    System.out.println("An error occurred while reading TimeCard.txt");
+        //    e.printStackTrace();
+        //}
+    }
+
     public void createTimeCard(LocalDateTime attendance, LocalTime departure) {
-    //try {
-    //    DataHandler<TimeCard> timeCardDataHandler = new DataHandler<>("TimeCard.txt", new TimeCard());
-    //    TimeCard newTimeCard = new TimeCard(currentEmployee, attendance, departure);
-    //    timeCardDataHandler.add(newTimeCard);
-    //} catch (IOException e) {
-    //    System.out.println("An error occurred while writing to TimeCard.txt");
-    //    e.printStackTrace();
-    //}
-}
+        //try {
+        //    DataHandler<TimeCard> timeCardDataHandler = new DataHandler<>("TimeCard.txt", new TimeCard());
+        //    TimeCard newTimeCard = new TimeCard(currentEmployee, attendance, departure);
+        //    timeCardDataHandler.add(newTimeCard);
+        //} catch (IOException e) {
+        //    System.out.println("An error occurred while writing to TimeCard.txt");
+        //    e.printStackTrace();
+        //}
+    }
+
     public void viewRequests() {
         //TODO
     }
+
     public void makeRequest(Request request) {
         //TODO
     }
+
     public void makeLeaveRequest(LeaveRequest leaveRequest) {
         //TODO
     }
+
     public void manageRequests() {
         //TODO
     }
+
     public void manageRequest(Request request) {
         //TODO
     }
