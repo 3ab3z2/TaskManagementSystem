@@ -144,9 +144,7 @@ public class EmployeeModule extends Module {
 
         System.out.println("==========================================================");
 
-        input.close();
-        
-
+       
         System.out.println("");
         try {
             TimeCard newTimeCard = new TimeCard(currentEmployee, attendance, departure);
@@ -155,10 +153,23 @@ public class EmployeeModule extends Module {
             System.out.println("An error occurred while writing to TimeCard.txt");
             e.printStackTrace();
         }
-        startModule(); 
+
+        System.out.println("Return to menu? (y/n)");
+        String choice = input.nextLine();
+        if(choice.equals("y")){
+            startModule();
+        }
+        else if(choice.equals("n")){
+            System.out.println("Returning to menu...");
+            createTimeCard();}
+        else{
+            System.out.println("Invalid choice, please try again.");
+        }
+        input.close();
     }
 
     public void viewRequests() {
+        Scanner input = new Scanner(System.in);
         System.out.println("==========================================================");
         for(int i = 0 , j = 0; i < Application.requestDataHandler.getLength(); i++, j++){
             Employee employee = Application.requestDataHandler.get(i).getEmployee();
@@ -168,8 +179,18 @@ public class EmployeeModule extends Module {
                   System.out.println("----------------------------------------------------------");
               }
             };
-        System.out.println("==========================================================");
-        startModule();
+        System.out.println("==========================================================");System.out.println("Return to menu? (y/n)");
+        String choice = input.nextLine();
+        if(choice.equals("y")){
+            startModule();
+        }
+        else if(choice.equals("n")){
+            System.out.println("Returning to menu...");
+            viewRequests();();}
+        else{
+            System.out.println("Invalid choice, please try again.");
+        }
+        input.close();
         }
 
     public void makeRequest(Request request) {
@@ -190,8 +211,18 @@ public class EmployeeModule extends Module {
             e.printStackTrace();
         }
 
+        System.out.println("Return to menu? (y/n)");
+        String choice = input.nextLine();
+        if(choice.equals("y")){
+            startModule();
+        }
+        else if(choice.equals("n")){
+            System.out.println("Returning to menu...");
+            makeRequest(request);}
+        else{
+            System.out.println("Invalid choice, please try again.");
+        }
         input.close();
-        startModule();
     }
 
     public void makeLeaveRequest(LeaveRequest leaveRequest) {
@@ -216,9 +247,18 @@ public class EmployeeModule extends Module {
             System.out.println("An error occurred while writing to LeaveRequest.txt");
             e.printStackTrace();
         }
-
+        System.out.println("Return to menu? (y/n)");
+        String choice = input.nextLine();
+        if(choice.equals("y")){
+            startModule();
+        }
+        else if(choice.equals("n")){
+            System.out.println("Returning to menu...");
+            makeLeaveRequest(leaveRequest);}
+        else{
+            System.out.println("Invalid choice, please try again.");
+        }
         input.close();
-        startModule();
     }
 
     public void manageRequests() {
