@@ -304,7 +304,7 @@ public class TaskModule extends Module {
                         System.out.print("Task phase: ");
                         String taskPhase = Application.input.next();
                         
-                        //TODO: Priority
+                        //Priority
                         int priorityChoice;
                         Task.Priority priority = null;
                         boolean priorityExit = false;
@@ -315,13 +315,15 @@ public class TaskModule extends Module {
                             switch (priorityChoice) 
                             {
                                 case 1:
-                                    
+                                    priority = Task.Priority.easy;
                                     priorityExit = true;
                                     break;
                                 case 2:
+                                    priority = Task.Priority.normal;
                                     priorityExit = true;
                                     break;
                                 case 3:
+                                    priority = Task.Priority.high;
                                     priorityExit = true;
                                     break;
                             
@@ -369,7 +371,7 @@ public class TaskModule extends Module {
                         
                         
             
-                        //TODO: EST
+                        //EST
                         System.out.println("EST: ");
                         double taskEST;
                         taskEST = Application.input.nextDouble();
@@ -399,9 +401,9 @@ public class TaskModule extends Module {
         
     
     public TaskLog createTaskLog(Task task, LocalDateTime fromTime, LocalDateTime toTime) throws IOException {
-        //TaskLog newlog = new TaskLog(fromTime, toTime, currentEmployee, task);
-        //TODO: Save() is private?, error checking?
-        //Application.taskLogDataHandler.add(newlog).save();
+        TaskLog newlog = new TaskLog(fromTime, toTime, currentEmployee, task);
+        
+        Application.taskLogDataHandler.add(newlog);
         
         return null;
     }
