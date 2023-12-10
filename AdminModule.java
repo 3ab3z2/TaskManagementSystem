@@ -258,17 +258,4 @@ public class AdminModule extends Module {
         //     }
         // }
     }
-    public static void main(String[] args) {
-        try
-        {
-            Application.initializeData();
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-        }
-        Application.input= new Scanner(System.in);
-        AdminModule adminModule= new AdminModule(null);
-        adminModule.startModule();
-    }
 }
