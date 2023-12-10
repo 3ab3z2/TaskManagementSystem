@@ -1,6 +1,8 @@
 import java.util.List;
 import java.util.Scanner;
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 
 ///ANSI COLOR CODES:
@@ -110,11 +112,16 @@ public class EmployeeModule extends Module {
     //    e.printStackTrace();
     //}
 }
-    public void createTimeCard(TimeCard timeCard) {
-        //TODO
-
-        
-    }
+    public void createTimeCard(LocalDateTime attendance, LocalTime departure) {
+    //try {
+    //    DataHandler<TimeCard> timeCardDataHandler = new DataHandler<>("TimeCard.txt", new TimeCard());
+    //    TimeCard newTimeCard = new TimeCard(currentEmployee, attendance, departure);
+    //    timeCardDataHandler.add(newTimeCard);
+    //} catch (IOException e) {
+    //    System.out.println("An error occurred while writing to TimeCard.txt");
+    //    e.printStackTrace();
+    //}
+}
     public void viewRequests() {
         //TODO
     }
