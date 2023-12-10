@@ -382,7 +382,53 @@ public class TaskModule extends Module {
                         
                         break;
                     case 3:
-                        
+                        System.out.println("Enter a task code to modify: ");
+                        int taskCint = Application.input.nextInt();
+                        String taskC = taskCint + "";
+                        for (int i = 0; i < Application.taskDataHandler.getLength(); i++)
+                        {
+                            Task taskUpdate = Application.taskDataHandler.get(i);
+                            if (taskC.equals(taskUpdate.getCode()))
+                            {
+                                System.out.println("Code: " + taskUpdate.getCode());
+                                System.out.println("Title: " + taskUpdate.getTitle());
+                                System.out.println("Description: " + taskUpdate.getDescription());
+                                System.out.println("Assigned Employee: " + taskUpdate.getAssignedEmployee());
+                                System.out.println("Task phase: " + taskUpdate.getTaskPhase());
+
+                                boolean updateExit = true;
+
+                                System.out.println("Enter a field to modify");
+                                System.out.println("1-title");
+                                System.out.println("2-Descreption");
+                                System.out.println("3-Assigned employee");
+                                System.out.println("4-Task phase");
+                                //TODO: error checking
+                                int choiceUpdate = Application.input.nextInt();
+
+                                switch (choiceUpdate) {
+                                    case 1:
+                                        System.out.print("Enter the new title: ");
+                                        //TODO: error checking
+                                        String newTitle = Application.input.nextLine();
+                                        taskUpdate.setTitle(newTitle);
+                                        break;
+                                    case 2:
+                                        System.out.print("Enter the new Descreption: ");
+                                        //TODO: error checking
+                                        String newDescription = Application.input.nextLine();
+                                        taskUpdate.setDescription(newDescription);
+                                        break;
+                                    case 3:
+                                        //TODO: update assigned employee
+                                        break;
+                                    case 4:
+                                        //TODO: update task phase
+                                    default:
+                                        break;
+                                }
+                            }
+                        }
                         break;
                     
                     case 4:
