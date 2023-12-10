@@ -197,11 +197,22 @@ public class TaskModule extends Module {
         for(int i = 0, j =0; i < Application.taskLogDataHandler.getLength(); i++)
         {
             //TODO: check if == or equals
-            if(Application.taskLogDataHandler.get(i).getTask() == task)
+            
+            //manager ver.
+            if(Application.taskLogDataHandler.get(i).getTask() == task && currentEmployee.empType.isManager)
             {
                 System.out.println((i+1) + ".\nfromtime:" + Application.taskLogDataHandler.get(i).getFromTime().toString());
                 System.out.println("totime:" + Application.taskLogDataHandler.get(i).getToTime().toString());
                 arr[j] = Application.taskLogDataHandler.get(i);
+
+            }
+            //emp ver.
+            if(Application.taskLogDataHandler.get(i).getAssignedEmployee() == currentEmployee)
+            {
+                System.out.println((i+1) + ".\nfromtime:" + Application.taskLogDataHandler.get(i).getFromTime().toString());
+                System.out.println("totime:" + Application.taskLogDataHandler.get(i).getToTime().toString());
+                arr[j] = Application.taskLogDataHandler.get(i);
+
             }
         }
 
@@ -233,7 +244,8 @@ public class TaskModule extends Module {
         System.out.println("Task: "+ taskLog.getTask().toString());
         System.out.println("From time:" + taskLog.getFromTime().toString());
         System.out.println("To time:" + taskLog.getToTime().toString());
-        System.out.println("Assigned to:" + taskLog.getAssignedEmployee().toString());
+        if(currentEmployee.empType.isManager())
+            System.out.println("Assigned to:" + taskLog.getAssignedEmployee().toString());
     }
     public void manageTasks() {
         //TODO
