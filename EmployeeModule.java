@@ -118,6 +118,7 @@ public class EmployeeModule extends Module {
         //    System.out.println("An error occurred while reading TimeCard.txt");
         //    e.printStackTrace();
         //}
+        startModule();
     }
 
     public void createTimeCard() {
@@ -148,6 +149,7 @@ public class EmployeeModule extends Module {
             System.out.println("An error occurred while writing to TimeCard.txt");
             e.printStackTrace();
         }
+        startModule(); 
     }
 
     public void viewRequests() {
@@ -165,6 +167,7 @@ public class EmployeeModule extends Module {
         //    System.out.println("An error occurred while reading request.txt");
         //    e.printStackTrace();
         //}
+        startModule();
     }
 
     public void makeRequest(Request request) {
@@ -187,6 +190,7 @@ public class EmployeeModule extends Module {
         }
 
         input.close();
+        startModule();
     }
 
     public void makeLeaveRequest(LeaveRequest leaveRequest) {
@@ -214,13 +218,21 @@ public class EmployeeModule extends Module {
         }
 
         input.close();
+        startModule();
     }
 
     public void manageRequests() {
-        //TODO
+        Scanner input = new Scanner(System.in);
+        System.out.println("==========================================================");
+        System.out.println("|| \u001B[43m"+"These are your open requests:\u001B[0m\t\t\t||\n");
+        viewRequests();
+        System.out.println("|| \u001B[43m"+"Please enter the ID of the request you want to manage:\u001B[0m||\n" +"||  \t\t\t\t\t\t\t||");
+        //there is no ID in the request class yet
+        int ID = input.nextInt();
+        manageRequest(null);
     }
 
     public void manageRequest(Request request) {
-        //TODO
+        //shoud add the remove, change duration, change reason, and change type
     }
 }
