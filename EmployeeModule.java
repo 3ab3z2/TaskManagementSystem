@@ -159,11 +159,18 @@ public class EmployeeModule extends Module {
 
     public void viewRequests() {
         //try {
+        for(int i = 0; i < Application.requestDataHandler.getLength(); i++){
+            if (Request.getEmployee().getusername().equals(Application.requestDataHandler.get().getUsername())) {
+                  System.out.println(Request);
+                  System.out.println("----------------------------------------------------------");
+              }
+            };
+        }
         //  DataHandler<Request> requestDataHandler = new DataHandler<>("/files/Request.txt", new Request());
         //  List<Request> request = requestDataHandler.getAll();
 
         //  for (Request request : request) {
-        //      if (Request.getEmployee().equals(currentEmployee.getUsername())) {
+        //      if (Request.getEmployee().getusername().equals(currentEmployee.getUsername())) {
         //          System.out.println(Request);
         //          System.out.println("----------------------------------------------------------");
         //      }
