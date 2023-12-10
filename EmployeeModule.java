@@ -131,12 +131,12 @@ public class EmployeeModule extends Module {
 
     public void viewRequests() {
         //try {
-        //  DataHandler<LeaveRequest> leaverequestDataHandler = new DataHandler<>("/files/Request.txt", new LeaveRequest());
-        //  List<LeaveRequest> leaverequest = timeCardDataHandler.getAll();
+        //  DataHandler<Request> requestDataHandler = new DataHandler<>("/files/Request.txt", new Request());
+        //  List<Request> request = timeCardDataHandler.getAll();
 
-        //  for (LeaveRequest leaveRequest : leaverequest) {
-        //      if (leaveRequest.getEmployee().equals(currentEmployee.getUsername())) {
-        //          System.out.println(leaveRequest);
+        //  for (Request request : request) {
+        //      if (Request.getEmployee().equals(currentEmployee.getUsername())) {
+        //          System.out.println(Request);
         //      }
         //  }
         //} catch (IOException e) {
