@@ -92,7 +92,7 @@ public class EmployeeModule extends Module {
                     break;
 
                 case 8:
-                    System.out.println("Logging out...");
+                    System.out.println("\u001B[41m Logging out...");
                     break;
 
                 default:
@@ -130,7 +130,19 @@ public class EmployeeModule extends Module {
     }
 
     public void viewRequests() {
-        //TODO
+        //try {
+        //  DataHandler<Request> requestDataHandler = new DataHandler<>("/files/Request.txt", new Request());
+        //  List<Request> request = timeCardDataHandler.getAll();
+
+        //  for (Request request : request) {
+        //      if (Request.getEmployee().equals(currentEmployee.getUsername())) {
+        //          System.out.println(Request);
+        //      }
+        //  }
+        //} catch (IOException e) {
+        //    System.out.println("An error occurred while reading TimeCard.txt");
+        //    e.printStackTrace();
+        //}
     }
 
     public void makeRequest(Request request) {
