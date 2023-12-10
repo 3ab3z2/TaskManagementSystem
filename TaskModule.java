@@ -226,22 +226,11 @@ public class TaskModule extends Module {
         for(int i = 0, j =0; i < Application.taskLogDataHandler.getLength(); i++)
         {
             //TODO: check if == or equals
-            
-            //manager ver.
-            if(Application.taskLogDataHandler.get(i).getTask() == task && currentEmployee.empType.isManager)
+            if(Application.taskLogDataHandler.get(i).getTask() == task)
             {
                 System.out.println((i+1) + ".\nfromtime:" + Application.taskLogDataHandler.get(i).getFromTime().toString());
                 System.out.println("totime:" + Application.taskLogDataHandler.get(i).getToTime().toString());
                 arr[j] = Application.taskLogDataHandler.get(i);
-
-            }
-            //emp ver.
-            if(Application.taskLogDataHandler.get(i).getAssignedEmployee() == currentEmployee)
-            {
-                System.out.println((i+1) + ".\nfromtime:" + Application.taskLogDataHandler.get(i).getFromTime().toString());
-                System.out.println("totime:" + Application.taskLogDataHandler.get(i).getToTime().toString());
-                arr[j] = Application.taskLogDataHandler.get(i);
-
             }
         }
 
@@ -280,21 +269,22 @@ public class TaskModule extends Module {
         //TODO
     }
     public TaskLog createTaskLog(Task task, LocalDateTime fromTime, LocalDateTime toTime) throws IOException {
-        TaskLog newlog = new TaskLog(fromTime, toTime, currentEmployee, task);
+        //TaskLog newlog = new TaskLog(fromTime, toTime, currentEmployee, task);
         //TODO: Save() is private?, error checking?
-        Application.taskLogDataHandler.add(newlog).save();
+        //Application.taskLogDataHandler.add(newlog).save();
         
         return null;
     }
     public void showCalender(){
-        // TODO
 
         for(int i = 0; i < Application.employeeDataHandler.getLength(); i++)
         {
             Task task = Application.taskDataHandler.get(i);
             if(task.project == project)
             {
-                System.out.println(task.getAssignedEmployee().getUsername() + "\t" + task.getTitle() + "\t" + task.getTaskPhase());
+               System.out.println("Task: " + task.getTitle());
+               System.out.println("Task phase: " + task.getTaskPhase());
+               System.out.println("Assigned employee: " + task.getAssignedEmployee().toString());
             }
         }
     }
