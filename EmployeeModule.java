@@ -45,20 +45,20 @@ public class EmployeeModule extends Module {
         int choice;
         Scanner input = new Scanner(System.in);
 
-        System.out.println("\u001B[41m" + "\n ---------------------Employee Module---------------------\n");
-        System.out.println("\t\t\tHi " + currentEmployee.getUsername() + " !");
+        System.out.println("\u001B[1m" + "\n ---------------------Employee Module---------------------\n\u001B[8m" + "\t\t\t  D͓̽e͓̽d͓̽S͓̽e͓̽c͓̽\u001B[0m");
+        System.out.println("\t\t\tHi \u001B[1m"+currentEmployee.getUsername()+" !");
 
         do {
             System.out.println("==========================================================");
-            System.out.println("|| Please choose one of the following options:\t\t||\n" +
-                    "|| 1)\tView time cards.\t\t\t\t||\n" +
-                    "|| 2)\tCreate a time card.\t\t\t\t||\n" +
-                    "|| 3)\tView requests.\t\t\t\t\t||\n" +
-                    "|| 4)\tMake a request.\t\t\t\t\t||\n" +
-                    "|| 5)\tMake a leave request.\t\t\t\t||\n" +
-                    "|| 6)\tManage requests.\t\t\t\t||\n" +
-                    "|| 7)\tManage a request.\t\t\t\t||\n" +
-                    "|| 8)\tLogout.\t\t\t\t\t\t||");
+            System.out.println("|| \u001B[43m"+"Please choose one of the following options:\u001B[0m\t\t||\n" +
+                    "|| 1)\u001B[35m\tView time cards.\u001B[0m\t\t\t\t||\n" +
+                    "|| 2)\u001B[35m\tCreate a time card.\u001B[0m\t\t\t\t||\n" +
+                    "|| 3)\u001B[35m\tView requests.\u001B[0m\t\t\t\t\t||\n" +
+                    "|| 4)\u001B[35m\tMake a request.\u001B[0m\t\t\t\t\t||\n" +
+                    "|| 5)\u001B[35m\tMake a leave request.\u001B[0m\t\t\t\t||\n" +
+                    "|| 6)\u001B[35m\tManage requests.\u001B[0m\t\t\t\t||\n" +
+                    "|| 7)\u001B[35m\tManage a request.\u001B[0m\t\t\t\t||\n" +
+                    "|| \u001B[41m8)\tLogout.\u001B[0m\t\t\t\t\t\t||");
             System.out.println("==========================================================");
             choice = input.nextInt();
 
