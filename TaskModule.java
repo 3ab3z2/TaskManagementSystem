@@ -19,7 +19,7 @@ public class TaskModule extends Module {
         System.out.println("\nTask Module\n");
         System.out.println("\t\t\tHi " +currentEmployee.getUsername()+ " !");
         
-        if (currentEmployee.empType.isManager)
+        if (currentEmployee.empType.isManager())
         {
             System.out.println("Manager\n");
             System.out.println("\nPick a choice: \n\n");
@@ -92,8 +92,7 @@ public class TaskModule extends Module {
         }
         
 
-    } 
-    
+    }    
     public void viewTasks() throws IOException {
         
         //display tasks
@@ -266,8 +265,107 @@ public class TaskModule extends Module {
             System.out.println("Assigned to:" + taskLog.getAssignedEmployee().toString());
     }
     public void manageTasks() {
-        //TODO
-    }
+        int choice;
+
+        System.out.println("\nManage Tasks:");
+            System.out.println("\nPick a choice: \n\n");
+            System.out.println("1-Add Task \n");
+            System.out.println("2-Delete Task \n");
+            System.out.println("3-Update Task \n");
+            System.out.println("4-Go back \n");
+
+            choice = Application.input.nextInt();
+            boolean exit = false;
+            while (!exit)
+            {
+                switch (choice)
+                {
+                    case 1:
+                        //input task data
+                        System.out.println("Task details");
+                        
+                        System.out.println("Code: ");
+                        String taskCode = Application.taskDataHandler.get(Application.taskDataHandler.getLength() - 1).getCode();
+                        int tempInt = Integer.parseInt(taskCode);
+                        tempInt++;
+                        taskCode = tempInt + "";
+
+                        System.out.println("Title: ");
+                        String taskTitle = Application.input.next();
+
+                        System.out.println("Description: ");
+                        String taskDescription = Application.input.next();
+                        
+
+
+
+
+
+                        boolean empExit = false;
+                        while (!empExit)
+                        {
+                            Employee arr[] = new Employee[Application.employeeDataHandler.getLength()];
+                            Employee employee; 
+                            for(int i = 0 , j = 0; i < Application.employeeDataHandler.getLength(); i++)
+                            {
+                                employee = Application.employeeDataHandler.get(i);
+                                if(!employee.empType.isManager())
+                                {
+                                    System.out.println((i+1) + "- " + employee.getUsername());
+                                    arr[j] = employee;
+                                }
+                            }
+                            
+                            System.out.println("Assign to: ");
+                            int empChoice = Application.input.nextInt();
+                            if(empChoice >= arr.length || empChoice < 0)
+                            {
+                                System.out.println("Invalid choice, please try again.");
+                                continue;
+                            }
+
+                            else
+                                for(int i = 0; i < arr.length; i++)
+                                    if(i == choice - 1 )
+                                        employee = arr[i];
+                        }
+                System.out.println("Task phase: ");
+                String taskPhase = Application.input.next();
+                
+                System.out.println("Project: ");
+                
+                        
+                        System.out.println("Priority: ");
+                        
+                        System.out.println("Creator: ");
+
+                        System.out.println("Start date: ");
+
+                        System.out.println("End date: ");
+
+                        System.out.println("EST: ");
+                        break;
+
+                    case 2:
+                        
+                        break;
+                    case 3:
+                        
+                        break;
+                    
+                    case 4:
+                        System.out.println("Going to the previous page");
+                        exit = true;
+                        break;
+
+                    default:
+                        System.out.println("Invalid choice, please try again.");
+                        break;
+                }
+            }
+        }
+        
+    
     public TaskLog createTaskLog(Task task, LocalDateTime fromTime, LocalDateTime toTime) throws IOException {
         //TaskLog newlog = new TaskLog(fromTime, toTime, currentEmployee, task);
         //TODO: Save() is private?, error checking?
