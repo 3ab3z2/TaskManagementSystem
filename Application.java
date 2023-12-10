@@ -32,7 +32,7 @@ public class Application {
 
 	}
 
-	public static void login() {
+	public static void login() throws IOException {
 		String username = "";
 		String pass = "";
 
@@ -70,7 +70,7 @@ public class Application {
 			System.out.println("Username or password is incorrect!\n");
 	}
 
-	public static void startModule() {
+	public static void startModule() throws IOException {
 		// admin module path
 		if (user.getUserType() == User.utype.admin) {
 			currentModule = new AdminModule(user);
@@ -133,7 +133,7 @@ public class Application {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		try {
 			initializeData();
 		} catch (IOException ex) {

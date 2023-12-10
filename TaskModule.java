@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 public class TaskModule extends Module {
@@ -12,7 +13,7 @@ public class TaskModule extends Module {
     }
 
     @Override
-    public void startModule(){
+    public void startModule() throws IOException{
         int choice;
 
         System.out.println("\nTask Module\n");
@@ -93,7 +94,7 @@ public class TaskModule extends Module {
 
     } 
     
-    public void viewTasks() {
+    public void viewTasks() throws IOException {
         
         //display tasks
         int len = Application.taskDataHandler.getLength();
@@ -151,7 +152,7 @@ public class TaskModule extends Module {
 
         
     }
-    public void viewTask(Task task) {
+    public void viewTask(Task task) throws IOException {
 
         //display task details
         System.out.println("Title: " + task.getTitle());
@@ -178,8 +179,36 @@ public class TaskModule extends Module {
                     case 1:
                         viewTasklogs(task);
                         break;
-                    case 2: //TODO
-                        createTaskLog(task, null, null); 
+                    case 2:
+                        //from time input
+                        System.out.println("Enter the From Time: ");
+                        System.out.print("Enter the year: ");
+                        int year = Application.input.nextInt();
+                        System.out.print("\nEnter the month: ");
+                        int month = Application.input.nextInt();
+                        System.out.print("\nEnter the day: ");
+                        int day = Application.input.nextInt();
+                        System.out.print("\nEnter the hour: ");
+                        int hour = Application.input.nextInt();
+                        System.out.print("\nEnter the minute: ");
+                        int minute = Application.input.nextInt();  
+
+                        //to time input
+                        System.out.println("Enter the to Time: ");
+                        System.out.print("Enter the year: ");
+                        int yeart = Application.input.nextInt();
+                        System.out.print("\nEnter the month: ");
+                        int montht = Application.input.nextInt();
+                        System.out.print("\nEnter the day: ");
+                        int dayt = Application.input.nextInt();
+                        System.out.print("\nEnter the hour: ");
+                        int hourt = Application.input.nextInt();
+                        System.out.print("\nEnter the minute: ");
+                        int minutet = Application.input.nextInt();
+                        //TODO: Error Checking
+
+                        //Creating the tasklog
+                        createTaskLog(task, LocalDateTime.of(year, month, day, hour, minute), LocalDateTime.of(yeart, montht, dayt, hourt, minutet)); 
                         break;
                     case 3:
                         System.out.println("Going to the previous page");
@@ -250,12 +279,24 @@ public class TaskModule extends Module {
     public void manageTasks() {
         //TODO
     }
-    public TaskLog createTaskLog(Task task, LocalDateTime fromTime, LocalDateTime toTime) {
-        // TODO
+    public TaskLog createTaskLog(Task task, LocalDateTime fromTime, LocalDateTime toTime) throws IOException {
+        TaskLog newlog = new TaskLog(fromTime, toTime, currentEmployee, task);
+        //TODO: Save() is private?, error checking?
+        Application.taskLogDataHandler.add(newlog).save();
+        
         return null;
     }
     public void showCalender(){
         // TODO
+
+        for(int i = 0; i < Application.employeeDataHandler.getLength(); i++)
+        {
+            Task task = Application.taskDataHandler.get(i);
+            if(task.project == project)
+            {
+                System.out.println(task.getAssignedEmployee().getUsername() + "\t" + task.getTitle() + "\t" + task.getTaskPhase());
+            }
+        }
     }
 
 }
