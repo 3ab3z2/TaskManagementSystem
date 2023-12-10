@@ -1,5 +1,7 @@
+import java.util.List;
 import java.util.Scanner;
 import java.io.*;
+
 
 ///ANSI COLOR CODES:
 ///Reset: \u001B[0m
@@ -94,11 +96,24 @@ public class EmployeeModule extends Module {
     }
 
     public void viewTimeCards() {
-        //TODO
-        
-    }
+    //try {
+    //  DataHandler<TimeCard> timeCardDataHandler = new DataHandler<>("/files/TimeCard.txt", new TimeCard());
+    //  List<TimeCard> timeCards = timeCardDataHandler.getAll();
+
+    //  for (TimeCard timeCard : timeCards) {
+    //      if (timeCard.getEmployee().equals(currentEmployee.getUsername())) {
+    //          System.out.println(timeCard);
+    //      }
+    //  }
+    //} catch (IOException e) {
+    //    System.out.println("An error occurred while reading TimeCard.txt");
+    //    e.printStackTrace();
+    //}
+}
     public void createTimeCard(TimeCard timeCard) {
         //TODO
+
+        
     }
     public void viewRequests() {
         //TODO
