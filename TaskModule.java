@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class TaskModule extends Module {
@@ -264,7 +265,7 @@ public class TaskModule extends Module {
         if(currentEmployee.empType.isManager())
             System.out.println("Assigned to:" + taskLog.getAssignedEmployee().toString());
     }
-    public void manageTasks() {
+    public void manageTasks() throws IOException {
         int choice;
 
         System.out.println("\nManage Tasks:");
@@ -281,38 +282,68 @@ public class TaskModule extends Module {
                 switch (choice)
                 {
                     case 1:
+                        //TODO: Error checking
                         //input task data
                         System.out.println("Task details");
                         
-                        System.out.println("Code: ");
+                        //code
                         String taskCode = Application.taskDataHandler.get(Application.taskDataHandler.getLength() - 1).getCode();
                         int tempInt = Integer.parseInt(taskCode);
                         tempInt++;
                         taskCode = tempInt + "";
-
-                        System.out.println("Title: ");
+                        
+                        //title
+                        System.out.print("Title: ");
                         String taskTitle = Application.input.next();
-
-                        System.out.println("Description: ");
+                        
+                        //desc
+                        System.out.print("Description: ");
                         String taskDescription = Application.input.next();
                         
+                        //task phase
+                        System.out.print("Task phase: ");
+                        String taskPhase = Application.input.next();
+                        
+                        //TODO: Priority
+                        int priorityChoice;
+                        Task.Priority priority = null;
+                        boolean priorityExit = false;
+                        while (!priorityExit) 
+                        {                            
+                            System.out.println("Priority: \n1- easy\n2- normal\n3- high");
+                            priorityChoice = Application.input.nextInt();
+                            switch (priorityChoice) 
+                            {
+                                case 1:
+                                    
+                                    priorityExit = true;
+                                    break;
+                                case 2:
+                                    priorityExit = true;
+                                    break;
+                                case 3:
+                                    priorityExit = true;
+                                    break;
+                            
+                                default:
+                                    System.out.println("Invalid choice, please try again.");
+                                    break;
+                            }
+                        }
 
-
-
-
-
+                        //assigned employee
+                        Employee taskEmployee = null; 
                         boolean empExit = false;
                         while (!empExit)
                         {
                             Employee arr[] = new Employee[Application.employeeDataHandler.getLength()];
-                            Employee employee; 
                             for(int i = 0 , j = 0; i < Application.employeeDataHandler.getLength(); i++)
                             {
-                                employee = Application.employeeDataHandler.get(i);
-                                if(!employee.empType.isManager())
+                                taskEmployee = Application.employeeDataHandler.get(i);
+                                if(!taskEmployee.empType.isManager())
                                 {
-                                    System.out.println((i+1) + "- " + employee.getUsername());
-                                    arr[j] = employee;
+                                    System.out.println((i+1) + "- " + taskEmployee.getUsername());
+                                    arr[j] = taskEmployee;
                                 }
                             }
                             
@@ -323,27 +354,28 @@ public class TaskModule extends Module {
                                 System.out.println("Invalid choice, please try again.");
                                 continue;
                             }
-
                             else
-                                for(int i = 0; i < arr.length; i++)
-                                    if(i == choice - 1 )
-                                        employee = arr[i];
+                                taskEmployee = arr[choice - 1];
                         }
-                System.out.println("Task phase: ");
-                String taskPhase = Application.input.next();
                 
-                System.out.println("Project: ");
                 
+                        //end date
+                        System.out.print("Enter the year: ");
+                        int year = Application.input.nextInt();
+                        System.out.print("\nEnter the month: ");
+                        int month = Application.input.nextInt();
+                        System.out.print("\nEnter the day: ");
+                        int day = Application.input.nextInt();
                         
-                        System.out.println("Priority: ");
                         
-                        System.out.println("Creator: ");
-
-                        System.out.println("Start date: ");
-
-                        System.out.println("End date: ");
-
+            
+                        //TODO: EST
                         System.out.println("EST: ");
+                        double taskEST;
+                        taskEST = Application.input.nextDouble();
+
+                        Task task = new Task(taskCode, taskTitle, taskDescription, taskEmployee, taskPhase, project, priority, currentEmployee, LocalDate.now(), LocalDate.of(year, month, day), taskEST);
+                        Application.taskDataHandler.add(task);
                         break;
 
                     case 2:
