@@ -14,7 +14,7 @@ public class TaskModule extends Module {
     }
 
     @Override
-    public void startModule() throws IOException{
+    public void startModule(){
         int choice;
 
         System.out.println("\nTask Module\n");

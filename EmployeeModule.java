@@ -159,9 +159,11 @@ public class EmployeeModule extends Module {
 
     public void viewRequests() {
         //try {
-        for(int i = 0; i < Application.requestDataHandler.getLength(); i++){
-            if (Request.getEmployee().getusername().equals(Application.requestDataHandler.get().getUsername())) {
-                  System.out.println(Request);
+        for(int i = 0 , j = 0; i < Application.requestDataHandler.getLength(); i++){
+            Employee employee = Application.requestDataHandler.get(i).getEmployee();
+            if (currentEmployee.getUsername().equals(employee.getUsername())) {
+                  System.out.println((j+1) +"- " + Application.requestDataHandler.get(i).toString());
+                  j++;
                   System.out.println("----------------------------------------------------------");
               }
             };
