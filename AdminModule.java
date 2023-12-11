@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
+// import java.util.Scanner;
 
 public class AdminModule extends Module {
     AdminModule(User currentUser) {
@@ -860,17 +860,17 @@ public class AdminModule extends Module {
             );
         }
     }
-    public static void main(String[] args) {
-    	try
-    	{
-    		Application.initializeData();
-    	}
-    	catch(IOException e)
-    	{
-    		e.printStackTrace();
-    	}
-    	Application.input= new Scanner(System.in);
-    	AdminModule adminModule= new AdminModule(null);
-    	adminModule.startModule();
-    }
+    // public static void main(String[] args) {
+    // 	try
+    // 	{
+    // 		Application.initializeData();
+    // 	}
+    // 	catch(IOException e)
+    // 	{
+    // 		e.printStackTrace();
+    // 	}
+    // 	Application.input= new Scanner(System.in);
+    // 	AdminModule adminModule= new AdminModule(null);
+    // 	adminModule.startModule();
+    // }
 }
