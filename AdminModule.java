@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
+// import java.util.Scanner;
 
 public class AdminModule extends Module {
     AdminModule(User currentUser) {
@@ -171,13 +172,18 @@ public class AdminModule extends Module {
                 {
                     User user= null;
                     int user_idx= -1;
+                    int len= Application.userDataHandler.getLength();
+                    if(len==0)
+                    {
+                        System.out.println("No Users Available");
+                        continue menu;
+                    }
 
                     System.out.print(
                         "--------------------------------\n"+
                         "\tRegistered Users\n"+
-                        "Username\tType\n"
+                        "USERNAME\tTYPE\n"
                     );
-                    int len= Application.userDataHandler.getLength();
                     for(int k=0;k<len;++k)
                     {
                         user= Application.userDataHandler.get(k);
@@ -305,13 +311,18 @@ public class AdminModule extends Module {
                 {
                     User user= null;
                     int user_idx= -1;
+                    int len= Application.userDataHandler.getLength();
 
+                    if(len==0)
+                    {
+                        System.out.println("No Employees Yet");
+                        continue menu;
+                    }
                     System.out.print(
                         "--------------------------------\n"+
                         "\tRegistered Users\n"+
-                        "Username\tType\n"
+                        "USERNAME\tTYPE\n"
                     );
-                    int len= Application.userDataHandler.getLength();
                     for(int k=0;k<len;++k)
                     {
                         user= Application.userDataHandler.get(k);
@@ -402,13 +413,18 @@ public class AdminModule extends Module {
                 {
                     Employee employee= null;
                     int employee_idx= -1;
+                    int len= Application.employeeDataHandler.getLength();
 
+                    if(len==0)
+                    {
+                        System.out.println("No Employees Yet");
+                        continue menu;
+                    }
                     System.out.print(
                         "--------------------------------\n"+
                         "\tRegistered Employees\n"+
-                        "Username\tType\n"
+                        "USERNAME\tTYPE\n"
                     );
-                    int len= Application.userDataHandler.getLength();
                     for(int k=0;k<len;++k)
                     {
                         employee= Application.employeeDataHandler.get(k);
@@ -572,40 +588,84 @@ public class AdminModule extends Module {
             }
         }
     }
-    public void manageTaskPhases() {
-        //TODO
+    public void manageTaskPhases()
+    {
+        Task task= null;
+        int task_idx= -1;
+        int len= Application.taskDataHandler.getLength();
 
-        // int choice= 0;
-        // boolean exit= false;
-        // while(!exit){
-        //     System.out.print(
-        //         "Managing Task Phases..\n"+
-        //         "1. Add  2.Update  3.Delete  4.Back\n"+
-        //         "input>> ");
-        //     try
-        //     {
-        //         choice= Application.input.nextInt();   
-        //     }
-        //     catch(InputMismatchException e)
-        //     {
-        //         System.out.println("\033[31mInvalid Operation!\n\033[0m");
-        //         Application.input.next();//consume invalid input from Scanner buffer
-        //         continue;
-        //     }
-        //     switch(choice) {
-        //     case 1:
-        //         break;
-        //     case 2:
-        //         break;
-        //     case 3:
-        //         break;
-        //     case 4:
-        //         exit= true;
-        //         break;
-        //     default:
-        //         System.out.println("\033[31mInvalid Operation!\n\033[0m");
-        //     }
-        // }
+        if(len==0)
+        {
+           System.out.println("No Tasks Yet");
+           return;//to menu
+        }
+        System.out.print(
+            "Current Tasks\n"+
+            "----------------------------------------------------------------\n"+
+            "CODE\tTITLE\tPROJECT\tPRIORITY\tPHASE\tDESCRIPTION\tSTARTS\tENDS\tEST\tCREATOR\tASSIGNED\n"+
+            "----------------------------------------------------------------\n"
+        );
+        for(int k=0;k<len;++k)
+        {
+            task= Application.taskDataHandler.get(k);
+            System.out.println(
+                task.getCode()+"\t"+
+                task.getTitle()+"\t"+
+                task.getProject()+"\t"+
+                task.getPriority()+"\t"+
+                task.getTaskPhase()+"\t"+
+                task.getDescription()+"\t"+
+                task.getStartDate()+"\t"+
+                task.getEndDate()+"\t"+
+                task.getEST()+"\t"+
+                task.getCreator()+"\t"+
+                task.getAssignedEmployee()+"\t"
+            );
+        }
+        System.out.println("----------------------------------------------------------------");
+        while(true)
+        {
+            System.out.print("Code: ");
+            String code= Application.input.next();
+            boolean found= false;
+            for(int k=0;k<len;++k)
+            {
+                task= Application.taskDataHandler.get(k);
+                if(task.getCode().equals(code))
+                {
+                    task_idx= k;
+                    found= true;
+                    break;
+                }
+            }
+            if(!found)
+            {
+                System.out.println("\033[31mTask not found!\033[0m");
+                System.out.print("\033[33mTry again? [Y/N]:\033[0m ");
+                String retry= Application.input.next();
+                if(retry.equals("Y")||retry.equals("y"))
+                    continue;
+                else
+                    return;//to main menu
+            }
+            break;
+        }
+        System.out.print("New Task Phase: ");
+        String phase= Application.input.next();
+        task.setTaskPhase(phase);
+        try
+        {
+            Application.taskDataHandler.delete(task_idx);
+            Application.taskDataHandler.add(task);
+            System.out.println("\033[33m\""+task.getTitle()+"\"\'s phase was successfully modified to \""+task.getTaskPhase()+"\" in project \""+task.getProject()+"\"!\033[0m");
+        }
+        catch(IOException e)
+        {
+            System.out.println(
+                "\033[31mFATAL ERROR\033[0m: something went wrong with the User DataHandler!\n"+
+                e.getMessage()
+            );
+        }
     }
     // public static void main(String[] args) {
     // 	try
