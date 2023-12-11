@@ -175,7 +175,144 @@ public class AdminModule extends Module {
                 }
                 break;
             case 2://Update Users
-                //TODO
+                boolean goback= false;
+                User user= null;
+                int user_idx= -1;
+
+                System.out.print(
+                    "--------------------------------\n"+
+                    "\tRegistered Users\n"+
+                    "Username\tType\n"
+                );
+                int len= Application.userDataHandler.getLength();
+                for(int k=0;k<len;++k)
+                {
+                    user= Application.userDataHandler.get(k);
+                    System.out.println(user.getUsername()+"\t"+user.getUserType());
+                }
+                System.out.println("--------------------------------");
+
+                while(true)
+                {
+                    System.out.print("Username: ");
+                    String uname= Application.input.next();
+                    boolean found= false;
+                    for(int k=0;k<len;++k)
+                    {
+                        user= Application.userDataHandler.get(k);
+                        if(user.getUsername().equals(uname))
+                        {
+                            user_idx= k;
+                            found= true;
+                            break;
+                        }
+                    }
+                    if(!found)
+                    {
+                        System.out.println("\033[31mUser not found!\033[0m");
+                        System.out.print("\033[33mTry again? [Y/N]:\033[0m ");
+                        String retry= Application.input.next();
+                        if(retry.equals("Y")||retry.equals("y"))
+                            continue;
+                        else
+                            goback= true;
+                    }
+                    break;
+                }
+                if(goback)
+                    continue;//back to menu
+
+                while(true)
+                {
+                    System.out.print(
+                        "What to modify?\n"+
+                        "1. Username\n"+
+                        "2. Type\n"+
+                        "3. Password\n"+//?
+                        "4. Cancel\n"+
+                        "input>> "
+                    );
+                    try
+                    {
+                        choice= Application.input.nextInt();
+                    }
+                    catch(InputMismatchException e)
+                    {
+                        System.out.println("\033[31mInvalid input!\033[0m please try again.");
+                        Application.input.next();//consume invalid input from Scanner buffer
+                        goback= true;
+                    }
+                    break;
+                }
+                if(goback)
+                    continue;//back to menu
+                switch(choice)
+                {
+                case 1://Modify username
+                    System.out.print("New Username: ");
+                    String uname= Application.input.next();
+                    String oldname= user.getUsername();
+                    user.setUsername(uname);
+                    try
+                    {
+                        Application.userDataHandler.delete(user_idx);
+                        Application.userDataHandler.add(user);
+                        System.out.println("\033[33m\"\033[0m"+oldname+"\" \033[32m was successfully modified to \"\033[0m"+uname+"\033[33m\"!\033[0m");
+                    }
+                    catch(IOException e)
+                    {
+                        System.out.println(
+                            "\033[31mFATAL ERROR\033[0m: something went wrong with the User DataHandler!\n"+
+                            e.getMessage()
+                        );
+                    }
+                    break;
+                case 2://Modify usertype
+                    String utype_str;
+                    while(true)
+                    {
+                        System.out.print("User Type [Admin/Employee]: ");
+                        utype_str= Application.input.next();
+                        if(utype_str.equals("Admin")||utype_str.equals("admin")||utype_str.equals("A")||utype_str.equals("a"))
+                            user.setUserType(User.utype.admin);
+                        else if(utype_str.equals("Employee")||utype_str.equals("employee")||utype_str.equals("E")||utype_str.equals("e"))
+                            user.setUserType(User.utype.employee);
+                        else
+                        {
+                            System.out.println("\033[31mInvalid User Type!\033[0m");
+                            System.out.print("\033[33mTry again? [Y/N]: \033[0m");
+                            String retry= Application.input.next();
+                            if(retry.equals("Y")||retry.equals("y"))
+                                continue;
+                            else
+                                goback= true;
+                        }
+                        break;
+                    }
+                    if(goback)
+                        continue;//back to menu
+                        
+                    try
+                    {
+                        Application.userDataHandler.delete(user_idx);
+                        Application.userDataHandler.add(user);
+                        System.out.println("\033[33m\"\033[0m"+user.getUsername()+"\" \033[32m was successfully promoted to \"\033[0m"+utype_str+"\033[33m\"!\033[0m");
+                    }
+                    catch(IOException e)
+                    {
+                        System.out.println(
+                            "\033[31mFATAL ERROR\033[0m: something went wrong with the User DataHandler!\n"+
+                            e.getMessage()
+                        );
+                    }
+                    break;
+                case 3://Modify password?
+                    //TODO
+                    break;
+                default:
+                    System.out.println("\033[31mInvalid Operation!\033[0m");
+                    break;
+                }
                 break;
             case 3://Delete Users
                 //TODO
@@ -367,17 +504,17 @@ public class AdminModule extends Module {
         //     }
         // }
     }
-    // public static void main(String[] args) {
-    //     try
-    //     {
-    //         Application.initializeData();
-    //     }
-    //     catch(IOException e)
-    //     {
-    //         e.printStackTrace();
-    //     }
-    //     Application.input= new Scanner(System.in);
-    //     AdminModule adminModule= new AdminModule(null);
-    //     adminModule.startModule();
-    // }
+    public static void main(String[] args) {
+        try
+        {
+            Application.initializeData();
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+        Application.input= new Scanner(System.in);
+        AdminModule adminModule= new AdminModule(null);
+        adminModule.startModule();
+    }
 }
