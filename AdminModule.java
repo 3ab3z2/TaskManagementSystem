@@ -315,7 +315,7 @@ public class AdminModule extends Module {
 
                     if(len==0)
                     {
-                        System.out.println("No Employees Yet");
+                        System.out.println("\033[33mNo Employees Yet\033[0m");
                         continue menu;
                     }
                     System.out.print(
@@ -362,7 +362,7 @@ public class AdminModule extends Module {
                         continue menu;
                     try
                     {
-                        Application.userDataHandler.delete(user_idx);
+                        Application.userDataHandler.delete(user_idx);//TODO: delete from employees?
                         System.out.println("\033[33m\"\033[0m"+user.getUsername()+"\" \033[32m was successfully removed!\033[0m");
                     }
                     catch(IOException e)
@@ -417,7 +417,7 @@ public class AdminModule extends Module {
 
                     if(len==0)
                     {
-                        System.out.println("No Employees Yet");
+                        System.out.println("\033[33mNo Employees Yet\033[0m");
                         continue menu;
                     }
                     System.out.print(
@@ -464,7 +464,7 @@ public class AdminModule extends Module {
                         continue menu;
                     try
                     {
-                        Application.employeeDataHandler.delete(employee_idx);
+                        Application.employeeDataHandler.delete(employee_idx);//TODO: delete from users?
                         System.out.println("\033[33m\"\033[0m"+employee.getUsername()+"\" \033[32m was successfully removed!\033[0m");
                     }
                     catch(IOException e)
@@ -524,6 +524,7 @@ public class AdminModule extends Module {
     public void manageEmpType() {
         int choice= 0;
         boolean exit= false;
+        menu:
         while(!exit)
         {
             System.out.print(
@@ -578,7 +579,71 @@ public class AdminModule extends Module {
                 //TODO
                 break;
             case 3://Delete Employee Type
-                //TODO
+                {
+                    EmpType empType= null;
+                    int idx= -1;
+                    int len= Application.empTypeDataHandler.getLength();
+
+                    if(len==0)
+                    {
+                        System.out.println("\033[33mNo Employee Types Defined Yet\033[0m");
+                        continue menu;
+                    }
+                    System.out.print(
+                        "Different Employee Types\n"+
+                        "--------------------------------\n"+
+                        "NUMBER\tTYPE\tMANAGER?\n"+
+                        "--------------------------------\n"
+                    );
+                    for(int k=0;k<len;++k)
+                    {
+                        empType= Application.empTypeDataHandler.get(k);
+                        System.out.println((k+1)+"\t"+empType.getName()+"\t"+empType.isManager());
+                    }
+                    System.out.println("--------------------------------");
+                    while(true)
+                    {
+                        System.out.print("Number: ");
+                        try
+                        {
+                            idx= Application.input.nextInt();
+                        }
+                        catch(InputMismatchException e)
+                        {
+                            System.out.println("\033[31mInvalid Input!\033[0m Please, enter valid type number!");
+                            Application.input.next();//consume invalid input from Scanner buffer
+                            continue;
+                        }
+                        if(idx<0||idx>=len)
+                        {
+                            System.out.println("\033[31mNumber Out of Bounds!\033[0m");
+                            System.out.print("\033[33mTry again? [Y/N]:\033[0m ");
+                            String retry= Application.input.next();
+                            if(retry.equals("Y")||retry.equals("y"))
+                                continue;
+                            else
+                                continue menu;
+                        }
+                        empType= Application.empTypeDataHandler.get(idx);
+                        break;
+                    }
+                    System.out.print("Are you sure you want to \033[31mDELETE\033[0m \""+empType.getName()+"\" Employee Type? [Y/N]: ");
+                    String confirm= Application.input.next();
+                    if(!confirm.equals("Y") && !confirm.equals("y"))//Don't Delete
+                        continue menu;
+                    try
+                    {
+                        Application.employeeDataHandler.delete(idx);//TODO: nullify all employees with this type
+                        System.out.println("\033[33m\"\033[0m"+empType.getName()+"\" \033[32m was successfully undefined!\033[0m");
+                    }
+                    catch(IOException e)
+                    {
+                        System.out.println(
+                            "\033[31mFATAL ERROR\033[0m: something went wrong with the Employee DataHandler!\n"+
+                            e.getMessage()
+                        );
+                    }
+                }
                 break;
             case 4:
                 exit= true;
@@ -596,7 +661,7 @@ public class AdminModule extends Module {
 
         if(len==0)
         {
-           System.out.println("No Tasks Yet");
+           System.out.println("\033[33mNo Tasks Yet\033[0m");
            return;//to menu
         }
         System.out.print(
