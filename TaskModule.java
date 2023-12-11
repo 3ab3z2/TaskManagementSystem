@@ -36,11 +36,19 @@ public class TaskModule extends Module {
                 switch (choice)
                 {
                     case 1:
-                        viewTasks();
+                    try {
+                            viewTasks();
+                        } catch (IOException e) {
+                            System.out.println("An error occurred while viewing tasks: " + e.getMessage());
+                        }
                         break;
 
                     case 2:
-                        manageTasks();
+                        try {
+                            manageTasks();
+                        } catch (IOException e) {
+                            System.out.println("An error occurred while viewing tasks: " + e.getMessage());
+                        }
                         break;
                     case 3:
                         showCalender();
@@ -73,7 +81,11 @@ public class TaskModule extends Module {
                 switch (choice)
                 {
                     case 1:
-                        viewTasks();
+                        try {
+                            viewTasks();
+                        } catch (IOException e) {
+                            System.out.println("An error occurred while viewing tasks: " + e.getMessage());
+                        }
                         break;
 
                     case 2:

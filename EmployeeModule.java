@@ -186,7 +186,7 @@ public class EmployeeModule extends Module {
         }
         else if(choice.equals("n")){
             System.out.println("Returning to menu...");
-            viewRequests();();}
+            viewRequests();}
         else{
             System.out.println("Invalid choice, please try again.");
         }
