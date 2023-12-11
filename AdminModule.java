@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.NoSuchElementException;
-// import java.util.Scanner;
+import java.util.Scanner;
 
 public class AdminModule extends Module {
     AdminModule(User currentUser) {
@@ -175,14 +175,15 @@ public class AdminModule extends Module {
                     int len= Application.userDataHandler.getLength();
                     if(len==0)
                     {
-                        System.out.println("No Users Available");
+                        System.out.println("\033[33mNo Users Available\033[0m");
                         continue menu;
                     }
 
                     System.out.print(
+                        "Registered Users\n"+
                         "--------------------------------\n"+
-                        "\tRegistered Users\n"+
-                        "USERNAME\tTYPE\n"
+                        "USERNAME\tTYPE\n"+
+                        "--------------------------------\n"
                     );
                     for(int k=0;k<len;++k)
                     {
@@ -248,8 +249,7 @@ public class AdminModule extends Module {
                         user.setUsername(uname);
                         try
                         {
-                            Application.userDataHandler.delete(user_idx);
-                            Application.userDataHandler.add(user);
+                            Application.userDataHandler.update(user_idx, user);
                             System.out.println("\033[33m\"\033[0m"+oldname+"\" \033[32m was successfully modified to \"\033[0m"+uname+"\033[33m\"!\033[0m");
                         }
                         catch(IOException e)
@@ -284,8 +284,7 @@ public class AdminModule extends Module {
                         }
                         try
                         {
-                            Application.userDataHandler.delete(user_idx);
-                            Application.userDataHandler.add(user);
+                            Application.userDataHandler.update(user_idx, user);
                             System.out.println("\033[33m\"\033[0m"+user.getUsername()+"\" \033[32m was successfully promoted to \"\033[0m"+utype_str+"\033[33m\"!\033[0m");
                         }
                         catch(IOException e)
@@ -576,8 +575,138 @@ public class AdminModule extends Module {
                 }
                 break;
             case 2://Update Employee Type
-                //TODO
-                break;
+                {
+                    EmpType empType= null;
+                    int idx= -1;
+                    int len= Application.empTypeDataHandler.getLength();
+                    if(len==0)
+                    {
+                        System.out.println("\033[33mNo Employee Types Defined Yet\033[0m");
+                        continue menu;
+                    }
+                    System.out.print(
+                        "Defined Employee Types\n"+
+                        "--------------------------------\n"+
+                        "TYPE\tMANAGER\n"+
+                        "--------------------------------\n"
+                    );
+                    for(int k=0;k<len;++k)
+                    {
+                        empType= Application.empTypeDataHandler.get(k);
+                        System.out.println((k+1)+empType.getName()+"\t"+empType.isManager());
+                    }
+                    System.out.println("--------------------------------");
+                    while(true)
+                    {
+                        System.out.print("Number: ");
+                        try
+                        {
+                            idx= Application.input.nextInt()-1;
+                        }
+                        catch(InputMismatchException e)
+                        {
+                            System.out.println("\033[31mInvalid Input!\033[0m Please, enter valid type number!");
+                            Application.input.next();//consume invalid input from Scanner buffer
+                            continue;
+                        }
+                        if(idx<0||idx>=len)
+                        {
+                            System.out.println("\033[31mNumber Out of Bounds!\033[0m");
+                            System.out.print("\033[33mTry again? [Y/N]:\033[0m ");
+                            String retry= Application.input.next();
+                            if(retry.equals("Y")||retry.equals("y"))
+                                continue;
+                            else
+                                continue menu;
+                        }
+                        break;
+                    }
+                    empType= Application.empTypeDataHandler.get(idx);
+                    menu_update:
+                    while(true)
+                    {
+                        System.out.print(
+                            "What to modify?\n"+
+                            "1. Type\n"+
+                            "2. Managerial Position\n"+
+                            "3. Cancel\n"+
+                            "input>> "
+                        );
+                        try
+                        {
+                            choice= Application.input.nextInt();
+                        }
+                        catch(InputMismatchException e)
+                        {
+                            System.out.println("\033[31mInvalid input!\033[0m please try again.");
+                            Application.input.next();//consume invalid input from Scanner buffer
+                            continue;
+                        }
+                        switch(choice)
+                        {
+                        case 1://Modify Type
+                            System.out.print("New Type: ");
+                            String type= Application.input.next();
+                            String oldtype= empType.getName();
+                            empType.setName(type);
+                            try
+                            {
+                                Application.empTypeDataHandler.update(idx, empType);//TODO: cascade update to all employees?
+                                System.out.println("\033[33m\"\033[0m"+oldtype+"\" \033[32m was successfully modified to \"\033[0m"+type+"\033[33m\"!\033[0m");
+                            }
+                            catch(IOException e)
+                            {
+                                System.out.println(
+                                    "\033[31mFATAL ERROR\033[0m: something went wrong with the Employee Type DataHandler!\n"+
+                                    e.getMessage()
+                                );
+                            }
+                            break;
+                        case 2://Modify Managerial Position
+                            {
+                                boolean isManager= false;
+                                while(true)
+                                {
+                                    System.out.print("Categorize as manager? [true/false]: ");
+                                    try
+                                    {
+                                        isManager= Application.input.nextBoolean();
+                                    }
+                                    catch(InputMismatchException e)
+                                    {
+                                        Application.input.next();//consume invalid input from Scanner buffer
+                                        System.out.println("\033[31mInvalid input!\033[0m please try again.");
+                                        System.out.print("\033[33mTry again? [Y/N]: \033[0m");
+                                        String retry= Application.input.next();
+                                        if(retry.equals("Y")||retry.equals("y"))
+                                            continue;
+                                        continue menu_update;
+                                    }
+                                    break;
+                                }
+                                empType.setManager(isManager);
+                                try
+                                {
+                                    Application.empTypeDataHandler.update(idx, empType);
+                                    System.out.println("\033[33m\""+empType+"\" managerial position was successfully changed!\033[0m");
+                                }
+                                catch(IOException e)
+                                {
+                                    System.out.println(
+                                        "\033[31mFATAL ERROR\033[0m: something went wrong with the User DataHandler!\n"+
+                                        e.getMessage()
+                                    );
+                                }
+                            }
+                            break;
+                        case 3:
+                            continue menu;
+                        default:
+                            System.out.println("\033[31mInvalid Operation!\033[0m");
+                            break;
+                        }
+                    }
+                }
             case 3://Delete Employee Type
                 {
                     EmpType empType= null;
@@ -606,7 +735,7 @@ public class AdminModule extends Module {
                         System.out.print("Number: ");
                         try
                         {
-                            idx= Application.input.nextInt();
+                            idx= Application.input.nextInt()-1;
                         }
                         catch(InputMismatchException e)
                         {
@@ -624,9 +753,9 @@ public class AdminModule extends Module {
                             else
                                 continue menu;
                         }
-                        empType= Application.empTypeDataHandler.get(idx);
                         break;
                     }
+                    empType= Application.empTypeDataHandler.get(idx);
                     System.out.print("Are you sure you want to \033[31mDELETE\033[0m \""+empType.getName()+"\" Employee Type? [Y/N]: ");
                     String confirm= Application.input.next();
                     if(!confirm.equals("Y") && !confirm.equals("y"))//Don't Delete
@@ -720,8 +849,7 @@ public class AdminModule extends Module {
         task.setTaskPhase(phase);
         try
         {
-            Application.taskDataHandler.delete(task_idx);
-            Application.taskDataHandler.add(task);
+            Application.taskDataHandler.update(task_idx, task);
             System.out.println("\033[33m\""+task.getTitle()+"\"\'s phase was successfully modified to \""+task.getTaskPhase()+"\" in project \""+task.getProject()+"\"!\033[0m");
         }
         catch(IOException e)
@@ -732,17 +860,17 @@ public class AdminModule extends Module {
             );
         }
     }
-    // public static void main(String[] args) {
-    // 	try
-    // 	{
-    // 		Application.initializeData();
-    // 	}
-    // 	catch(IOException e)
-    // 	{
-    // 		e.printStackTrace();
-    // 	}
-    // 	Application.input= new Scanner(System.in);
-    // 	AdminModule adminModule= new AdminModule(null);
-    // 	adminModule.startModule();
-    // }
+    public static void main(String[] args) {
+    	try
+    	{
+    		Application.initializeData();
+    	}
+    	catch(IOException e)
+    	{
+    		e.printStackTrace();
+    	}
+    	Application.input= new Scanner(System.in);
+    	AdminModule adminModule= new AdminModule(null);
+    	adminModule.startModule();
+    }
 }
