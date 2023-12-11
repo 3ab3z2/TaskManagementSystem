@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.util.InputMismatchException;
-import java.util.NoSuchElementException;
 // import java.util.Scanner;
 
 public class AdminModule extends Module {
@@ -8,7 +7,8 @@ public class AdminModule extends Module {
         this.currentUser= currentUser;
     }
     @Override
-    public void startModule(){
+    public void startModule() throws IOException
+    {
         int choice= 0;
         boolean exit= false;
         while(!exit)
@@ -57,7 +57,8 @@ public class AdminModule extends Module {
             }
         }
     }
-    public void manageUsers(){
+    public void manageUsers() throws IOException
+    {
         int choice= 0;
         boolean exit= false;
         menu:
@@ -152,21 +153,6 @@ public class AdminModule extends Module {
                     System.out.println("\033[31mInvalid input!\033[0m please try again.");
                     Application.input.next();//consume invalid input from Scanner buffer
                 }
-                catch(NoSuchElementException e)
-                {
-                    //TODO: this block can be removed
-                }
-                catch(IllegalStateException e)
-                {
-                    //TODO: handle closed scanner
-                }
-                catch(IOException e)
-                {
-                    System.out.println(
-                        "\033[31mFATAL ERROR\033[0m: something went wrong with the Employee Type DataHandler!\n"+
-                        e.getMessage()
-                    );
-                }
                 break;
             case 2://Update Users
                 {
@@ -247,18 +233,8 @@ public class AdminModule extends Module {
                         String uname= Application.input.next();
                         String oldname= user.getUsername();
                         user.setUsername(uname);
-                        try
-                        {
-                            Application.userDataHandler.update(user_idx, user);
-                            System.out.println("\033[33m\"\033[0m"+oldname+"\" \033[32m was successfully modified to \"\033[0m"+uname+"\033[33m\"!\033[0m");
-                        }
-                        catch(IOException e)
-                        {
-                            System.out.println(
-                                "\033[31mFATAL ERROR\033[0m: something went wrong with the User DataHandler!\n"+
-                                e.getMessage()
-                            );
-                        }
+                        Application.userDataHandler.update(user_idx, user);
+                        System.out.println("\033[33m\"\033[0m"+oldname+"\" \033[32m was successfully modified to \"\033[0m"+uname+"\033[33m\"!\033[0m");
                         break;
                     case 2://Modify usertype
                         String utype_str;
@@ -282,18 +258,8 @@ public class AdminModule extends Module {
                             }
                             break;
                         }
-                        try
-                        {
-                            Application.userDataHandler.update(user_idx, user);
-                            System.out.println("\033[33m\"\033[0m"+user.getUsername()+"\" \033[32m was successfully promoted to \"\033[0m"+utype_str+"\033[33m\"!\033[0m");
-                        }
-                        catch(IOException e)
-                        {
-                            System.out.println(
-                                "\033[31mFATAL ERROR\033[0m: something went wrong with the User DataHandler!\n"+
-                                e.getMessage()
-                            );
-                        }
+                        Application.userDataHandler.update(user_idx, user);
+                        System.out.println("\033[33m\"\033[0m"+user.getUsername()+"\" \033[32m was successfully promoted to \"\033[0m"+utype_str+"\033[33m\"!\033[0m");
                         break;
                     case 3://Modify password?
                         //TODO
@@ -359,18 +325,8 @@ public class AdminModule extends Module {
                     String confirm= Application.input.next();
                     if(!confirm.equals("Y") && !confirm.equals("y"))//Don't Delete
                         continue menu;
-                    try
-                    {
-                        Application.userDataHandler.delete(user_idx);//TODO: delete from employees?
-                        System.out.println("\033[33m\"\033[0m"+user.getUsername()+"\" \033[32m was successfully removed!\033[0m");
-                    }
-                    catch(IOException e)
-                    {
-                        System.out.println(
-                            "\033[31mFATAL ERROR\033[0m: something went wrong with the User DataHandler!\n"+
-                            e.getMessage()
-                        );
-                    }
+                    Application.userDataHandler.delete(user_idx);//TODO: delete from employees?
+                    System.out.println("\033[33m\"\033[0m"+user.getUsername()+"\" \033[32m was successfully removed!\033[0m");
                 }
                 break;
             case 4:
@@ -381,7 +337,8 @@ public class AdminModule extends Module {
             }
         }
     }
-    public void manageEmployees() {
+    public void manageEmployees() throws IOException
+    {
         int choice= 0;
         boolean exit= false;
         menu:
@@ -461,18 +418,8 @@ public class AdminModule extends Module {
                     String confirm= Application.input.next();
                     if(!confirm.equals("Y") && !confirm.equals("y"))//Don't Delete
                         continue menu;
-                    try
-                    {
-                        Application.employeeDataHandler.delete(employee_idx);//TODO: delete from users?
-                        System.out.println("\033[33m\"\033[0m"+employee.getUsername()+"\" \033[32m was successfully removed!\033[0m");
-                    }
-                    catch(IOException e)
-                    {
-                        System.out.println(
-                            "\033[31mFATAL ERROR\033[0m: something went wrong with the Employee DataHandler!\n"+
-                            e.getMessage()
-                        );
-                    }
+                    Application.employeeDataHandler.delete(employee_idx);//TODO: delete from users?
+                    System.out.println("\033[33m\"\033[0m"+employee.getUsername()+"\" \033[32m was successfully removed!\033[0m");
                 }
                 break;
             case 4:
@@ -483,7 +430,8 @@ public class AdminModule extends Module {
             }
         }
     }
-    public void manageProjects() {
+    public void manageProjects() throws IOException
+    {
         int choice= 0;
         boolean exit= false;
         while(!exit)
@@ -520,7 +468,8 @@ public class AdminModule extends Module {
             }
         }
     }
-    public void manageEmpType() {
+    public void manageEmpType() throws IOException
+    {
         int choice= 0;
         boolean exit= false;
         menu:
@@ -557,21 +506,6 @@ public class AdminModule extends Module {
                 {
                     System.out.println("\033[31mInvalid input!\033[0m please try again.");
                     Application.input.next();//consume invalid input from Scanner buffer
-                }
-                catch(NoSuchElementException e)
-                {
-                    //TODO: this block can be removed
-                }
-                catch(IllegalStateException e)
-                {
-                    //TODO: handle closed scanner
-                }
-                catch(IOException e)
-                {
-                    System.out.println(
-                        "\033[31mFATAL ERROR\033[0m: something went wrong with the Employee Type DataHandler!\n"+
-                        e.getMessage()
-                    );
                 }
                 break;
             case 2://Update Employee Type
@@ -649,18 +583,8 @@ public class AdminModule extends Module {
                             String type= Application.input.next();
                             String oldtype= empType.getName();
                             empType.setName(type);
-                            try
-                            {
-                                Application.empTypeDataHandler.update(idx, empType);//TODO: cascade update to all employees?
-                                System.out.println("\033[33m\"\033[0m"+oldtype+"\" \033[32m was successfully modified to \"\033[0m"+type+"\033[33m\"!\033[0m");
-                            }
-                            catch(IOException e)
-                            {
-                                System.out.println(
-                                    "\033[31mFATAL ERROR\033[0m: something went wrong with the Employee Type DataHandler!\n"+
-                                    e.getMessage()
-                                );
-                            }
+                            Application.empTypeDataHandler.update(idx, empType);//TODO: cascade update to all employees?
+                            System.out.println("\033[33m\"\033[0m"+oldtype+"\" \033[32m was successfully modified to \"\033[0m"+type+"\033[33m\"!\033[0m");
                             break;
                         case 2://Modify Managerial Position
                             {
@@ -685,18 +609,8 @@ public class AdminModule extends Module {
                                     break;
                                 }
                                 empType.setManager(isManager);
-                                try
-                                {
-                                    Application.empTypeDataHandler.update(idx, empType);
-                                    System.out.println("\033[33m\""+empType+"\" managerial position was successfully changed!\033[0m");
-                                }
-                                catch(IOException e)
-                                {
-                                    System.out.println(
-                                        "\033[31mFATAL ERROR\033[0m: something went wrong with the User DataHandler!\n"+
-                                        e.getMessage()
-                                    );
-                                }
+                                Application.empTypeDataHandler.update(idx, empType);
+                                System.out.println("\033[33m\""+empType+"\" managerial position was successfully changed!\033[0m");
                             }
                             break;
                         case 3:
@@ -760,18 +674,8 @@ public class AdminModule extends Module {
                     String confirm= Application.input.next();
                     if(!confirm.equals("Y") && !confirm.equals("y"))//Don't Delete
                         continue menu;
-                    try
-                    {
-                        Application.employeeDataHandler.delete(idx);//TODO: nullify all employees with this type
-                        System.out.println("\033[33m\"\033[0m"+empType.getName()+"\" \033[32m was successfully undefined!\033[0m");
-                    }
-                    catch(IOException e)
-                    {
-                        System.out.println(
-                            "\033[31mFATAL ERROR\033[0m: something went wrong with the Employee DataHandler!\n"+
-                            e.getMessage()
-                        );
-                    }
+                    Application.employeeDataHandler.delete(idx);//TODO: nullify all employees with this type
+                    System.out.println("\033[33m\"\033[0m"+empType.getName()+"\" \033[32m was successfully undefined!\033[0m");
                 }
                 break;
             case 4:
@@ -782,7 +686,7 @@ public class AdminModule extends Module {
             }
         }
     }
-    public void manageTaskPhases()
+    public void manageTaskPhases() throws IOException
     {
         Task task= null;
         int task_idx= -1;
@@ -847,18 +751,8 @@ public class AdminModule extends Module {
         System.out.print("New Task Phase: ");
         String phase= Application.input.next();
         task.setTaskPhase(phase);
-        try
-        {
-            Application.taskDataHandler.update(task_idx, task);
-            System.out.println("\033[33m\""+task.getTitle()+"\"\'s phase was successfully modified to \""+task.getTaskPhase()+"\" in project \""+task.getProject()+"\"!\033[0m");
-        }
-        catch(IOException e)
-        {
-            System.out.println(
-                "\033[31mFATAL ERROR\033[0m: something went wrong with the User DataHandler!\n"+
-                e.getMessage()
-            );
-        }
+        Application.taskDataHandler.update(task_idx, task);
+        System.out.println("\033[33m\""+task.getTitle()+"\"\'s phase was successfully modified to \""+task.getTaskPhase()+"\" in project \""+task.getProject()+"\"!\033[0m");
     }
     // public static void main(String[] args) {
     // 	try
