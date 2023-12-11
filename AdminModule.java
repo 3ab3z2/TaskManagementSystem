@@ -60,6 +60,7 @@ public class AdminModule extends Module {
     public void manageUsers(){
         int choice= 0;
         boolean exit= false;
+        menu:
         while(!exit)
         {
             System.out.print(
@@ -81,7 +82,6 @@ public class AdminModule extends Module {
             case 1://Add Users
                 try
                 {
-                    boolean goback= false;
                     String uname, pword, utype_str;
                     User.utype utype= User.utype.employee;
 
@@ -101,12 +101,10 @@ public class AdminModule extends Module {
                             if(retry.equals("Y")||retry.equals("y"))
                                 continue;
                             else
-                                goback= true;
+                                continue menu;
                         }
                         break;
                     }
-                    if(goback)
-                        continue;//back to menu
 
                     System.out.print("Username: ");
                     uname= Application.input.next();
@@ -123,12 +121,10 @@ public class AdminModule extends Module {
                             if(retry.equals("Y")||retry.equals("y"))
                                 continue;
                             else
-                                goback= true;
+                                continue menu;
                         }
                         break;
                     }
-                    if(goback)
-                        continue;//back to menu
 
                     while(true)
                     {
@@ -142,12 +138,10 @@ public class AdminModule extends Module {
                             if(retry.equals("Y")||retry.equals("y"))
                                 continue;
                             else
-                                goback= true;
+                                continue menu;
                         }
                         break;
                     }
-                    if(goback)
-                        continue;//back to menu
 
                     User user= new User(uname, pword, utype);
                     Application.userDataHandler.add(user);
@@ -175,7 +169,6 @@ public class AdminModule extends Module {
                 }
                 break;
             case 2://Update Users
-                boolean goback= false;
                 User user= null;
                 int user_idx= -1;
 
@@ -191,7 +184,6 @@ public class AdminModule extends Module {
                     System.out.println(user.getUsername()+"\t"+user.getUserType());
                 }
                 System.out.println("--------------------------------");
-
                 while(true)
                 {
                     System.out.print("Username: ");
@@ -215,13 +207,10 @@ public class AdminModule extends Module {
                         if(retry.equals("Y")||retry.equals("y"))
                             continue;
                         else
-                            goback= true;
+                            continue menu;
                     }
                     break;
                 }
-                if(goback)
-                    continue;//back to menu
-
                 while(true)
                 {
                     System.out.print(
@@ -240,12 +229,10 @@ public class AdminModule extends Module {
                     {
                         System.out.println("\033[31mInvalid input!\033[0m please try again.");
                         Application.input.next();//consume invalid input from Scanner buffer
-                        goback= true;
+                        continue;
                     }
                     break;
                 }
-                if(goback)
-                    continue;//back to menu
                 switch(choice)
                 {
                 case 1://Modify username
@@ -285,13 +272,10 @@ public class AdminModule extends Module {
                             if(retry.equals("Y")||retry.equals("y"))
                                 continue;
                             else
-                                goback= true;
+                                continue menu;
                         }
                         break;
                     }
-                    if(goback)
-                        continue;//back to menu
-                        
                     try
                     {
                         Application.userDataHandler.delete(user_idx);
@@ -309,6 +293,8 @@ public class AdminModule extends Module {
                 case 3://Modify password?
                     //TODO
                     break;
+                case 4:
+                    continue menu;
                 default:
                     System.out.println("\033[31mInvalid Operation!\033[0m");
                     break;
@@ -328,6 +314,7 @@ public class AdminModule extends Module {
     public void manageEmployees() {
         int choice= 0;
         boolean exit= false;
+        menu:
         while(!exit)
         {
             System.out.print(
