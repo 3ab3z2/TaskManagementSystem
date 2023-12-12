@@ -233,8 +233,10 @@ public class EmployeeModule extends Module {
         System.out.println("==========================================================");
         System.out.println("|| \u001B[43m"+"Please enter the reason for your leave request:\u001B[0m\t||\n" +"||  \t\t\t\t\t\t\t||");
         String LeaveReason = input.nextLine();
-        System.out.println("|| \u001B[43m"+"Please enter the duration of your leave request:\u001B[0m\t||\n" +"||  \t\t\t\t\t\t\t||");
-        int duration = input.nextInt();
+        System.out.println("|| \u001B[43m"+"Please enter the first day of your leave request: (ex:2010-01-15)\u001B[0m\t||\n" +"||  \t\t\t\t\t\t\t||");
+        LocalDate firstDay = LocalDate.parse(input.nextLine());
+        System.out.println("|| \u001B[43m"+"Please enter the last day of your leave request: (ex:2010-01-15)\u001B[0m\t||\n" +"||  \t\t\t\t\t\t\t||");
+        LocalDate lastDay = LocalDate.parse(input.nextLine());  
         System.out.println("|| \u001B[43m"+"Please enter the type of your leave request:\u001B[0m\t||\n" +"||  \t\t\t\t\t\t\t||");
         String leaveTypeString = input.nextLine();
         LeaveRequest.LeaveType leaveType = LeaveRequest.LeaveType.valueOf(leaveTypeString);    
@@ -243,7 +245,7 @@ public class EmployeeModule extends Module {
         System.out.println("");
         
         try {
-            LeaveRequest newleaverequest = new LeaveRequest(currentEmployee, LeaveReason, approval, Period.between(LocalDate.now(),LocalDate.now().plusDays(duration)), leaveType);
+            LeaveRequest newleaverequest = new LeaveRequest(currentEmployee, LeaveReason, approval, Period.between(firstDay, lastDay), leaveType);
             Application.leaveRequestDataHandler.add(newleaverequest);
         } catch (IOException e) {
             System.out.println("An error occurred while writing to LeaveRequest.txt");
