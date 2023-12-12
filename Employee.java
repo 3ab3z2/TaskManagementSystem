@@ -43,12 +43,68 @@ public class Employee extends User {
     }
     @Override
     public LoadSave fromString(String s) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
-        return super.fromString(s);
+        String[] parts=s.split("\t");
+        if(parts.length>=4){
+            utype cUserType;
+            switch (parts[2]) {
+                case "admin":
+                    cUserType=utype.admin;
+                    break;
+                case "employee":
+                    cUserType=utype.employee;
+                    break;
+                default:
+                    throw new IllegalArgumentException("unknown value "+parts[2]);
+            }
+            Employee employee = new Employee(parts[0], parts[1], cUserType, Application.empTypeDataHandler.get(Integer.parseInt(parts[3])));
+            if(parts.length>=5){
+                for(String index : parts[4].split(",")){
+                    if(!index.isEmpty()) {
+                        Request request=Application.requestDataHandler.get(Integer.parseInt(index));
+                        employee.getMissionRequests().add(request);
+                        request.setEmployee(employee);
+                    }
+                }
+            }
+            if(parts.length>=6){
+                for(String index : parts[5].split(",")){
+                    if(!index.isEmpty()) {
+                        Request request=Application.requestDataHandler.get(Integer.parseInt(index));
+                        employee.getPermissionRequests().add(request);
+                        request.setEmployee(employee);
+                    }
+                }
+            }
+            if(parts.length>=7){
+                for(String index : parts[6].split(",")){
+                    if(!index.isEmpty()) {
+                        LeaveRequest request=Application.leaveRequestDataHandler.get(Integer.parseInt(index));
+                        employee.getLeaveRequests().add(request);
+                        request.setEmployee(employee);
+                    }
+                }
+            }
+            return employee;
+        }
+        else throw new IllegalArgumentException("not enough arguments");
     }
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
-        return super.toString();
+        String s = username+"\t"+password+"\t"+userType+"\t"+Application.empTypeDataHandler.getIndex(empType)+"\t";
+        for (Request missionRequest : missionRequests) {
+            int missionRequestIndex=Application.requestDataHandler.getIndex(missionRequest);
+            s+=missionRequestIndex+",";
+        }
+        s+="\t";
+        for (Request permissionRequest : permissionRequests) {
+            int permissionRequestIndex=Application.requestDataHandler.getIndex(permissionRequest);
+            s+=permissionRequestIndex+",";
+        }
+        s+="\t";
+        for (LeaveRequest leaveRequest : leaveRequests) {
+            int leaveRequestIndex=Application.leaveRequestDataHandler.getIndex(leaveRequest);
+            s+=leaveRequestIndex+",";
+        }
+        return s;
     }
 }

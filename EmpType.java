@@ -19,13 +19,15 @@ public class EmpType implements LoadSave {
     }
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
-        return super.toString();
+        return name+"\t"+isManager;
     }
     @Override
     public LoadSave fromString(String s) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
-        return null;
+        String[] parts=s.split("\t");
+        if(parts.length>=2){
+            return new EmpType(parts[0], Boolean.parseBoolean(parts[1]));
+        }
+        else throw new IllegalArgumentException("not enough arguments");
     }
     
 }

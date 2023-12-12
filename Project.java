@@ -62,14 +62,16 @@ public class Project implements LoadSave {
 
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
-        return super.toString();
+        return name+"\t"+description+"\t"+Application.employeeDataHandler.getIndex(Leader);
     }
 
     @Override
     public LoadSave fromString(String s) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
-        return null;
+        String[] parts=s.split("\t");
+        if(parts.length>=3){
+            return new Project(parts[0], parts[1],Application.employeeDataHandler.get(Integer.parseInt(parts[1])));
+        }
+        else throw new IllegalArgumentException("not enough arguments");
     }
 
 }
