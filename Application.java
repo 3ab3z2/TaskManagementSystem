@@ -17,18 +17,15 @@ public class Application {
 
 	public static void initializeData() throws IOException {
 
-		userDataHandler = new DataHandler<User>("files/User.txt", new User(null, null, null));
-		employeeDataHandler = new DataHandler<Employee>("files/Employee.txt", new Employee(null, null, null, null));
-		taskDataHandler = new DataHandler<Task>("files/Task.txt",
-				new Task(null, null, null, null, null, null, null, null, null, null, 0));
-		leaveRequestDataHandler = new DataHandler<LeaveRequest>("files/LeaveRequest.txt",
-				new LeaveRequest(null, null, null, 0, null));
 		empTypeDataHandler = new DataHandler<EmpType>("files/EmpType.txt", new EmpType(null, false));
+		userDataHandler = new DataHandler<User>("files/User.txt", new User(null, null, null));
 		requestDataHandler = new DataHandler<Request>("files/Request.txt", new Request(null, null, null));
+		leaveRequestDataHandler = new DataHandler<LeaveRequest>("files/LeaveRequest.txt", new LeaveRequest(null, null, null, null, null));
+		employeeDataHandler = new DataHandler<Employee>("files/Employee.txt", new Employee(null, null, null, null));
 		timeCardDataHandler = new DataHandler<TimeCard>("files/TimeCard.txt", new TimeCard(null, null, null));
+		projectDataHandler = new DataHandler<Project>("files/Project.txt", new Project(null, null, null, null, null));
+		taskDataHandler = new DataHandler<Task>("files/Task.txt", new Task(null, null, null, null, null, null, null, null, null, null, 0));
 		taskLogDataHandler = new DataHandler<TaskLog>("files/TaskLog.txt", new TaskLog(null, null, null, null));
-		projectDataHandler = new DataHandler<Project>("files/Project.txt",
-				new Project(null, null, null, null, null));
 
 	}
 
