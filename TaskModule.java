@@ -24,7 +24,7 @@ public class TaskModule extends Module {
         System.out.println("\nTask Module\n");
         System.out.println("\t\t\tHi " + currentEmployee.getUsername() + " !");
 
-        if (currentEmployee.empType.isManager()) {
+        if (project.getLeader() == currentEmployee) {
             System.out.println("Manager\n");
             System.out.println("\nPick a choice: \n\n");
             System.out.println("1-View tasks \n");
@@ -110,7 +110,7 @@ public class TaskModule extends Module {
         // display tasks
         System.out.println("Code\tTitle\n");
         // manager
-        if (currentEmployee.empType.isManager) {
+        if (project.getLeader() == currentEmployee) {
             for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
                 Task task = Application.taskDataHandler.get(i);
                 if (task.project == project)
@@ -125,8 +125,6 @@ public class TaskModule extends Module {
                     System.out.println(task.getCode() + "\t" + task.getTitle() + "\n");
             }
         }
-
-        
 
     }
 
@@ -176,8 +174,6 @@ public class TaskModule extends Module {
         System.out.println("Start date: " + task.getStartDate().toString());
         System.out.println("Due date: " + task.getEndDate().toString());
         System.out.println("EST: " + task.getEST());
-
-        
 
     }
 
@@ -261,8 +257,7 @@ public class TaskModule extends Module {
                 tasklogArr[j] = Application.taskLogDataHandler.get(i);
             }
         }
-
-        
+        viewTasklogsMenu(tasklogArr);
 
     }
 
@@ -297,7 +292,7 @@ public class TaskModule extends Module {
         System.out.println("Task: " + taskLog.getTask().toString());
         System.out.println("From time:" + taskLog.getFromTime().toString());
         System.out.println("To time:" + taskLog.getToTime().toString());
-        if (currentEmployee.empType.isManager())
+        if (project.getLeader() == currentEmployee)
             System.out.println("Assigned to:" + taskLog.getAssignedEmployee().toString());
     }
 

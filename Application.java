@@ -98,24 +98,35 @@ public class Application {
 							currentModule.startModule();
 							break;
 						case 2:
-
-							int projchoice;
 							boolean projexit = false;
 							while (!projexit) {
-								System.out.println("Please choose the project\n0-Go back");
-								for (int i = 0; i < projectDataHandler.getLength(); i++) {
-									System.out.println((i + 1) + "-Project: " + projectDataHandler.get(i).getName());
+								Project[] projectArr = new Project[projectDataHandler.getLength()];
+								for (int i = 0, j = 0; i < projectDataHandler.getLength(); i++)
+								{
+									if(projectDataHandler.get(i).getLeader() == employee)
+									{
+										projectArr[j] = projectDataHandler.get(i);
+										System.out.println((j + 1) + "-Project: " + projectArr[j].getName());
+										j++;
+									}
 								}
-								System.out.print("Choice: ");
-								projchoice = input.nextInt();
-								if (projchoice == 0)
-									projexit = true;
-								else if (projchoice >= projectDataHandler.getLength() || projchoice < 0)
-									System.out.println("\nUnknown Choice!\nTry again!\n");
-								else {
-									currentModule = new TaskModule(employee, projectDataHandler.get(projchoice - 1));
-									currentModule.startModule();
-									projexit = true;
+								System.out.println("1- choose project\n2-Go back");
+								switch (choice) {
+									case 1:
+										System.out.print("Choice: ");
+										choice = input.nextInt();
+										if (choice > projectArr.length || choice < 1)
+											System.out.println("chosen project doesn't exist");
+										currentModule = new TaskModule(employee, projectArr[choice - 1]);
+										currentModule.startModule();
+										projexit = true;
+										break;
+									case 2:
+										projexit = true;
+										break;
+									default:
+										System.out.println("invalid option please choose again");
+										break;
 								}
 							}
 							break;
@@ -123,7 +134,7 @@ public class Application {
 							exit = true;
 							break;
 						default:
-							System.out.println("\nUnknown Choice!\nTry again!\n");
+							System.out.println("invalid option please choose again");
 							break;
 
 					}
@@ -131,6 +142,7 @@ public class Application {
 			}
 
 		}
+
 	}
 
 	public static void main(String[] args) throws IOException {
