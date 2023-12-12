@@ -42,7 +42,7 @@ public class TaskLog implements LoadSave {
         if(parts.length>=4){
             Task cTask=Application.taskDataHandler.get(Integer.parseInt(parts[3]));
             TaskLog tasklog =  new TaskLog(LocalDateTime.parse(parts[0]), LocalDateTime.parse(parts[1]), Application.employeeDataHandler.get(Integer.parseInt(parts[2])), cTask);
-            cTask.getProject.getListOfTaskLogs().add(tasklog);
+            cTask.getProject().getListOfTaskLogs().add(tasklog);
             return tasklog;
         }
         else throw new IllegalArgumentException("not enough arguments");
