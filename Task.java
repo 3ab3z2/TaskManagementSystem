@@ -95,13 +95,32 @@ public class Task implements LoadSave {
         EST = eST;
     }
     @Override
-    public String toString() {
-        // TODO Auto-generated method stub
-        return super.toString();
+    public LoadSave fromString(String s) throws IllegalArgumentException {
+        String[] parts=s.split("\t");
+        if(parts.length>=11){
+            Priority cPriority;
+            switch (parts[6]) {
+                case "easy":
+                    cPriority=Priority.easy;
+                    break;
+                case "normal":
+                    cPriority=Priority.normal;
+                    break;
+                case "high":
+                    cPriority=Priority.high;
+                    break;
+                default:
+                    throw new IllegalArgumentException("unknown value "+parts[6]);
+            }
+            Project cProject=Application.projectDataHandler.get(Integer.parseInt(parts[5]));
+            Task task =  new Task(parts[0], parts[1], parts[2], Application.employeeDataHandler.get(Integer.parseInt(parts[3])), parts[4], cProject, cPriority, Application.employeeDataHandler.get(Integer.parseInt(parts[7])), LocalDate.parse(parts[8]), LocalDate.parse(parts[9]), Double.parseDouble(parts[10]));
+            cProject.getListOfTasks().add(task);
+            return task;
+        }
+        else throw new IllegalArgumentException("not enough arguments");
     }
     @Override
-    public LoadSave fromString(String s) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
-        return null;
+    public String toString() {
+        return code+"\t"+title+"\t"+description+"\t"+Application.employeeDataHandler.getIndex(assignedEmployee)+"\t"+taskPhase+"\t"+Application.projectDataHandler.getIndex(project)+"\t"+priority+"\t"+Application.employeeDataHandler.getIndex(creator)+"\t"+startDate+"\t"+endDate+"\t"+EST;
     }
 }

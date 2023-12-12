@@ -37,14 +37,19 @@ public class TaskLog implements LoadSave {
         this.task = task;
     }
     @Override
-    public String toString() {
-        // TODO Auto-generated method stub
-        return super.toString();
+    public LoadSave fromString(String s) throws IllegalArgumentException {
+        String[] parts=s.split("\t");
+        if(parts.length>=4){
+            Task cTask=Application.taskDataHandler.get(Integer.parseInt(parts[3]));
+            TaskLog tasklog =  new TaskLog(LocalDateTime.parse(parts[0]), LocalDateTime.parse(parts[1]), Application.employeeDataHandler.get(Integer.parseInt(parts[2])), cTask);
+            cTask.getProject.getListOfTaskLogs().add(tasklog);
+            return tasklog;
+        }
+        else throw new IllegalArgumentException("not enough arguments");
     }
     @Override
-    public LoadSave fromString(String s) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
-        return null;
+    public String toString() {
+        return fromTime+"\t"+toTime+"\t"+Application.employeeDataHandler.getIndex(assignedEmployee)+"\t"+Application.taskDataHandler.getIndex(task);
     }
     public double calculateHours() {
         // TODO
