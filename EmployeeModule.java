@@ -1,7 +1,9 @@
 import java.util.Scanner;
 import java.io.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Period;
 
 
 ///ANSI COLOR CODES:
@@ -241,7 +243,7 @@ public class EmployeeModule extends Module {
         System.out.println("");
         
         try {
-            LeaveRequest newleaverequest = new LeaveRequest(currentEmployee, LeaveReason, approval, duration, leaveType);
+            LeaveRequest newleaverequest = new LeaveRequest(currentEmployee, LeaveReason, approval, Period.between(LocalDate.now(),LocalDate.now().plusDays(duration)), leaveType);
             Application.leaveRequestDataHandler.add(newleaverequest);
         } catch (IOException e) {
             System.out.println("An error occurred while writing to LeaveRequest.txt");
