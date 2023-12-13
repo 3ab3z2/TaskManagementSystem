@@ -897,7 +897,18 @@ public class AdminModule extends Module {
                     String confirm= Application.input.next();
                     if(!confirm.equals("Y") && !confirm.equals("y"))//Don't Delete
                         continue menu;
-                    Application.employeeDataHandler.delete(idx);//TODO: nullify all employees with this type
+                    Application.employeeDataHandler.delete(idx);
+                    //nullify all employees with this type
+                    int len_employees= Application.employeeDataHandler.getLength();
+                    for(int k=0;k<len_employees;++k)
+                    {
+                        Employee employee= Application.employeeDataHandler.get(k);
+                        if(employee.getEmpType().getName().equals(empType.getName()));
+                        {
+                            employee.setEmpType(null);
+                            Application.employeeDataHandler.update(k, employee);
+                        }
+                    }
                     System.out.println("\033[33m\"\033[0m"+empType.getName()+"\" \033[32m was successfully undefined!\033[0m");
                 }
                 break;
