@@ -36,13 +36,13 @@ import java.util.InputMismatchException;
 public class EmployeeModule extends Module {
     Employee currentEmployee;
 
-    public EmployeeModule(Employee currentEmployee) {
+    public EmployeeModule(Employee currentEmployee) throws IOException{
         this.currentEmployee = currentEmployee;
         this.currentUser = currentEmployee;
     }
 
     @Override
-    public void startModule() {
+    public void startModule() throws IOException{
         int choice=0;
 
         System.out.println("\u001B[1m" + "\n ---------------------Employee Module---------------------\n\u001B[8m" + "\t\t\t  D͓̽e͓̽d͓̽S͓̽e͓̽c͓̽\u001B[0m");
@@ -108,7 +108,7 @@ public class EmployeeModule extends Module {
         } while (choice != 8);
     }
 
-    public void viewTimeCards() {
+    public void viewTimeCards() throws IOException{
         System.out.println("==========================================================");
         System.out.println("|| \u001B[43m"+"These are your time cards:\u001B[0m\t\t\t||\n");
         for(int i = 0; i < Application.timeCardDataHandler.getLength(); i++){
@@ -123,7 +123,13 @@ public class EmployeeModule extends Module {
         try{
             String choice = Application.input.nextLine();
             if(choice.equals("y")){
-                startModule();
+                try{
+                    startModule();
+                }
+                catch(IOException e){
+                    System.out.println("An error occurred while writing to TimeCard.txt");
+                    e.printStackTrace();
+                }
             }
             else if(choice.equals("n")){
                 System.out.println("Returning to menu...");
@@ -138,7 +144,7 @@ public class EmployeeModule extends Module {
         }
     }
 
-    public void createTimeCard() {
+    public void createTimeCard() throws IOException{
         LocalTime departure = null;
         LocalDateTime attendance = LocalDateTime.now();
 
@@ -173,7 +179,13 @@ public class EmployeeModule extends Module {
         System.out.println("Return to menu? (y/n)");
         String choice = Application.input.nextLine();
         if(choice.equals("y")){
-            startModule();
+            try{
+                startModule();
+            }
+            catch(IOException e){
+                System.out.println("An error occurred while writing to TimeCard.txt");
+                e.printStackTrace();
+            }
         }
         else if(choice.equals("n")){
             System.out.println("Returning to menu...");
@@ -183,7 +195,7 @@ public class EmployeeModule extends Module {
         }
     }
 
-    public void viewRequests() {
+    public void viewRequests() throws IOException{
         System.out.println("==========================================================");
         for(int i = 0 , j = 0; i < Application.requestDataHandler.getLength(); i++, j++){
             Employee employee = Application.requestDataHandler.get(i).getEmployee();
@@ -197,7 +209,13 @@ public class EmployeeModule extends Module {
         try{
             String choice = Application.input.nextLine();
             if(choice.equals("y")){
-                startModule();
+                try{
+                    startModule();
+                }
+                catch(IOException e){
+                    System.out.println("An error occurred while writing to request.txt");
+                    e.printStackTrace();
+                }
             }
             else if(choice.equals("n")){
                 System.out.println("Returning to menu...");
@@ -212,7 +230,7 @@ public class EmployeeModule extends Module {
         }
         }
 
-    public void makeRequest(Request request) {
+    public void makeRequest(Request request) throws IOException{
 
         Request.Approval approval = null;
         System.out.println("==========================================================");
@@ -234,7 +252,13 @@ public class EmployeeModule extends Module {
         try{
             String choice = Application.input.nextLine();
             if(choice.equals("y")){
-                startModule();
+                try{
+                    startModule();
+                }
+                catch(IOException e){
+                    System.out.println("An error occurred while writing to request.txt");
+                    e.printStackTrace();
+                }
             }
             else if(choice.equals("n")){
                 System.out.println("Returning to menu...");
@@ -249,7 +273,7 @@ public class EmployeeModule extends Module {
         }
     }
 
-    public void makeLeaveRequest(LeaveRequest leaveRequest) {
+    public void makeLeaveRequest(LeaveRequest leaveRequest) throws IOException{
         Request.Approval approval = null;
         LocalDate lastDay=null;
         LocalDate firstDay=null;
@@ -299,7 +323,13 @@ public class EmployeeModule extends Module {
         try{
             String choice = Application.input.nextLine();
             if(choice.equals("y")){
-                startModule();
+                try{
+                    startModule();
+                }
+                catch(IOException e){
+                    System.out.println("An error occurred while writing to LeaveRequest.txt");
+                    e.printStackTrace();
+                }
             }
             else if(choice.equals("n")){
                 System.out.println("Returning to menu...");
@@ -314,7 +344,7 @@ public class EmployeeModule extends Module {
         }
     }
 
-    public void manageRequests() {
+    public void manageRequests() throws IOException{
         Request request = null;
         System.out.println("==========================================================");
         System.out.println("|| \u001B[43m"+"These are your open requests:\u001B[0m\t\t\t||\n");
@@ -336,7 +366,7 @@ public class EmployeeModule extends Module {
         
     }
 
-    public void manageRequest(Request request) {
+    public void manageRequest(Request request) throws IOException{
         System.out.println("|| \u001B[43m"+"Please Choose what you want to do with the request:\u001B[0m\t||\n|| 1)\u001B[35m\tChange the reason.\u001B[0m\t\t\t\t||\n" +"|| 2)\u001B[35m\tReturn to menu.\u001B[0m\t\t\t\t||\n");
         int choice = Application.input.nextInt();
         switch (choice) {
@@ -367,7 +397,13 @@ public class EmployeeModule extends Module {
                 break;
 
             case 2:
+            try{
                 startModule();
+            }
+            catch(IOException e){
+                System.out.println("An error occurred while writing to request.txt");
+                e.printStackTrace();
+            }
                 break;
 
             default:
