@@ -793,7 +793,7 @@ public class AdminModule extends Module {
 							for(int k=0;k<count_employees;k++)
 							{
 								Employee employee= Application.employeeDataHandler.get(k);
-								if(employee.getUsername().equals(leader_name));
+								if(employee.getUsername().equals(leader_name))
 								{
 									leader= employee;
 									break;
