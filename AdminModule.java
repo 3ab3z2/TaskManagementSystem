@@ -514,7 +514,67 @@ public class AdminModule extends Module {
             }
             switch(choice) {
             case 1://Add Employees
-                //TODO
+                {
+                    User user= null;
+                    int user_idx= -1;
+                    int len= Application.userDataHandler.getLength();
+
+                    if(len==0)
+                    {
+                        System.out.println("\033[33mNo Registered Users Found!\033[0m\nEnter any key to continue...");
+                        Application.input.next();
+                        continue menu;
+                    }
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    // System.out.println("=====================================");
+                    // System.out.print("|| \u001B[43m"+"Registered Users\u001B[0m\t\t\t\t||\n" +
+                    //         "|| \u001B[43m"+"--------------------------------\u001B[0m\t\t\t||\n" +
+                    //         "|| \u001B[43m"+"USERNAME\tTYPE\u001B[0m\t\t\t\t||\n" +
+                    //         "||");
+                    System.out.print(
+                        "Registered Users\n"+
+                        "--------------------------------\n"+
+                        "USERNAME\tTYPE\n"+
+                        "--------------------------------\n"
+                    );
+                    for(int k=0;k<len;++k)
+                    {
+                        user= Application.userDataHandler.get(k);
+                        System.out.println(user.getUsername()+"\t"+user.getUserType());
+                    }
+                    // System.out.println("=====================================");
+                    while(true)
+                    {
+                        System.out.println("|| \u001B[43m"+"Username: \u001B[0m\t\t\t\t||\n");
+                        String uname= Application.input.next();
+                        boolean found= false;
+                        for(int k=0;k<len;++k)
+                        {
+                            user= Application.userDataHandler.get(k);
+                            if(user.getUsername().equals(uname))
+                            {
+                                user_idx= k;
+                                found= true;
+                                break;
+                            }
+                        }
+                        if(!found)
+                        {
+                            // System.out.println("|| \033[31m"+"User not found!\033[0m\t\t\t\t||\n");
+                            // System.out.println("|| \033[31m"+"Try again? [Y/N]: \033[0m\t\t\t\t||\n");
+                            System.out.println("\033[31mUser not found!\033[0m");
+                            System.out.print("\033[33mTry again? [Y/N]: \033[0m");
+                            String retry= Application.input.next();
+                            if(retry.equals("Y")||retry.equals("y"))
+                                continue;
+                            else
+                                continue menu;
+                        }
+                        break;
+                    }
+                    //TODO employee info
+                }
                 break;
             case 2://Update Employees
                 //TODO
