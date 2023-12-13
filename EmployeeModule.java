@@ -1,9 +1,9 @@
-import java.util.Scanner;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Period;
+import java.util.InputMismatchException;
 
 
 ///ANSI COLOR CODES:
@@ -43,8 +43,7 @@ public class EmployeeModule extends Module {
 
     @Override
     public void startModule() {
-        int choice;
-        Scanner input = new Scanner(System.in);
+        int choice=0;
 
         System.out.println("\u001B[1m" + "\n ---------------------Employee Module---------------------\n\u001B[8m" + "\t\t\t  D͓̽e͓̽d͓̽S͓̽e͓̽c͓̽\u001B[0m");
         System.out.println("\t\t\tHi \u001B[1m"+currentEmployee.getUsername()+" !");
@@ -61,8 +60,14 @@ public class EmployeeModule extends Module {
                     "|| 7)\u001B[35m\tManage a request.\u001B[0m\t\t\t\t||\n" +
                     "|| \u001B[41m8)\tLogout.\u001B[0m\t\t\t\t\t\t||");
             System.out.println("==========================================================");
-            choice = input.nextInt();
-
+            try{
+                choice = Application.input.nextInt();
+            }
+            catch(InputMismatchException e){
+                System.out.println("|| \u001B[41m"+"Invalid choice, please try again.\u001B[0m\t\t\t\t||");
+                Application.input.nextLine();
+                continue;
+            }
             switch (choice) {
                 case 1:
                     viewTimeCards();
@@ -101,7 +106,6 @@ public class EmployeeModule extends Module {
                     break;
             }
         } while (choice != 8);
-        input.close();
     }
 
     public void viewTimeCards() {
@@ -116,33 +120,43 @@ public class EmployeeModule extends Module {
         }
         System.out.println("==========================================================");
         System.out.println("Return to menu? (y/n)");
-        Scanner input = new Scanner(System.in);
-        String choice = input.nextLine();
-        if(choice.equals("y")){
-            startModule();
+        try{
+            String choice = Application.input.nextLine();
+            if(choice.equals("y")){
+                startModule();
+            }
+            else if(choice.equals("n")){
+                System.out.println("Returning to menu...");
+                viewTimeCards();}
+            else{
+                System.out.println("Invalid choice, please try again.");
+            }
         }
-        else if(choice.equals("n")){
-            System.out.println("Returning to menu...");
-            viewTimeCards();}
-        else{
+        catch(InputMismatchException e){
             System.out.println("Invalid choice, please try again.");
+            Application.input.nextLine();
         }
-        input.close();
     }
 
     public void createTimeCard() {
-        Scanner input = new Scanner(System.in);
         LocalTime departure = null;
         LocalDateTime attendance = LocalDateTime.now();
 
         System.out.println("==========================================================");
         System.out.println("|| \u001B[43m"+"Please enter the date and time of your attendance\u001B[0m\t||\n|| \u001B[43m(yyyy-MM-dd HH:mm:ss): \u001B[0m\t\t\t\t||\n" +"||  \t\t\t\t\t\t\t||");
         System.out.print("|| \u001B[43m"+"Date: \u001B[0m");
-        String date = input.nextLine();
-        System.out.print("|| \u001B[43m"+"Time: \u001B[0m");
-        String time = input.nextLine();
-        String dateTime = date + "T" + time;
-        attendance = LocalDateTime.parse(dateTime);
+        try{
+            String date = Application.input.nextLine();
+            System.out.print("|| \u001B[43m"+"Time: \u001B[0m");
+            String time = Application.input.nextLine();
+            String dateTime = date + "T" + time;
+            attendance = LocalDateTime.parse(dateTime);
+        }
+        catch(Exception e){
+            System.out.println("Invalid choice, please try again.");
+            Application.input.nextLine();
+            createTimeCard();
+        }
 
         System.out.println("==========================================================");
 
@@ -157,7 +171,7 @@ public class EmployeeModule extends Module {
         }
 
         System.out.println("Return to menu? (y/n)");
-        String choice = input.nextLine();
+        String choice = Application.input.nextLine();
         if(choice.equals("y")){
             startModule();
         }
@@ -167,11 +181,9 @@ public class EmployeeModule extends Module {
         else{
             System.out.println("Invalid choice, please try again.");
         }
-        input.close();
     }
 
     public void viewRequests() {
-        Scanner input = new Scanner(System.in);
         System.out.println("==========================================================");
         for(int i = 0 , j = 0; i < Application.requestDataHandler.getLength(); i++, j++){
             Employee employee = Application.requestDataHandler.get(i).getEmployee();
@@ -182,26 +194,31 @@ public class EmployeeModule extends Module {
               }
             };
         System.out.println("==========================================================");System.out.println("Return to menu? (y/n)");
-        String choice = input.nextLine();
-        if(choice.equals("y")){
-            startModule();
+        try{
+            String choice = Application.input.nextLine();
+            if(choice.equals("y")){
+                startModule();
+            }
+            else if(choice.equals("n")){
+                System.out.println("Returning to menu...");
+                viewRequests();}
+            else{
+                System.out.println("Invalid choice, please try again.");
+            }
         }
-        else if(choice.equals("n")){
-            System.out.println("Returning to menu...");
-            viewRequests();}
-        else{
+        catch(InputMismatchException e){
             System.out.println("Invalid choice, please try again.");
+            Application.input.nextLine();
         }
-        input.close();
         }
 
     public void makeRequest(Request request) {
 
         Request.Approval approval = null;
-        Scanner input = new Scanner(System.in);
         System.out.println("==========================================================");
         System.out.println("|| \u001B[43m"+"Please enter the reason for your request:\u001B[0m\t\t||\n" +"||  \t\t\t\t\t\t\t||");
-        String reason = input.nextLine();
+        //putting a try and catch here makes it impossible that "reason" is readable by Request, so not writing it here
+        String reason = Application.input.nextLine();
         System.out.println("==========================================================");
 
         System.out.println("");
@@ -214,32 +231,59 @@ public class EmployeeModule extends Module {
         }
 
         System.out.println("Return to menu? (y/n)");
-        String choice = input.nextLine();
-        if(choice.equals("y")){
-            startModule();
+        try{
+            String choice = Application.input.nextLine();
+            if(choice.equals("y")){
+                startModule();
+            }
+            else if(choice.equals("n")){
+                System.out.println("Returning to menu...");
+                makeRequest(request);}
+            else{
+                System.out.println("Invalid choice, please try again.");
+            }
         }
-        else if(choice.equals("n")){
-            System.out.println("Returning to menu...");
-            makeRequest(request);}
-        else{
+        catch(InputMismatchException e){
             System.out.println("Invalid choice, please try again.");
+            Application.input.nextLine();
         }
-        input.close();
     }
 
     public void makeLeaveRequest(LeaveRequest leaveRequest) {
         Request.Approval approval = null;
-        Scanner input = new Scanner(System.in);
+        LocalDate lastDay=null;
+        LocalDate firstDay=null;
+        LeaveRequest.LeaveType leaveType=null;
         System.out.println("==========================================================");
         System.out.println("|| \u001B[43m"+"Please enter the reason for your leave request:\u001B[0m\t||\n" +"||  \t\t\t\t\t\t\t||");
-        String LeaveReason = input.nextLine();
+        String LeaveReason = Application.input.nextLine();
         System.out.println("|| \u001B[43m"+"Please enter the first day of your leave request: (ex:2010-01-15)\u001B[0m\t||\n" +"||  \t\t\t\t\t\t\t||");
-        LocalDate firstDay = LocalDate.parse(input.nextLine());
+        try{
+            firstDay = LocalDate.parse(Application.input.nextLine());
+        }
+        catch(Exception e){
+            System.out.println("Invalid choice, please try again.");
+            Application.input.nextLine();
+            makeLeaveRequest(leaveRequest);
+        }
         System.out.println("|| \u001B[43m"+"Please enter the last day of your leave request: (ex:2010-01-15)\u001B[0m\t||\n" +"||  \t\t\t\t\t\t\t||");
-        LocalDate lastDay = LocalDate.parse(input.nextLine());  
+        try{
+            lastDay = LocalDate.parse(Application.input.nextLine());
+        }
+        catch(Exception e){
+            System.out.println("Invalid choice, please try again.");
+            Application.input.nextLine();
+            makeLeaveRequest(leaveRequest);
+        }
         System.out.println("|| \u001B[43m"+"Please enter the type of your leave request:\u001B[0m\t||\n" +"||  \t\t\t\t\t\t\t||");
-        String leaveTypeString = input.nextLine();
-        LeaveRequest.LeaveType leaveType = LeaveRequest.LeaveType.valueOf(leaveTypeString);    
+        try{
+            leaveType = LeaveRequest.LeaveType.valueOf(Application.input.nextLine());
+        }
+        catch(Exception e){
+            System.out.println("Invalid choice, please try again.");
+            Application.input.nextLine();
+            makeLeaveRequest(leaveRequest);
+        }
         System.out.println("==========================================================");
 
         System.out.println("");
@@ -252,54 +296,73 @@ public class EmployeeModule extends Module {
             e.printStackTrace();
         }
         System.out.println("Return to menu? (y/n)");
-        String choice = input.nextLine();
-        if(choice.equals("y")){
-            startModule();
+        try{
+            String choice = Application.input.nextLine();
+            if(choice.equals("y")){
+                startModule();
+            }
+            else if(choice.equals("n")){
+                System.out.println("Returning to menu...");
+                makeLeaveRequest(leaveRequest);}
+            else{
+                System.out.println("Invalid choice, please try again.");
+            }
         }
-        else if(choice.equals("n")){
-            System.out.println("Returning to menu...");
-            makeLeaveRequest(leaveRequest);}
-        else{
+        catch(InputMismatchException e){
             System.out.println("Invalid choice, please try again.");
+            Application.input.nextLine();
         }
-        input.close();
     }
 
     public void manageRequests() {
-        Scanner input = new Scanner(System.in);
+        Request request = null;
         System.out.println("==========================================================");
         System.out.println("|| \u001B[43m"+"These are your open requests:\u001B[0m\t\t\t||\n");
         viewRequests();
         System.out.println("|| \u001B[43m"+"Please enter the number of the request you want to manage:\u001B[0m||\n");
-        int ID = input.nextInt();
-        Request request = Application.requestDataHandler.get(ID);
+        try{
+            int ID = Application.input.nextInt();
+            request = Application.requestDataHandler.get(ID);
+            System.out.println("==========================================================");
+            manageRequest(request);
+        }
+        catch(Exception e){
+            System.out.println("Invalid choice, please try again.");
+            Application.input.nextLine();
+            manageRequests();
+        }
         System.out.println("==========================================================");
         manageRequest(request);
-        input.close();
         
     }
 
     public void manageRequest(Request request) {
-        Scanner input = new Scanner(System.in);
         System.out.println("|| \u001B[43m"+"Please Choose what you want to do with the request:\u001B[0m\t||\n|| 1)\u001B[35m\tChange the reason.\u001B[0m\t\t\t\t||\n" +"|| 2)\u001B[35m\tReturn to menu.\u001B[0m\t\t\t\t||\n");
-        int choice = input.nextInt();
+        int choice = Application.input.nextInt();
         switch (choice) {
             case 1:
                 System.out.println("|| \u001B[43m"+"Please enter the new reason for your request:\u001B[0m\t\t||\n" +"||  \t\t\t\t\t\t\t||");
-                String reason = input.nextLine();
-                System.out.println("==========================================================");
-                System.out.println("");
-                request.setReason(reason);
-                System.out.println("|| \u001B[43m"+"Your request has been updated: (enter \"ok\" to return to home page)\u001B[0m\t\t\t||\n");
-                System.out.println(request.toString());
-                System.out.println("----------------------------------------------------------");
-                System.out.println("==========================================================");
-                String ok = input.nextLine();
-                if(ok.equals("ok")){
-                    startModule();
+                try{
+                    String reason = Application.input.nextLine();
+                    request.setReason(reason);
+                    System.out.println("==========================================================");
+                    System.out.println("");
+                    System.out.println("|| \u001B[43m"+"Your request has been updated: (enter \"ok\" to return to home page)\u001B[0m\t\t\t||\n");
+                    System.out.println(request.toString());
+                    System.out.println("----------------------------------------------------------");
+                    System.out.println("==========================================================");
+                    String ok = Application.input.nextLine();
+                    if(ok.equals("ok")){
+                        startModule();
+                    }
+                    else{
+                        System.out.println("Invalid choice, please try again.");
+                    }
                 }
-                else{
+                catch(Exception e){
                     System.out.println("Invalid choice, please try again.");
+                    Application.input.nextLine();
+                    manageRequest(request);
                 }
                 break;
 
@@ -311,6 +374,5 @@ public class EmployeeModule extends Module {
                 System.out.println("Invalid choice, please try again.");
                 break;
         }
-        input.close();
     }
 }
