@@ -121,6 +121,7 @@ public class EmployeeModule extends Module {
             if(choice.equals("y")){
                 try{
                     startModule();
+					return;
                 }
                 catch(IOException e){
                 System.out.println("\u001B[41m" + "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m" +
@@ -213,6 +214,7 @@ public class EmployeeModule extends Module {
         if(choice.equals("y")){
             try{
                 startModule();
+				return;
             }
             catch(IOException e){
                 System.out.println("\u001B[41m" + "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m" +
@@ -260,6 +262,7 @@ public class EmployeeModule extends Module {
             if(choice.equals("y")){
                 try{
                     startModule();
+					return;
                 }
                 catch(IOException e){
                 System.out.println("\u001B[41m" + "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m" +
@@ -322,6 +325,7 @@ public class EmployeeModule extends Module {
             if(choice.equals("y")){
                 try{
                     startModule();
+					return;
                 }
                 catch(IOException e){
                 System.out.println("\u001B[41m" + "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m" +
@@ -430,6 +434,7 @@ public class EmployeeModule extends Module {
             if(choice.equals("y")){
                 try{
                     startModule();
+					return;
                 }
                 catch(IOException e){
                 System.out.println("\u001B[41m" + "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m" +
@@ -508,6 +513,7 @@ public class EmployeeModule extends Module {
                     String ok = Application.input.next();
                     if(ok.equals("ok")){
                         startModule();
+						return;
                     }
                     else{
                 System.out.println("\u001B[41m" + "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m" +
@@ -527,6 +533,7 @@ public class EmployeeModule extends Module {
             case 2:
             try{
                 startModule();
+				return;
             }
             catch(IOException e){
                 System.out.println("\u001B[41m" + "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m" +
