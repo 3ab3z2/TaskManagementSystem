@@ -516,9 +516,8 @@ public class AdminModule extends Module {
             case 1://Add Employees
                 {
                     User user= null;
-                    int user_idx= -1;
-                    int len= Application.userDataHandler.getLength();
 
+                    int len= Application.userDataHandler.getLength();
                     if(len==0)
                     {
                         System.out.println("\033[33mNo Registered Users Found!\033[0m\nEnter any key to continue...");
@@ -533,7 +532,7 @@ public class AdminModule extends Module {
                     //         "|| \u001B[43m"+"USERNAME\tTYPE\u001B[0m\t\t\t\t||\n" +
                     //         "||");
                     System.out.print(
-                        "Registered Users\n"+
+                        "Registered Accounts\n"+
                         "--------------------------------\n"+
                         "USERNAME\tTYPE\n"+
                         "--------------------------------\n"
@@ -541,12 +540,14 @@ public class AdminModule extends Module {
                     for(int k=0;k<len;++k)
                     {
                         user= Application.userDataHandler.get(k);
-                        System.out.println(user.getUsername()+"\t"+user.getUserType());
+                        if(user.getUserType()==User.utype.employee)
+                            System.out.println(user.getUsername()+"\t"+user.getUserType());
                     }
                     // System.out.println("=====================================");
                     while(true)
                     {
-                        System.out.println("|| \u001B[43m"+"Username: \u001B[0m\t\t\t\t||\n");
+                        // System.out.println("|| \u001B[43m"+"Username: \u001B[0m\t\t\t\t||\n");
+                        System.out.print("Username: ");
                         String uname= Application.input.next();
                         boolean found= false;
                         for(int k=0;k<len;++k)
@@ -554,7 +555,6 @@ public class AdminModule extends Module {
                             user= Application.userDataHandler.get(k);
                             if(user.getUsername().equals(uname))
                             {
-                                user_idx= k;
                                 found= true;
                                 break;
                             }
@@ -573,7 +573,54 @@ public class AdminModule extends Module {
                         }
                         break;
                     }
-                    //TODO employee info
+
+                    int empType_idx= -1;
+                    int len_emptypes= Application.empTypeDataHandler.getLength();
+                    if(len_emptypes!=0)
+                    {
+                        System.out.print(
+                            "Defined Employee Types\n"+
+                            "--------------------------------\n"+
+                            "NUM\tTYPE\tMANAGER\n"+
+                            "--------------------------------\n"
+                        );
+                        for(int k=0;k<len_emptypes;++k)
+                        {
+                            EmpType empType= Application.empTypeDataHandler.get(k);
+                            System.out.println((k+1)+empType.getName()+"\t"+empType.isManager());
+                        }
+                        // System.out.println("=====================================");
+                        while(true)
+                        {
+                            System.out.print("Number: ");
+                            try
+                            {
+                                empType_idx= Application.input.nextInt()-1;
+                            }
+                            catch(InputMismatchException e)
+                            {
+                                System.out.println("\033[31mInvalid Input!\033[0m Please, enter valid type number!");
+                                Application.input.next();//consume invalid input from Scanner buffer
+                                continue;
+                            }
+                            if(empType_idx<0||empType_idx>=len)
+                            {
+                                System.out.println("\033[31mNumber Out of Bounds!\033[0m");
+                                System.out.print("\033[33mTry again? [Y/N]:\033[0m ");
+                                String retry= Application.input.next();
+                                if(retry.equals("Y")||retry.equals("y"))
+                                    continue;
+                                else
+                                    continue menu;
+                            }
+                            break;
+                        }
+                    }
+                    EmpType empType= null;
+                    if(empType_idx!=-1)
+                        empType= Application.empTypeDataHandler.get(empType_idx);
+                    Employee employee= new Employee(user.getUsername(), user.getPassword(), User.utype.employee, empType);
+                    Application.employeeDataHandler.add(employee);
                 }
                 break;
             case 2://Update Employees
@@ -803,7 +850,7 @@ public class AdminModule extends Module {
                     System.out.print(
                         "Defined Employee Types\n"+
                         "--------------------------------\n"+
-                        "TYPE\tMANAGER\n"+
+                        "NUM\tTYPE\tMANAGER\n"+
                         "--------------------------------\n"
                     );
                     for(int k=0;k<len;++k)
