@@ -1,11 +1,9 @@
 import java.io.IOException;
 import java.time.DateTimeException;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 
-import javax.swing.text.DateFormatter;
 
 public class TaskModule extends Module {
     Employee currentEmployee;
@@ -382,7 +380,7 @@ public class TaskModule extends Module {
             // assigned employee
             Employee employee = null;
             exit = false;
-            for (int i = 0, j = 0; i < Application.employeeDataHandler.getLength(); i++) {
+            for (int i = 0; i < Application.employeeDataHandler.getLength(); i++) {
                 employee = Application.employeeDataHandler.get(i);
                 System.out.println((i + 1) + "- " + employee.getUsername());
             }
