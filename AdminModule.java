@@ -360,7 +360,7 @@ public class AdminModule extends Module {
                         }
                         user.setPassword(newpword);
                         Application.userDataHandler.update(user_idx, user);
-                        System.out.println("\033[33mPassword was successfully modified!\033[0m\nEnter any key to continue...");
+                        System.out.println("\033[32mPassword was successfully modified!\033[0m\nEnter any key to continue...");
                         Application.input.next();
                     case 4:
                         continue menu;
@@ -445,7 +445,7 @@ public class AdminModule extends Module {
                     for(int k=0;k<len_employees;++k)//delete from employees
                     {
                         Employee employee= Application.employeeDataHandler.get(k);
-                        if(employee.getUsername()==uname)
+                        if(employee.getUsername().equals(uname))
                         {
                             Application.employeeDataHandler.delete(k);
                             break;
@@ -454,7 +454,7 @@ public class AdminModule extends Module {
                     for(int k=0;k<len_tasks;++k)//nullify assigned tasks
                     {
                         Task task= Application.taskDataHandler.get(k);
-                        if(task.getAssignedEmployee().getUsername()==uname)
+                        if(task.getAssignedEmployee().getUsername().equals(uname))
                         {
                             task.setAssignedEmployee(null);
                             Application.taskDataHandler.update(k, task);
@@ -463,7 +463,7 @@ public class AdminModule extends Module {
                     for(int k=0;k<len_projects;++k)//nullify any assigned projects 
                     {
                         Project project= Application.projectDataHandler.get(k);
-                        if(project.getLeader().getUsername()==uname)
+                        if(project.getLeader().getUsername().equals(uname))
                         {
                             project.setLeader(null);
                             Application.projectDataHandler.update(k, project);
@@ -522,6 +522,7 @@ public class AdminModule extends Module {
             case 3://Delete Employees
                 {
                     Employee employee= null;
+                    String uname;
                     int employee_idx= -1;
                     int len= Application.employeeDataHandler.getLength();
 
@@ -552,7 +553,7 @@ public class AdminModule extends Module {
                     while(true)
                     {
                         System.out.println("|| \u001B[43m"+"Username: \u001B[0m\t\t\t\t||\n");
-                        String uname= Application.input.next();
+                        uname= Application.input.next();
                         boolean found= false;
                         for(int k=0;k<len;++k)
                         {
@@ -580,7 +581,38 @@ public class AdminModule extends Module {
                     String confirm= Application.input.next();
                     if(!confirm.equals("Y") && !confirm.equals("y"))//Don't Delete
                         continue menu;
-                    Application.employeeDataHandler.delete(employee_idx);//TODO: delete from users?
+                    Application.employeeDataHandler.delete(employee_idx);//delete employee
+                    int
+                        len_users= Application.userDataHandler.getLength(),
+                        len_tasks= Application.taskDataHandler.getLength(),
+                        len_projects= Application.projectDataHandler.getLength();
+                    for(int k=0;k<len_users;++k)
+                    {
+                        User user= Application.userDataHandler.get(k);
+                        if(user.getUsername().equals(uname))//delete user account
+                        {
+                            Application.userDataHandler.delete(k);
+                            break;
+                        }
+                    }
+                    for(int k=0;k<len_tasks;++k)//nullify assigned tasks
+                    {
+                        Task task= Application.taskDataHandler.get(k);
+                        if(task.getAssignedEmployee().getUsername().equals(uname))
+                        {
+                            task.setAssignedEmployee(null);
+                            Application.taskDataHandler.update(k, task);
+                        }
+                    }
+                    for(int k=0;k<len_projects;++k)//nullify any assigned projects 
+                    {
+                        Project project= Application.projectDataHandler.get(k);
+                        if(project.getLeader().getUsername().equals(uname))
+                        {
+                            project.setLeader(null);
+                            Application.projectDataHandler.update(k, project);
+                        }
+                    }
                     System.out.println("|| \033[33m"+"\""+employee.getUsername()+"\" \033[32m was successfully removed!\033[0m\t||\n");
                 }
                 break;
