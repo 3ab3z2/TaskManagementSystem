@@ -98,7 +98,7 @@ public class EmployeeModule extends Module {
                     break;
 
                 case 8:
-                    System.out.println("\u001B[41m Logging out...");
+                    System.out.println("\u001B[41m Logging out...\u001B[0m");
                     break;
 
                 default:
@@ -145,22 +145,36 @@ public class EmployeeModule extends Module {
     }
 
     public void createTimeCard() throws IOException{
-        LocalTime departure = null;
+        LocalTime departure = LocalTime.now();
         LocalDateTime attendance = LocalDateTime.now();
 
         System.out.println("==========================================================");
         System.out.println("|| \u001B[43m"+"Please enter the date and time of your attendance\u001B[0m\t||\n|| \u001B[43m(yyyy-MM-dd HH:mm:ss): \u001B[0m\t\t\t\t||\n" +"||  \t\t\t\t\t\t\t||");
-        System.out.print("|| \u001B[43m"+"Date: \u001B[0m");
+        
         try{
-            String date = Application.input.nextLine();
+            System.out.print("|| \u001B[43m"+"Date: \u001B[0m");
+            String date = Application.input.next();
             System.out.print("|| \u001B[43m"+"Time: \u001B[0m");
-            String time = Application.input.nextLine();
+            String time = Application.input.next();
             String dateTime = date + "T" + time;
             attendance = LocalDateTime.parse(dateTime);
         }
         catch(Exception e){
             System.out.println("Invalid choice, please try again.");
-            Application.input.nextLine();
+            createTimeCard();
+        }
+
+        System.out.println("==========================================================");
+
+        System.out.println("|| \u001B[43m"+"Please enter the time of your departure\u001B[0m\t||\n|| \u001B[43m(HH:mm:ss): \u001B[0m\t\t\t\t||\n" +"||  \t\t\t\t\t\t\t||");
+        
+        try{
+            System.out.print("|| \u001B[43m"+"Time: \u001B[0m");
+            String timedep = Application.input.next();
+            departure = LocalTime.parse(timedep);
+        }
+        catch(Exception e){
+            System.out.println("Invalid choice, please try again.");
             createTimeCard();
         }
 
@@ -177,7 +191,7 @@ public class EmployeeModule extends Module {
         }
 
         System.out.println("Return to menu? (y/n)");
-        String choice = Application.input.nextLine();
+        String choice = Application.input.next();
         if(choice.equals("y")){
             try{
                 startModule();
