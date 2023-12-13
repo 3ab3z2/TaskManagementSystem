@@ -166,7 +166,7 @@ public class EmployeeModule extends Module {
 
         System.out.println("==========================================================");
 
-        System.out.println("|| \u001B[43m"+"Please enter the time of your departure\u001B[0m\t||\n|| \u001B[43m(HH:mm:ss): \u001B[0m\t\t\t\t||\n" +"||  \t\t\t\t\t\t\t||");
+        System.out.println("|| \u001B[43m"+"Please enter the time of your departure\u001B[0m\t\t||\n|| \u001B[43m(HH:mm:ss): \u001B[0m\t\t\t\t\t\t||\n" +"||  \t\t\t\t\t\t\t||");
         
         try{
             System.out.print("|| \u001B[43m"+"Time: \u001B[0m");
