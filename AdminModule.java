@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.util.InputMismatchException;
-// import java.util.Scanner;
 
 public class AdminModule extends Module {
 	AdminModule(User currentUser) {
@@ -624,7 +623,11 @@ public class AdminModule extends Module {
 				}
 				break;
 			case 2://Update Employees
-				//TODO
+				{
+					int count_employees= Application.employeeDataHandler.getLength();
+
+				}
+				//TODO: Update Employees
 				break;
 			case 3://Delete Employees
 				{
@@ -819,7 +822,7 @@ public class AdminModule extends Module {
 				}
 				break;
 			case 2://Update Projects
-				//TODO
+				//TODO: Update Projects
 				break;
 			case 3://Delete Projects
 				{
@@ -1026,7 +1029,18 @@ public class AdminModule extends Module {
 							String type= Application.input.next();
 							String oldtype= empType.getName();
 							empType.setName(type);
-							Application.empTypeDataHandler.update(idx, empType);//TODO: cascade update to all employees?
+							Application.empTypeDataHandler.update(idx, empType);
+							int count_employees= Application.employeeDataHandler.getLength();
+							for(int k=0;k<count_employees;++k)//update all employees with this type
+							{
+								Employee employee= Application.employeeDataHandler.get(k);
+								if(employee.getEmpType().getName().equals(oldtype));
+								{
+									employee.setEmpType(empType);
+									System.out.println("\033[33m\""+employee.getUsername()+"\" has been promoted to \""+type+"\"!\033[0m");
+									Application.employeeDataHandler.update(k, employee);
+								}
+							}
 							System.out.println("|| \033[33m"+"\""+oldtype+"\" \033[32m was successfully modified to \"\033[0m"+type+"\033[33m\"!\033[0m\t||\n");
 							break;
 						case 2://Modify Managerial Position
@@ -1121,9 +1135,9 @@ public class AdminModule extends Module {
 					if(!confirm.equals("Y") && !confirm.equals("y"))//Don't Delete
 						continue menu;
 					Application.employeeDataHandler.delete(idx);
-					//nullify all employees with this type
+
 					int len_employees= Application.employeeDataHandler.getLength();
-					for(int k=0;k<len_employees;++k)
+					for(int k=0;k<len_employees;++k)//nullify all employees with this type
 					{
 						Employee employee= Application.employeeDataHandler.get(k);
 						if(employee.getEmpType().getName().equals(empType.getName()));
@@ -1214,18 +1228,4 @@ public class AdminModule extends Module {
 		Application.taskDataHandler.update(task_idx, task);
 		System.out.println("\033[33m\""+task.getTitle()+"\"\'s phase was successfully modified to \""+task.getTaskPhase()+"\" in project \""+task.getProject()+"\"!\033[0m");
 	}
-	// public static void main(String[] args) throws IOException
-	// {
-	// 	try
-	// 	{
-	// 		Application.initializeData();
-	// 	}
-	// 	catch(IOException e)
-	// 	{
-	// 		e.printStackTrace();
-	// 	}
-	// 	Application.input= new Scanner(System.in);
-	// 	AdminModule adminModule= new AdminModule(null);
-	// 	adminModule.startModule();
-	// }
 }
