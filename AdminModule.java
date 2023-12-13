@@ -1,6 +1,6 @@
 import java.io.IOException;
 import java.util.InputMismatchException;
-// import java.util.Scanner;
+import java.util.Scanner;
 
 public class AdminModule extends Module {
     AdminModule(User currentUser) {
@@ -11,19 +11,29 @@ public class AdminModule extends Module {
     {
         int choice= 0;
         boolean exit= false;
-        System.out.println("\u001B[1m" + "\n ---------------------Admin Module---------------------\n\u001B[8m" + "\t\t\t  D͓̽e͓̽d͓̽S͓̽e͓̽c͓̽\u001B[0m");
         while(!exit)
         {
-            System.out.println("==========================================================");
-            System.out.println("|| \u001B[43m"+"Please choose one of the following options:\u001B[0m\t\t||\n" +
-                    "|| 1)\u001B[35m\tManage Users.\u001B[0m\t\t\t\t\t||\n" +
-                    "|| 2)\u001B[35m\tManage Employees.\u001B[0m\t\t\t\t||\n" +
-                    "|| 3)\u001B[35m\tManage Projects.\u001B[0m\t\t\t\t||\n" + 
-                    "|| 4)\u001B[35m\tManage Employee Type.\u001B[0m\t\t\t\t||\n" + 
-                    "|| 5)\u001B[35m\tModify Task Phases.\u001B[0m\t\t\t\t||\n" + 
-                    "|| 6)\u001B[35m\tLogout.\u001B[0m\t\t\t\t\t\t||");
-            System.out.println("==========================================================");
-                        
+            System.out.println("\u001B[1m" + "\n ---------------------Admin Module---------------------\n\u001B[8m" + "\t\t\t  D͓̽e͓̽d͓̽S͓̽e͓̽c͓̽\u001B[0m");
+            // System.out.println("==========================================================");
+            // System.out.println("|| \u001B[43m"+"Please choose one of the following options:\u001B[0m\t\t||\n" +
+            //         "|| 1)\u001B[35m\tManage Users.\u001B[0m\t\t\t\t\t||\n" +
+            //         "|| 2)\u001B[35m\tManage Employees.\u001B[0m\t\t\t\t||\n" +
+            //         "|| 3)\u001B[35m\tManage Projects.\u001B[0m\t\t\t\t||\n" + 
+            //         "|| 4)\u001B[35m\tManage Employee Type.\u001B[0m\t\t\t\t||\n" + 
+            //         "|| 5)\u001B[35m\tModify Task Phases.\u001B[0m\t\t\t\t||\n" + 
+            //         "|| 6)\u001B[35m\tLogout.\u001B[0m\t\t\t\t\t\t||");
+            // System.out.println("==========================================================");
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            System.out.print(
+                "Admin Module\n"+
+                "\t1.Manage Users\n"+
+                "\t2.Manage Employees\n"+
+                "\t3.Manage Projects\n"+
+                "\t4.Manage Employee Type\n"+
+                "\t5.Modify Task Phases\n"+
+                "\t6.Logout\n"+
+                "input>> ");
             try
             {
                 choice= Application.input.nextInt();
@@ -63,17 +73,24 @@ public class AdminModule extends Module {
     {
         int choice= 0;
         boolean exit= false;
-        System.out.println("\u001B[1m" + "\n ---------------------Manage Users---------------------\n\u001B[8m" + "\t\t\t  D͓̽e͓̽d͓̽S͓̽e͓̽c͓̽\u001B[0m");
         menu:
         while(!exit)
         {
-            System.out.println("==========================================================");
-            System.out.println("|| \u001B[43m"+"Please choose one of the following options:\u001B[0m\t\t||\n" +
-                    "|| 1)\u001B[35m\tAdd Users.\u001B[0m\t\t\t\t\t||\n" +
-                    "|| 2)\u001B[35m\tUpdate Users.\u001B[0m\t\t\t\t||\n" +
-                    "|| 3)\u001B[35m\tDelete Users.\u001B[0m\t\t\t\t||\n" + 
-                    "|| 4)\u001B[35m\tBack.\u001B[0m\t\t\t\t\t\t||");
-            System.out.println("==========================================================");
+            System.out.println("\u001B[1m" + "\n ---------------------Manage Users---------------------\n\u001B[8m" + "\t\t\t  D͓̽e͓̽d͓̽S͓̽e͓̽c͓̽\u001B[0m");
+            // System.out.println("==========================================================");
+            // System.out.println("|| \u001B[43m"+"Please choose one of the following options:\u001B[0m\t\t||\n" +
+            //         "|| 1)\u001B[35m\tAdd Users.\u001B[0m\t\t\t\t\t||\n" +
+            //         "|| 2)\u001B[35m\tUpdate Users.\u001B[0m\t\t\t\t||\n" +
+            //         "|| 3)\u001B[35m\tDelete Users.\u001B[0m\t\t\t\t||\n" + 
+            //         "|| 4)\u001B[35m\tBack.\u001B[0m\t\t\t\t\t\t||");
+            // System.out.println("==========================================================");
+
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            System.out.print(
+                "Managing Users..\n"+
+                "1.Add 2.Update 3.Delete 4.Back\n"+
+                "input>> ");
             try
             {
                 choice= Application.input.nextInt();    
@@ -87,7 +104,7 @@ public class AdminModule extends Module {
             switch(choice)
             {
             case 1://Add Users
-                try
+                // try
                 {
                     String uname, pword, utype_str;
                     User.utype utype= User.utype.employee;
@@ -133,7 +150,6 @@ public class AdminModule extends Module {
                         }
                         break;
                     }
-
                     while(true)
                     {
                         System.out.println("|| \u001B[43m"+"Confirm Password: \u001B[0m\t\t\t||\n");
@@ -153,13 +169,16 @@ public class AdminModule extends Module {
 
                     User user= new User(uname, pword, utype);
                     Application.userDataHandler.add(user);
-                    System.out.println("|| \033[33m"+"\""+uname+"\" \033[32mwas successfully added!\033[0m\t||\n");
+
+                    // System.out.println("|| \033[33m"+"\""+uname+"\" \033[32mwas successfully added!\033[0m\t||\n");
+                    System.out.println(uname+" \033[32mwas successfully added!\033[0m\nEnter any key to continue...");
+                    Application.input.next();
                 }
-                catch(InputMismatchException e)
-                {
-                    System.out.println("\033[31mInvalid input!\033[0m please try again.");
-                    Application.input.next();//consume invalid input from Scanner buffer
-                }
+                // catch(InputMismatchException e)
+                // {
+                //     System.out.println("\033[31mInvalid input!\033[0m please try again.");
+                //     Application.input.next();//consume invalid input from Scanner buffer
+                // }
                 break;
             case 2://Update Users
                 {
@@ -168,21 +187,29 @@ public class AdminModule extends Module {
                     int len= Application.userDataHandler.getLength();
                     if(len==0)
                     {
-                        System.out.println("\033[33mNo Users Available\033[0m");
+                        System.out.println("\033[33mNo Registered Users Found!\033[0m\nEnter any key to continue...");
+                        Application.input.next();
                         continue menu;
                     }
-
-                    System.out.println("=====================================");
-                    System.out.print("|| \u001B[43m"+"Registered Users\u001B[0m\t\t\t\t||\n" +
-                            "|| \u001B[43m"+"--------------------------------\u001B[0m\t\t\t||\n" +
-                            "|| \u001B[43m"+"USERNAME\tTYPE\u001B[0m\t\t\t\t||\n" +
-                            "|| \u001B[43m"+"--------------------------------\u001B[0m\t\t\t||\n");
+                    // System.out.println("=====================================");
+                    // System.out.print("|| \u001B[43m"+"Registered Users\u001B[0m\t\t\t\t||\n" +
+                    //         "|| \u001B[43m"+"--------------------------------\u001B[0m\t\t\t||\n" +
+                    //         "|| \u001B[43m"+"USERNAME\tTYPE\u001B[0m\t\t\t\t||\n" +
+                    //         "|| \u001B[43m"+"--------------------------------\u001B[0m\t\t\t||\n");
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    System.out.print(
+                        "Registered Users\n"+
+                        "--------------------------------\n"+
+                        "USERNAME\tTYPE\n"+
+                        "--------------------------------\n"
+                    );
                     for(int k=0;k<len;++k)
                     {
                         user= Application.userDataHandler.get(k);
                         System.out.println(user.getUsername()+"\t"+user.getUserType());
                     }
-                    System.out.println("=====================================");
+                    // System.out.println("=====================================");
                     while(true)
                     {
                         System.out.print("Username: ");
@@ -212,13 +239,20 @@ public class AdminModule extends Module {
                     }
                     while(true)
                     {
-                        System.out.println("=====================================");
-                        System.out.println("|| \u001B[43m"+"What to modify?\u001B[0m\t\t\t\t||\n" +
-                                "|| \u001B[43m"+"1) Username\u001B[0m\t\t\t\t\t||\n" +
-                                "|| \u001B[43m"+"2) Type\u001B[0m\t\t\t\t\t\t||\n" +
-                                "|| \u001B[43m"+"3) Password\u001B[0m\t\t\t\t\t||\n" +
-                                "|| \u001B[43m"+"4) Cancel\u001B[0m\t\t\t\t\t||\n");
-                                
+                        // System.out.println("=====================================");
+                        // System.out.println("|| \u001B[43m"+"What to modify?\u001B[0m\t\t\t\t||\n" +
+                        //         "|| \u001B[43m"+"1) Username\u001B[0m\t\t\t\t\t||\n" +
+                        //         "|| \u001B[43m"+"2) Type\u001B[0m\t\t\t\t\t\t||\n" +
+                        //         "|| \u001B[43m"+"3) Password\u001B[0m\t\t\t\t\t||\n" +
+                        //         "|| \u001B[43m"+"4) Cancel\u001B[0m\t\t\t\t\t||\n");
+                        System.out.print(
+                            "What to modify?\n"+
+                            "1. Username\n"+
+                            "2. Type\n"+
+                            "3. Password\n"+
+                            "4. Cancel\n"+
+                            "input>> "
+                        );
                         try
                         {
                             choice= Application.input.nextInt();
@@ -234,14 +268,17 @@ public class AdminModule extends Module {
                     switch(choice)
                     {
                     case 1://Modify username  
-                        System.out.println("=====================================");
+                        // System.out.println("=====================================");
                         System.out.println("|| \u001B[43m"+"New Username: \u001B[0m\t\t\t\t||\n");
                         String uname= Application.input.next();
                         String oldname= user.getUsername();
                         user.setUsername(uname);
                         Application.userDataHandler.update(user_idx, user);
-                        System.out.println("|| \033[33m"+"\""+oldname+"\" \033[32m was successfully modified to \"\033[0m"+uname+"\033[33m\"!\033[0m\t||\n");
-                        System.out.println("=====================================");
+
+                        // System.out.println("|| \033[33m"+"\""+oldname+"\" \033[32m was successfully modified to \"\033[0m"+uname+"\033[33m\"!\033[0m\t||\n");
+                        // System.out.println("=====================================");
+                        System.out.println("\033[33m\"\033[0m"+oldname+"\" \033[32m was successfully modified to \"\033[0m"+uname+"\033[33m\"!\033[0m\nEnter any key to continue...");
+                        Application.input.next();
                         break;
                     case 2://Modify usertype
                         String utype_str;
@@ -267,11 +304,64 @@ public class AdminModule extends Module {
                             break;
                         }
                         Application.userDataHandler.update(user_idx, user);
-                        System.out.println("|| \033[33m"+"\""+user.getUsername()+"\" \033[32m was successfully modified to \"\033[0m"+utype_str+"\033[33m\"!\033[0m\t||\n");
+                        // System.out.println("|| \033[33m"+"\""+user.getUsername()+"\" \033[32m was successfully modified to \"\033[0m"+utype_str+"\033[33m\"!\033[0m\t||\n");
+                        System.out.println("\033[33m\"\033[0m"+user.getUsername()+"\" \033[32m was successfully promoted to \"\033[0m"+utype_str+"\033[33m\"!\033[0m\nEnter any key to continue...");
+                        Application.input.next();
                         break;
-                    case 3://Modify password?
-                        //TODO
-                        break;
+                    case 3://Modify password
+                        String newpword;
+                        while(true)
+                        {
+                            System.out.print("Old Password: ");
+                            String oldpword= Application.input.next();
+                            if(!oldpword.equals(user.getPassword()))
+                            {
+                                System.out.println("\033[31mIncorrect Password!\033[0m");
+                                System.out.print("\033[33mTry again? [Y/N]: \033[0m");
+                                String retry= Application.input.next();
+                                if(retry.equals("Y")||retry.equals("y"))
+                                    continue;
+                                else
+                                    continue menu;
+                            }
+                            break;
+                        }
+                        while(true)
+                        {
+                            System.out.print("New Password: ");
+                            newpword= Application.input.next();
+                            if(newpword.length()<8)
+                            {
+                                System.out.println("\033[31mPassword must be at least 8 character long!\033[0m");
+                                System.out.print("\033[33mTry again? [Y/N]: \033[0m");
+                                String retry= Application.input.next();
+                                if(retry.equals("Y")||retry.equals("y"))
+                                    continue;
+                                else
+                                    continue menu;
+                            }
+                            break;
+                        }
+                        while(true)
+                        {
+                            System.out.print("Confirm Password: ");
+                            String cpword= Application.input.next();
+                            if(!newpword.equals(cpword))
+                            {
+                                System.out.println("\033[31mPassword Mismatch!\033[0m");
+                                System.out.print("\033[33mTry again? [Y/N]: \033[0m");
+                                String retry= Application.input.next();
+                                if(retry.equals("Y")||retry.equals("y"))
+                                    continue;
+                                else
+                                    continue menu;
+                            }
+                            break;
+                        }
+                        user.setPassword(newpword);
+                        Application.userDataHandler.update(user_idx, user);
+                        System.out.println("\033[33mPassword was successfully modified!\033[0m\nEnter any key to continue...");
+                        Application.input.next();
                     case 4:
                         continue menu;
                     default:
@@ -288,20 +378,29 @@ public class AdminModule extends Module {
 
                     if(len==0)
                     {
-                        System.out.println("\033[33mNo Employees Yet\033[0m");
+                        System.out.println("\033[33mNo Registered Users Found!\033[0m\nEnter any key to continue...");
+                        Application.input.next();
                         continue menu;
                     }
-                    System.out.println("=====================================");
-                    System.out.print("|| \u001B[43m"+"Registered Users\u001B[0m\t\t\t\t||\n" +
-                            "|| \u001B[43m"+"--------------------------------\u001B[0m\t\t\t||\n" +
-                            "|| \u001B[43m"+"USERNAME\tTYPE\u001B[0m\t\t\t\t||\n" +
-                            "||");
+                    // System.out.println("=====================================");
+                    // System.out.print("|| \u001B[43m"+"Registered Users\u001B[0m\t\t\t\t||\n" +
+                    //         "|| \u001B[43m"+"--------------------------------\u001B[0m\t\t\t||\n" +
+                    //         "|| \u001B[43m"+"USERNAME\tTYPE\u001B[0m\t\t\t\t||\n" +
+                    //         "||");
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    System.out.print(
+                        "Registered Users\n"+
+                        "--------------------------------\n"+
+                        "USERNAME\tTYPE\n"+
+                        "--------------------------------\n"
+                    );
                     for(int k=0;k<len;++k)
                     {
                         user= Application.userDataHandler.get(k);
                         System.out.println(user.getUsername()+"\t"+user.getUserType());
                     }
-                    System.out.println("=====================================");
+                    // System.out.println("=====================================");
                     while(true)
                     {
                         System.out.println("|| \u001B[43m"+"Username: \u001B[0m\t\t\t\t||\n");
@@ -319,8 +418,10 @@ public class AdminModule extends Module {
                         }
                         if(!found)
                         {
-                            System.out.println("|| \033[31m"+"User not found!\033[0m\t\t\t\t||\n");
-                            System.out.println("|| \033[31m"+"Try again? [Y/N]: \033[0m\t\t\t\t||\n");
+                            // System.out.println("|| \033[31m"+"User not found!\033[0m\t\t\t\t||\n");
+                            // System.out.println("|| \033[31m"+"Try again? [Y/N]: \033[0m\t\t\t\t||\n");
+                            System.out.println("\033[31mUser not found!\033[0m");
+                            System.out.print("\033[33mTry again? [Y/N]: \033[0m");
                             String retry= Application.input.next();
                             if(retry.equals("Y")||retry.equals("y"))
                                 continue;
@@ -329,12 +430,48 @@ public class AdminModule extends Module {
                         }
                         break;
                     }
-                    System.out.println("|| \u001B[43m"+"Are you sure you want to \033[31mDELETE\033[0m \""+user.getUsername()+"\"? [Y/N]\u001B[0m\t||\n");
+                    // System.out.println("|| \u001B[43m"+"Are you sure you want to \033[31mDELETE\033[0m \""+user.getUsername()+"\"? [Y/N]\u001B[0m\t||\n");
+                    System.out.print("Are you sure you want to \033[31mDELETE\033[0m \""+user.getUsername()+"\"? [Y/N]: ");
                     String confirm= Application.input.next();
                     if(!confirm.equals("Y") && !confirm.equals("y"))//Don't Delete
                         continue menu;
-                    Application.userDataHandler.delete(user_idx);//TODO: delete from employees?
-                    System.out.println("|| \033[33m"+"\""+user.getUsername()+"\" \033[32m was successfully removed!\033[0m\t||\n");
+                    Application.userDataHandler.delete(user_idx);//delete user
+                    String uname= user.getUsername();
+                    int
+                        len_employees= Application.employeeDataHandler.getLength(),
+                        len_tasks= Application.taskDataHandler.getLength(),
+                        len_projects= Application.projectDataHandler.getLength();
+
+                    for(int k=0;k<len_employees;++k)//delete from employees
+                    {
+                        Employee employee= Application.employeeDataHandler.get(k);
+                        if(employee.getUsername()==uname)
+                        {
+                            Application.employeeDataHandler.delete(k);
+                            break;
+                        }
+                    }
+                    for(int k=0;k<len_tasks;++k)//nullify assigned tasks
+                    {
+                        Task task= Application.taskDataHandler.get(k);
+                        if(task.getAssignedEmployee().getUsername()==uname)
+                        {
+                            task.setAssignedEmployee(null);
+                            Application.taskDataHandler.update(k, task);
+                        }
+                    }
+                    for(int k=0;k<len_projects;++k)//nullify any assigned projects 
+                    {
+                        Project project= Application.projectDataHandler.get(k);
+                        if(project.getLeader().getUsername()==uname)
+                        {
+                            project.setLeader(null);
+                            Application.projectDataHandler.update(k, project);
+                        }
+                    }
+                    // System.out.println("|| \033[33m"+"\""+user.getUsername()+"\" \033[32m was successfully removed!\033[0m\t||\n");
+                    System.out.println("\033[33m\"\033[0m"+user.getUsername()+"\" \033[32m was successfully removed!\033[0mEnter any key to continue...");
+                    Application.input.next();
                 }
                 break;
             case 4:
@@ -349,16 +486,22 @@ public class AdminModule extends Module {
     {
         int choice= 0;
         boolean exit= false;
-        System.out.println("\u001B[1m" + "\n ---------------------Manage Employees---------------------\n\u001B[8m" + "\t\t\t  D͓̽e͓̽d͓̽S͓̽e͓̽c͓̽\u001B[0m");
         menu:
         while(!exit)
         {
-            System.out.println("==========================================================");
-            System.out.println("|| \u001B[43m"+"Please choose one of the following options:\u001B[0m\t\t||\n" +
-                    "|| 1)\u001B[35m\tAdd Employees.\u001B[0m\t\t\t\t||\n" +
-                    "|| 2)\u001B[35m\tUpdate Employees.\u001B[0m\t\t\t\t||\n" +
-                    "|| 3)\u001B[35m\tDelete Employees.\u001B[0m\t\t\t\t||\n" + 
-                    "|| 4)\u001B[35m\tBack.\u001B[0m\t\t\t\t\t\t||");
+            System.out.println("\u001B[1m" + "\n ---------------------Manage Employees---------------------\n\u001B[8m" + "\t\t\t  D͓̽e͓̽d͓̽S͓̽e͓̽c͓̽\u001B[0m");
+            // System.out.println("==========================================================");
+            // System.out.println("|| \u001B[43m"+"Please choose one of the following options:\u001B[0m\t\t||\n" +
+            //         "|| 1)\u001B[35m\tAdd Employees.\u001B[0m\t\t\t\t||\n" +
+            //         "|| 2)\u001B[35m\tUpdate Employees.\u001B[0m\t\t\t\t||\n" +
+            //         "|| 3)\u001B[35m\tDelete Employees.\u001B[0m\t\t\t\t||\n" + 
+            //         "|| 4)\u001B[35m\tBack.\u001B[0m\t\t\t\t\t\t||");
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            System.out.print(
+                "Managing Employees..\n"+
+                "1.Add  2.Update  3.Delete  4.Back\n"+
+                "input>> ");
             try
             {
                 choice= Application.input.nextInt();    
@@ -384,14 +527,22 @@ public class AdminModule extends Module {
 
                     if(len==0)
                     {
-                        System.out.println("\033[33mNo Employees Yet\033[0m");
+                        System.out.println("\033[33mNo Employees Yet!\033[0m\nEnter any key to continue...");
+                        Application.input.next();
                         continue menu;
                     }
-                    System.out.println("=====================================");
-                    System.out.println("|| \u001B[43m"+"Registered Employees\u001B[0m\t\t\t\t||\n" +
-                            "|| \u001B[43m"+"--------------------------------\u001B[0m\t\t\t||\n" +
-                            "|| \u001B[43m"+"USERNAME\tTYPE\u001B[0m\t\t\t\t||\n" +
-                            "||");
+                    // System.out.println("=====================================");
+                    // System.out.println("|| \u001B[43m"+"Registered Employees\u001B[0m\t\t\t\t||\n" +
+                    //         "|| \u001B[43m"+"--------------------------------\u001B[0m\t\t\t||\n" +
+                    //         "|| \u001B[43m"+"USERNAME\tTYPE\u001B[0m\t\t\t\t||\n" +
+                    //         "||");
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    System.out.print(
+                        "--------------------------------\n"+
+                        "\tRegistered Employees\n"+
+                        "USERNAME\tTYPE\n"
+                    );
                     for(int k=0;k<len;++k)
                     {
                         employee= Application.employeeDataHandler.get(k);
@@ -445,15 +596,21 @@ public class AdminModule extends Module {
     {
         int choice= 0;
         boolean exit= false;
-        System.out.println("\u001B[1m" + "\n ---------------------Manage Projects---------------------\n\u001B[8m" + "\t\t\t  D͓̽e͓̽d͓̽S͓̽e͓̽c͓̽\u001B[0m");
         while(!exit)
         {
-            System.out.println("==========================================================");
-            System.out.println("|| \u001B[43m"+"Please choose one of the following options:\u001B[0m\t\t||\n" +
-                    "|| 1)\u001B[35m\tAdd Projects.\u001B[0m\t\t\t\t||\n" +
-                    "|| 2)\u001B[35m\tUpdate Projects.\u001B[0m\t\t\t\t||\n" +
-                    "|| 3)\u001B[35m\tDelete Projects.\u001B[0m\t\t\t\t||\n" + 
-                    "|| 4)\u001B[35m\tBack.\u001B[0m\t\t\t\t\t\t||");
+            System.out.println("\u001B[1m" + "\n ---------------------Manage Projects---------------------\n\u001B[8m" + "\t\t\t  D͓̽e͓̽d͓̽S͓̽e͓̽c͓̽\u001B[0m");
+            // System.out.println("==========================================================");
+            // System.out.println("|| \u001B[43m"+"Please choose one of the following options:\u001B[0m\t\t||\n" +
+            //         "|| 1)\u001B[35m\tAdd Projects.\u001B[0m\t\t\t\t||\n" +
+            //         "|| 2)\u001B[35m\tUpdate Projects.\u001B[0m\t\t\t\t||\n" +
+            //         "|| 3)\u001B[35m\tDelete Projects.\u001B[0m\t\t\t\t||\n" + 
+            //         "|| 4)\u001B[35m\tBack.\u001B[0m\t\t\t\t\t\t||");
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            System.out.print(
+                "Managing Projects..\n"+
+                "1.Add 2.Update 3.Delete 4.Back\n"+
+                "input>> ");
             try
             {
                 choice= Application.input.nextInt();   
@@ -486,16 +643,23 @@ public class AdminModule extends Module {
     {
         int choice= 0;
         boolean exit= false;
-        System.out.println("\u001B[1m" + "\n ---------------------Manage Employee Type---------------------\n\u001B[8m" + "\t\t\t  D͓̽e͓̽d͓̽S͓̽e͓̽c͓̽\u001B[0m");
         menu:
         while(!exit)
         {
-            System.out.println("==========================================================");
-            System.out.println("|| \u001B[43m"+"Please choose one of the following options:\u001B[0m\t\t||\n" +
-                    "|| 1)\u001B[35m\tAdd Employee Type.\u001B[0m\t\t\t\t||\n" +
-                    "|| 2)\u001B[35m\tUpdate Employee Type.\u001B[0m\t\t\t\t||\n" +
-                    "|| 3)\u001B[35m\tDelete Employee Type.\u001B[0m\t\t\t\t||\n" + 
-                    "|| 4)\u001B[35m\tBack.\u001B[0m\t\t\t\t\t\t||");
+            System.out.println("\u001B[1m" + "\n ---------------------Manage Employee Type---------------------\n\u001B[8m" + "\t\t\t  D͓̽e͓̽d͓̽S͓̽e͓̽c͓̽\u001B[0m");
+            // System.out.println("==========================================================");
+            // System.out.println("|| \u001B[43m"+"Please choose one of the following options:\u001B[0m\t\t||\n" +
+            //         "|| 1)\u001B[35m\tAdd Employee Type.\u001B[0m\t\t\t\t||\n" +
+            //         "|| 2)\u001B[35m\tUpdate Employee Type.\u001B[0m\t\t\t\t||\n" +
+            //         "|| 3)\u001B[35m\tDelete Employee Type.\u001B[0m\t\t\t\t||\n" + 
+            //         "|| 4)\u001B[35m\tBack.\u001B[0m\t\t\t\t\t\t||");
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+            System.out.print(
+                "Managing Types of Employees..\n"+
+                "1.Add  2.Update  3.Delete  4.Back\n"+
+                "input>> "
+            );
             try
             {
                 choice= Application.input.nextInt();   
@@ -531,20 +695,31 @@ public class AdminModule extends Module {
                     int len= Application.empTypeDataHandler.getLength();
                     if(len==0)
                     {
-                        System.out.println("|| \033[33m"+"No Employee Types Defined Yet\033[0m\t\t\t\t||\n");
+                        // System.out.println("|| \033[33m"+"No Employee Types Defined Yet\033[0m\t\t\t\t||\n");
+
+                        System.out.println("\033[33mNo Employee Types Defined Yet!\033[0m\nEnter any key to continue...");
+                        Application.input.next();
                         continue menu;
                     }
-                    System.out.print("=====================================\n");
-                    System.out.print("|| \u001B[43m"+"Defined Employee Types\u001B[0m\t\t\t\t||\n" +
-                            "|| \u001B[43m"+"--------------------------------\u001B[0m\t\t\t||\n" +
-                            "|| \u001B[43m"+"TYPE\tMANAGER\u001B[0m\t\t\t\t||\n" +
-                            "|| \u001B[43m"+"--------------------------------\u001B[0m\t\t\t||\n");
+                    // System.out.print("=====================================\n");
+                    // System.out.print("|| \u001B[43m"+"Defined Employee Types\u001B[0m\t\t\t\t||\n" +
+                    //         "|| \u001B[43m"+"--------------------------------\u001B[0m\t\t\t||\n" +
+                    //         "|| \u001B[43m"+"TYPE\tMANAGER\u001B[0m\t\t\t\t||\n" +
+                    //         "|| \u001B[43m"+"--------------------------------\u001B[0m\t\t\t||\n");
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
+                    System.out.print(
+                        "Defined Employee Types\n"+
+                        "--------------------------------\n"+
+                        "TYPE\tMANAGER\n"+
+                        "--------------------------------\n"
+                    );
                     for(int k=0;k<len;++k)
                     {
                         empType= Application.empTypeDataHandler.get(k);
                         System.out.println((k+1)+empType.getName()+"\t"+empType.isManager());
                     }
-                    System.out.println("=====================================");
+                    // System.out.println("=====================================");
                     while(true)
                     {
                         System.out.print("Number: ");
@@ -642,9 +817,12 @@ public class AdminModule extends Module {
 
                     if(len==0)
                     {
-                        System.out.println("\033[33mNo Employee Types Defined Yet\033[0m");
+                        System.out.println("\033[33mNo Employee Types Defined Yet!\033[0m\nEnter any key to continue...");
+                        Application.input.next();
                         continue menu;
                     }
+                    System.out.print("\033[H\033[2J");
+                    System.out.flush();
                     System.out.print(
                         "Different Employee Types\n"+
                         "--------------------------------\n"+
@@ -707,9 +885,12 @@ public class AdminModule extends Module {
 
         if(len==0)
         {
-           System.out.println("\033[33mNo Tasks Yet\033[0m");
-           return;//to menu
+            System.out.println("\033[33mNo Tasks Yet!\033[0m\nEnter any key to continue...");
+            Application.input.next();
+            return;//to menu
         }
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         System.out.print(
             "Current Tasks\n"+
             "----------------------------------------------------------------\n"+
@@ -767,17 +948,18 @@ public class AdminModule extends Module {
         Application.taskDataHandler.update(task_idx, task);
         System.out.println("\033[33m\""+task.getTitle()+"\"\'s phase was successfully modified to \""+task.getTaskPhase()+"\" in project \""+task.getProject()+"\"!\033[0m");
     }
-    // public static void main(String[] args) {
-    // 	try
-    // 	{
-    // 		Application.initializeData();
-    // 	}
-    // 	catch(IOException e)
-    // 	{
-    // 		e.printStackTrace();
-    // 	}
-    // 	Application.input= new Scanner(System.in);
-    // 	AdminModule adminModule= new AdminModule(null);
-    // 	adminModule.startModule();
-    // }
+    public static void main(String[] args) throws IOException
+    {
+    	try
+    	{
+    		Application.initializeData();
+    	}
+    	catch(IOException e)
+    	{
+    		e.printStackTrace();
+    	}
+    	Application.input= new Scanner(System.in);
+    	AdminModule adminModule= new AdminModule(null);
+    	adminModule.startModule();
+    }
 }
