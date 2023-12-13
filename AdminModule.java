@@ -103,10 +103,10 @@ public class AdminModule extends Module {
 			switch(choice)
 			{
 			case 1://Add Users
-				// try
 				{
 					String uname, pword, utype_str;
-					User.utype utype= User.utype.employee;
+					User.utype utype= null;
+					int count_users= Application.userDataHandler.getLength();
 
 					while(true)
 					{
@@ -128,14 +128,37 @@ public class AdminModule extends Module {
 						}
 						break;
 					}
-
 					System.out.println("=====================================");
-					System.out.println("|| \u001B[43m"+"Username: \u001B[0m\t\t\t\t||\n");
-					uname= Application.input.next();
-
 					while(true)
 					{
-					System.out.println("|| \u001B[43m"+"Password: \u001B[0m\t\t\t\t||\n");
+						boolean duplicate= false;
+
+						System.out.println("|| \u001B[43m"+"Username: \u001B[0m\t\t\t\t||\n");
+						uname= Application.input.next();
+						for(int k=0;k<count_users;++k)
+						{
+							User user= Application.userDataHandler.get(k);
+							if(user.getUsername().equals(uname))
+							{
+								duplicate= true;
+								break;
+							}
+						}
+						if(duplicate)
+						{
+							System.out.println("|| \033[31m"+"User by that name already exists!\033[0m\t||\n");
+							System.out.println("|| \033[31m"+"Try again? [Y/N]: \033[0m\t\t\t||\n");
+							String retry= Application.input.next();
+							if(retry.equals("Y")||retry.equals("y"))
+								continue;
+							else
+								continue menu;
+						}
+						break;
+					}
+					while(true)
+					{
+						System.out.println("|| \u001B[43m"+"Password: \u001B[0m\t\t\t\t||\n");
 						pword= Application.input.next();
 						if(pword.length()<8)
 						{
@@ -173,11 +196,6 @@ public class AdminModule extends Module {
 					System.out.println(uname+" \033[32mwas successfully added!\033[0m\nEnter any key to continue...");
 					Application.input.next();
 				}
-				// catch(InputMismatchException e)
-				// {
-				//     System.out.println("\033[31mInvalid input!\033[0m please try again.");
-				//     Application.input.next();//consume invalid input from Scanner buffer
-				// }
 				break;
 			case 2://Update Users
 				{
@@ -515,11 +533,40 @@ public class AdminModule extends Module {
 			case 1://Add Employees
 				{
 					User user= null;
-
-					int len= Application.userDataHandler.getLength();
-					if(len==0)
+					int
+						count_users= Application.userDataHandler.getLength(),
+						count_employees= Application.employeeDataHandler.getLength();
+					if(count_users==0)
 					{
 						System.out.println("\033[33mNo Registered Users Found!\033[0m\nEnter any key to continue...");
+						Application.input.next();
+						continue menu;
+					}
+					boolean unregistered= false;
+					for(int i=0;i<count_users;i++)
+					{
+						boolean found= false;
+						User user_registered= Application.userDataHandler.get(i);
+						if(user_registered.getUserType()!=User.utype.employee)
+							continue;
+						for(int j=0;j<count_employees;j++)
+						{
+							Employee employee_registered= Application.employeeDataHandler.get(j);
+							if(employee_registered.getUsername().equals(user_registered.getUsername()))
+							{
+								found= true;
+								break;
+							}
+						}
+						if(!found)
+						{
+							unregistered= true;
+							break;
+						}
+					}
+					if(!unregistered)
+					{
+						System.out.println("\033[33mAll employee user accounts have already been approved!\033[0m\nEnter any key to continue...");
 						Application.input.next();
 						continue menu;
 					}
@@ -536,10 +583,22 @@ public class AdminModule extends Module {
 						"USERNAME\tTYPE\n"+
 						"--------------------------------\n"
 					);
-					for(int k=0;k<len;++k)
+					for(int k=0;k<count_users;++k)
 					{
 						user= Application.userDataHandler.get(k);
-						if(user.getUserType()==User.utype.employee)
+						if(user.getUserType()!=User.utype.employee)
+							continue;
+
+						boolean duplicate= false;
+						for(int i=0;i<count_employees;++i)
+						{
+							if(Application.employeeDataHandler.get(i).getUsername().equals(user.getUsername()))
+							{
+								duplicate= true;
+								break;
+							}
+						}
+						if(!duplicate)
 							System.out.println(user.getUsername()+"\t"+user.getUserType());
 					}
 					// System.out.println("=====================================");
@@ -549,7 +608,7 @@ public class AdminModule extends Module {
 						System.out.print("Username: ");
 						String uname= Application.input.next();
 						boolean found= false;
-						for(int k=0;k<len;++k)
+						for(int k=0;k<count_users;++k)
 						{
 							user= Application.userDataHandler.get(k);
 							if(user.getUsername().equals(uname))
@@ -574,8 +633,8 @@ public class AdminModule extends Module {
 					}
 
 					int empType_idx= -1;
-					int len_emptypes= Application.empTypeDataHandler.getLength();
-					if(len_emptypes!=0)
+					int count_emptypes= Application.empTypeDataHandler.getLength();
+					if(count_emptypes!=0)
 					{
 						System.out.print(
 							"Defined Employee Types\n"+
@@ -583,10 +642,10 @@ public class AdminModule extends Module {
 							"NUM\tTYPE\tMANAGER\n"+
 							"--------------------------------\n"
 						);
-						for(int k=0;k<len_emptypes;++k)
+						for(int k=0;k<count_emptypes;++k)
 						{
 							EmpType empType= Application.empTypeDataHandler.get(k);
-							System.out.println((k+1)+empType.getName()+"\t"+empType.isManager());
+							System.out.println((k+1)+"\t"+empType.getName()+"\t"+empType.isManager());
 						}
 						// System.out.println("=====================================");
 						while(true)
@@ -602,7 +661,7 @@ public class AdminModule extends Module {
 								Application.input.next();//consume invalid input from Scanner buffer
 								continue;
 							}
-							if(empType_idx<0||empType_idx>=len)
+							if(empType_idx<0||empType_idx>=count_emptypes)
 							{
 								System.out.println("\033[31mNumber Out of Bounds!\033[0m");
 								System.out.print("\033[33mTry again? [Y/N]:\033[0m ");
@@ -756,7 +815,12 @@ public class AdminModule extends Module {
 				"input>> ");
 			try
 			{
-				choice= Application.input.nextInt();   
+				choice= Integer.parseInt(Application.input.nextLine());
+			}
+			catch(NumberFormatException e)
+			{
+				System.out.println("\033[31mIllegal Character!\033[0m");
+				continue;
 			}
 			catch(InputMismatchException e)
 			{
@@ -767,46 +831,86 @@ public class AdminModule extends Module {
 			switch(choice) {
 			case 1://Add Projects
 				{
-					String name, description;
+					String project_name, project_description;
 					int count_employees= Application.employeeDataHandler.getLength();
 					Employee leader= null;
 
-					System.out.print("Project Name: ");
-					name= Application.input.next();
-					System.out.print("Project Description: ");
-					description= Application.input.next();
+					while(true)
+					{
+						boolean duplicate= false;
+						int count_projects= Application.projectDataHandler.getLength();
+						System.out.print("Project Name: ");
+						project_name= Application.input.nextLine().trim();
+						if(project_name.isBlank())
+						{
+							System.out.println("\033[31mThe project must have a name!\033[0m");
+							continue;
+						}
+						for(int i = 0; i < count_projects; i++)
+						{
+							Project project= Application.projectDataHandler.get(i);
+							if(project.getName().equals(project_name))
+							{
+								duplicate= true;
+								break;
+							}
+						}
+						if(duplicate)
+						{
+							System.out.println("|| \033[31m"+"Project with the same name already in progress!\033[0m\t\t\t\t||\n");
+							System.out.println("|| \033[31m"+"Try again? [Y/N]: \033[0m\t\t\t\t||\n");
+							
+							String retry= Application.input.nextLine();
+							if(retry.equals("Y")||retry.equals("y"))
+								continue;
+							else
+								continue menu_manageProjects;
+						}
+						break;
+					}
+					while(true)
+					{
+						System.out.print("Project Description: ");
+						project_description= Application.input.nextLine();
+						if(project_description.isBlank())
+						{
+							System.out.println("\033[31mThe project must have a description!\033[0m");
+							continue;
+						}
+						break;
+					}
 					if(count_employees!=0)
 					{
-						String leader_name;
-						System.out.print(
-							"Registered Employees\n"+
-							"-----------------------------\n"+
-							"NAME\tPOSITION\n"+
-							"-----------------------------\n"
-						);
+						int leader_idx;
+						System.out.println("Available employees to assign a leader:");
 						for(int k=0;k<count_employees;++k)
 						{
 							Employee employee= Application.employeeDataHandler.get(k);
-							System.out.println(employee.getUsername()+"\t"+employee.getEmpType());
+							System.out.println((k+1)+".\t"+employee.getUsername()+"\t"+employee.getEmpType());
 						}
 						while(true)
 						{
-							System.out.print("Leader: ");
-							leader_name= Application.input.next();
-							for(int k=0;k<count_employees;k++)
+							System.out.print("Input>> ");
+							try
 							{
-								Employee employee= Application.employeeDataHandler.get(k);
-								if(employee.getUsername().equals(leader_name))
-								{
-									leader= employee;
-									break;
-								}
+								leader_idx= Integer.parseInt(Application.input.nextLine())-1;
 							}
+							catch(NumberFormatException e)
+							{
+								System.out.println("\033[31mPlease select a valid number from the employees list!\033[0m");
+								continue;
+							}
+							if(leader_idx<0||leader_idx>=count_employees)
+							{
+								System.out.println("\033[31mPlease select a valid number from the employees list!\033[0m");
+								continue;
+							}
+							leader= Application.employeeDataHandler.get(leader_idx);
 							if(leader==null)//not found
 							{
 								System.out.println("|| \033[31m"+"Employee not found!\033[0m\t\t\t\t||\n");
 								System.out.println("|| \033[31m"+"Try again? [Y/N]: \033[0m\t\t\t\t||\n");
-								String retry= Application.input.next();
+								String retry= Application.input.nextLine();
 								if(retry.equals("Y")||retry.equals("y"))
 									continue;
 								else
@@ -815,10 +919,10 @@ public class AdminModule extends Module {
 							break;
 						}
 					}
-					Project project= new Project(name, description, leader);
+					Project project= new Project(project_name, project_description, leader);
 					Application.projectDataHandler.add(project);
-					System.out.println("\033[32m\""+name+"\" was successfully added!\033[0m\nEnter any key to continue...");
-					Application.input.next();
+					System.out.println("\033[32mSuccessfully added project \""+project_name+"\"!\033[0m\nPress any key to continue...");
+					Application.input.nextLine();
 				}
 				break;
 			case 2://Update Projects
@@ -828,10 +932,10 @@ public class AdminModule extends Module {
 				{
 					Project project= null;
 					int
-						len_projects= Application.projectDataHandler.getLength(),
+						count_projects= Application.projectDataHandler.getLength(),
 						project_idx= -1;
 
-					if(len_projects==0)
+					if(count_projects==0)
 					{
 						System.out.println("\033[33mNo Projects Found!\033[0m\nEnter any key to continue...");
 						Application.input.next();
@@ -844,7 +948,7 @@ public class AdminModule extends Module {
 						"--------------------------------\n"+
 						"NAME\tLEADER\tDESCRIPTION\n"
 					);
-					for(int k=0;k<len_projects;++k)
+					for(int k=0;k<count_projects;++k)
 					{
 						project= Application.projectDataHandler.get(k);
 						System.out.println(project.getName()+"\t"+project.getLeader()+"\t"+project.getDescription());
@@ -854,7 +958,7 @@ public class AdminModule extends Module {
 					{
 						System.out.println("|| \u001B[43m"+"Delete Project: \u001B[0m\t\t\t\t||\n");
 						String project_name= Application.input.next();
-						for(int k=0;k<len_projects;++k)
+						for(int k=0;k<count_projects;++k)
 						{
 							project= Application.projectDataHandler.get(k);
 							if(project.getName().equals(project_name))
@@ -880,8 +984,8 @@ public class AdminModule extends Module {
 					if(!confirm.equals("Y") && !confirm.equals("y"))//Don't Delete
 						continue menu_manageProjects;
 					Application.projectDataHandler.delete(project_idx);//delete project
-					int len_tasks= Application.taskDataHandler.getLength();
-					for(int k=0;k<len_tasks;++k)//delete all tasks associated with the project
+					int count_tasks= Application.taskDataHandler.getLength();
+					for(int k=0;k<count_tasks;++k)//delete all tasks associated with the project
 					{
 						Task task= Application.taskDataHandler.get(k);
 						if(task.getProject()==project)
@@ -901,7 +1005,7 @@ public class AdminModule extends Module {
 	{
 		int choice= 0;
 		boolean exit= false;
-		menu:
+	menu_manageEmptype:
 		while(!exit)
 		{
 			System.out.print("\033[H\033[2J");
@@ -930,20 +1034,61 @@ public class AdminModule extends Module {
 			}
 			switch(choice) {
 			case 1://Add Employee Type
-				try
 				{
-					System.out.print("|| \u001B[43m"+"New Type of Employee: \u001B[0m\t\t\t\t||\n");
-					String name= Application.input.next();
-					boolean isManager;
-					System.out.print("|| \u001B[43m"+"Categorize as manager? [true/false]: \u001B[0m\t\t\t||\n");
-					isManager= Application.input.nextBoolean();
-					EmpType empType= new EmpType(name, isManager);
+					String empString= null;
+					boolean isManager= false;
+					
+					while(true)
+					{
+						boolean duplicate= false;
+						int count_emptypes= Application.empTypeDataHandler.getLength();
+						System.out.print("|| \u001B[43m"+"New Type of Employee: \u001B[0m\t\t\t\t||\n");
+						empString= Application.input.next();
+						for(int i = 0; i < count_emptypes; i++)
+						{
+							EmpType empType= Application.empTypeDataHandler.get(i);
+							if(empType.getName().equals(empString))
+							{
+								duplicate= true;
+								break;
+							}
+						}
+						if(duplicate)
+						{
+							System.out.println("|| \033[31m"+"Type with the same name already exists!\033[0m\t\t\t\t||\n");
+							System.out.println("|| \033[31m"+"Try again? [Y/N]: \033[0m\t\t\t\t||\n");
+							String retry= Application.input.next();
+							if(retry.equals("Y")||retry.equals("y"))
+								continue;
+							else
+								continue menu_manageEmptype;
+						}
+						break;
+					}
+					while(true)
+					{
+						System.out.print("|| \u001B[43m"+"Categorize as manager? [true/false]: \u001B[0m\t\t\t||\n");
+						try
+						{
+							isManager= Application.input.nextBoolean();
+						}
+						catch(InputMismatchException e)
+						{
+							Application.input.next();//consume invalid input from Scanner buffer
+							System.out.print(
+								"\033[31mInvalid input!\033[0m please enter (true/false)\n"+
+								"Try again? [Y/N]: "
+							);
+							String retry= Application.input.next();
+							if(retry.equals("Y")||retry.equals("y"))
+								continue;
+							else
+								continue menu_manageEmptype;
+						}
+						break;
+					}
+					EmpType empType= new EmpType(empString, isManager);
 					Application.empTypeDataHandler.add(empType);
-				}
-				catch(InputMismatchException e)
-				{
-					System.out.println("\033[31mInvalid input!\033[0m please try again.");
-					Application.input.next();//consume invalid input from Scanner buffer
 				}
 				break;
 			case 2://Update Employee Type
@@ -957,7 +1102,7 @@ public class AdminModule extends Module {
 
 						System.out.println("\033[33mNo Employee Types Defined Yet!\033[0m\nEnter any key to continue...");
 						Application.input.next();
-						continue menu;
+						continue menu_manageEmptype;
 					}
 					System.out.print("\033[H\033[2J");
 					System.out.flush();
@@ -999,12 +1144,12 @@ public class AdminModule extends Module {
 							if(retry.equals("Y")||retry.equals("y"))
 								continue;
 							else
-								continue menu;
+								continue menu_manageEmptype;
 						}
 						break;
 					}
 					empType= Application.empTypeDataHandler.get(idx);
-					menu_update:
+				menu_manageEmptype_update:
 					while(true)
 					{
 						// System.out.println("=====================================");
@@ -1061,7 +1206,7 @@ public class AdminModule extends Module {
 										String retry= Application.input.next();
 										if(retry.equals("Y")||retry.equals("y"))
 											continue;
-										continue menu_update;
+										continue menu_manageEmptype_update;
 									}
 									break;
 								}
@@ -1071,7 +1216,7 @@ public class AdminModule extends Module {
 							}
 							break;
 						case 3:
-							continue menu;
+							continue menu_manageEmptype;
 						default:
 							System.out.println("\033[31mInvalid Operation!\033[0m");
 							break;
@@ -1088,7 +1233,7 @@ public class AdminModule extends Module {
 					{
 						System.out.println("\033[33mNo Employee Types Defined Yet!\033[0m\nEnter any key to continue...");
 						Application.input.next();
-						continue menu;
+						continue menu_manageEmptype;
 					}
 					System.out.print("\033[H\033[2J");
 					System.out.flush();
@@ -1125,7 +1270,7 @@ public class AdminModule extends Module {
 							if(retry.equals("Y")||retry.equals("y"))
 								continue;
 							else
-								continue menu;
+								continue menu_manageEmptype;
 						}
 						break;
 					}
@@ -1133,7 +1278,7 @@ public class AdminModule extends Module {
 					System.out.print("Are you sure you want to \033[31mDELETE\033[0m \""+empType.getName()+"\" Employee Type? [Y/N]: ");
 					String confirm= Application.input.next();
 					if(!confirm.equals("Y") && !confirm.equals("y"))//Don't Delete
-						continue menu;
+						continue menu_manageEmptype;
 					Application.employeeDataHandler.delete(idx);
 
 					int len_employees= Application.employeeDataHandler.getLength();
