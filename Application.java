@@ -39,47 +39,32 @@ public class Application {
 		System.out.print("\033[H\033[2J"); System.out.flush();
 
 		// credentials input
-		while (true) {
-			System.out.print(
-					"╔═════════════════════════════════════════════════════════════════════════════════════╗\n" +
-							"║                     🯇 Please Enter the Username and password🯈   	              ║\n" +
-							"║╒═══════════════════════════════════════════════════════════════════════════════════╕║\n"
-							+
-							"║│🯅 🯆 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🮲🮳 🯇 🯉 🯉 🯉 🯉 🯉 🯉 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 │║\n"
-							+
-							"╠╧═══════════════════════════════════════════════════════════════════════════════════╧╣\n"
-							+
-							"║ Username: ");
-			username = input.next();
-			// delete the if statements (idk)
-			if (username.equals("")) {
-				System.out.println("\u001B[41m"
-						+ "╠═════════════════════════════════════════════════════════════════════════════════════╣\n\u001B[0m"
-						+
-						"\u001B[41m"
-						+ "║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Usernames cannot be empty my bro! 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 ║"
-						+ "\u001B[0m" +
-						"\n" + "\u001B[41m"
-						+ "╠═════════════════════════════════════════════════════════════════════════════════════╣\u001B[0m\n");
-				continue;
-			}
+		username= inputString(
+			//prompt
+			"╔═════════════════════════════════════════════════════════════════════════════════════╗\n"+
+			"║                     🯇 Please Enter the Username and password🯈   	                 ║\n"+
+			"║╒═══════════════════════════════════════════════════════════════════════════════════╕║\n"+
+			"║│🯅 🯆 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🮲🮳 🯇 🯉 🯉 🯉 🯉 🯉 🯉 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 │║\n"+
+			"╠╧═══════════════════════════════════════════════════════════════════════════════════╧╣\n"+
+			"║ Username: ",
+			//err message
+			"\u001B[41m╠═════════════════════════════════════════════════════════════════════════════════════╣\u001B[0m\n"+
+			"\u001B[41m║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Username cannot be empty my bro! 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 ║\u001B[0m\n"+
+			"\u001B[41m╠═════════════════════════════════════════════════════════════════════════════════════╣\u001B[0m\n"
+		);
+		if(username.equals("exit"))
+			return;
 
-			System.out.print("\n║ Password: ");
-			pass = input.next();
-			// delete the if statements (idk)
-			if (pass.equals("")) {
-				System.out.println("\u001B[41m"
-						+ "╠═════════════════════════════════════════════════════════════════════════════════════╣\n\u001B[0m"
-						+
-						"\u001B[41m"
-						+ "║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Passwords cannot be empty my bro! 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 ║"
-						+ "\u001B[0m" +
-						"\n" + "\u001B[41m"
-						+ "╠═════════════════════════════════════════════════════════════════════════════════════╣\u001B[0m\n");
-				continue;
-			}
-			break;
-		}
+		pass= inputString(
+			//prompt
+			"║ Password: ",
+			//err message
+			"\u001B[41m╠═════════════════════════════════════════════════════════════════════════════════════╣\u001B[0m\n"+
+			"\u001B[41m║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Passwords cannot be empty my bro! 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀║\u001B[0m\n"+
+			"\u001B[41m╠═════════════════════════════════════════════════════════════════════════════════════╣\u001B[0m\n"
+		);
+		if(pass.equals("exit"))
+			return;
 
 		// check user's credentials
 		boolean foundUser = false;
@@ -273,7 +258,7 @@ public class Application {
 							+
 							"║│ A task management system made in Java for the PL2 course at Helwan University.    │║ █\n"
 							+
-							"║│ This project made by: 3ab3z, Omar Atya, Omar Wageh, Ali, Mohammed, Tarek.         │║ █\n"
+							"║│ This project made by: 3ab3z, Omar Atya, Omar Wagih, Ali, Mohammed, Tarek.         │║ █\n"
 							+
 							"║╘═══════════════════════════════════════════════════════════════════════════════════╛║ █\n"
 							+
@@ -288,8 +273,7 @@ public class Application {
 							"╚╧══╧════════════════════════════════════════════════════════════════════════════════╧╝ █\n"
 							+
 							" ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇█\n");
-			System.out.print("Your choice:🮶 ");
-			choice = input.nextInt();
+			choice = inputInt(">>🮶  ");
 			switch (choice) {
 				case 1:
 					login();
@@ -311,39 +295,118 @@ public class Application {
 		}
 	}
 
-	public static int inputInt(String print) {
+	public static int inputInt(String print)
+	{
 		int value;
-		while (true) {
-			try {
+		while(true)
+		{
+			try
+			{
 				System.out.print(print);
-				value = input.nextInt();
+				value= Integer.parseInt(input.nextLine());
 				break;
-			} catch (InputMismatchException ex) {
-				System.err.print("Input must be an integer!");
-				input.next();
+			}
+			catch(NumberFormatException ex)
+			{
+				System.err.println("\033[31mInput must be an integer!\033[0m");
+				continue;
 			}
 		}
 		return value;
 	}
+
+	public static String inputString(String prompt)
+	{
+		String value;
+		while(true)
+		{
+			System.out.print(prompt);
+			value= input.nextLine();
+			if(value.isBlank())
+			{
+				System.err.println("\033[31mInput must not be empty!\033[0m");
+				continue;
+			}
+			break;
+		}
+		return value;
+	}
+	//Waits for the user to acknowledge message
+	public static String inputString(String prompt, String isBlank_message) throws IOException
+	{
+		String value;
+		while(true)
+		{
+			System.out.print(prompt);
+			value= input.nextLine();
+			if(value.isBlank())
+			{
+				System.err.print(isBlank_message);
+				input.nextLine();
+				continue;
+			}
+			break;
+		}
+		return value;
+	}
+	public static String inputStringln(String prompt)
+	{
+		return inputString(prompt+"\n");
+	}
+
+	//public static int inputInt(String print) {
+	//	int value;
+	//	while (true) {
+	//		try {
+	//			System.out.print(print);
+	//			value = input.nextInt();
+	//			break;
+	//		} catch (InputMismatchException ex) {
+	//			System.err.print("Input must be an integer!");
+	//			input.next();
+	//		}
+	//	}
+	//	return value;
+	//}
 
 	public static int inputIntln(String print) {
 		return inputInt(print + "\n");
 	}
 
-	public static double inputDouble(String print) {
+	public static double inputDouble(String print)
+	{
 		double value;
-		while (true) {
-			try {
-				System.out.println(print);
-				value = input.nextDouble();
+		while(true)
+		{
+			try
+			{
+				System.out.print(print);
+				value= Double.parseDouble(input.nextLine());
 				break;
-			} catch (InputMismatchException ex) {
-				System.err.print("Input must be an number!");
+			}
+			catch(NumberFormatException ex)
+			{
+				System.err.print("\033[31mInput must be an number!\033[0m");
 				input.next();
 			}
 		}
 		return value;
 	}
+
+	//public static double inputDouble(String print) {
+	//	double value;
+	//	while (true) {
+	//		try {
+	//			System.out.println(print);
+	//			value = input.nextDouble();
+	//			break;
+	//		} catch (InputMismatchException ex) {
+	//			System.err.print("Input must be an number!");
+	//			input.next();
+	//		}
+	//	}
+	//	return value;
+	//}
 
 	public static double inputDoubleln(String print) {
 		return inputDouble(print + "\n");
