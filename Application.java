@@ -84,10 +84,12 @@ public class Application {
 			currentModule.startModule();
 		} else {
 			Employee employee = null;
+			int index = -1;
 			for (int i = 0; i < employeeDataHandler.getLength(); i++) {
 				if (employeeDataHandler.get(i).canlogin(user.getUsername(), user.getPassword())) {
 					employee = employeeDataHandler.get(i);
 					user = employee;
+					index = employeeDataHandler.getIndex(employee);
 					break;
 				}
 			}
@@ -127,7 +129,9 @@ public class Application {
 									case 1:
 									for (int i = 0, j = 0; i < projectDataHandler.getLength(); i++)
 										{
-											if(projectDataHandler.get(i).getLeader() == employee)
+											
+											
+											if(projectDataHandler.get(i).getLeader().toString().equals(employee.toString()))
 											{
 												projectArr[j] = projectDataHandler.get(i);
 												System.out.println((j + 1) + "-Project: " + projectArr[j].getName());
