@@ -1463,72 +1463,72 @@ public class AdminModule extends Module {
 	public void manageTaskPhases() throws IOException
 	{
 		Task task= null;
-		int task_idx= -1;
-		int len= Application.taskDataHandler.getLength();
+		int
+			task_idx= -1,
+			count_tasks= Application.taskDataHandler.getLength();
 
-		if(len==0)
+		if(count_tasks==0)
 		{
-			System.out.println("\033[33mNo Tasks Yet!\033[0m\nEnter any key to continue...");
-			Application.input.next();
+			System.out.print(
+				"\033[33mNo Tasks Yet!\033[0m\n"+
+				"Enter any key to continue..."
+			);
+			Application.input.nextLine();
 			return;//to menu
 		}
-		System.out.print("\033[H\033[2J");
-		System.out.flush();
+		System.out.print("\033[H\033[2J"); System.out.flush();
 		System.out.print(
-			"Current Tasks\n"+
-			"----------------------------------------------------------------\n"+
-			"CODE\tTITLE\tPROJECT\tPRIORITY\tPHASE\tDESCRIPTION\tSTARTS\tENDS\tEST\tCREATOR\tASSIGNED\n"+
-			"----------------------------------------------------------------\n"
+			"Current Tasks:\n"+
+			"IDX\tCODE\tTITLE\tPROJECT\tPRIORITY\tPHASE\tDESCRIPTION\tSTARTS\tENDS\tEST\tCREATOR\tASSIGNED\n"
 		);
-		for(int k=0;k<len;++k)
+		for(int k=0;k<count_tasks;++k)
 		{
 			task= Application.taskDataHandler.get(k);
-			System.out.println(
-				task.getCode()+"\t"+
-				task.getTitle()+"\t"+
-				task.getProject()+"\t"+
-				task.getPriority()+"\t"+
-				task.getTaskPhase()+"\t"+
-				task.getDescription()+"\t"+
-				task.getStartDate()+"\t"+
-				task.getEndDate()+"\t"+
-				task.getEST()+"\t"+
-				task.getCreator()+"\t"+
-				task.getAssignedEmployee()+"\t"
+			System.out.printf(
+				"%d.\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%f\t%s\t%s\n",
+				k+1,
+				task.getCode(),
+				task.getTitle(),
+				task.getProject().getName(),
+				task.getPriority().toString(),
+				task.getTaskPhase(),
+				task.getDescription(),
+				task.getStartDate().toString(),
+				task.getEndDate().toString(),
+				task.getEST(),
+				task.getCreator().getUsername(),
+				task.getAssignedEmployee().getUsername()
 			);
 		}
-		System.out.println("----------------------------------------------------------------");
 		while(true)
 		{
-			System.out.print("Code: ");
-			String code= Application.input.next();
-			boolean found= false;
-			for(int k=0;k<len;++k)
+			System.out.print("Modify>> ");
+			try
 			{
-				task= Application.taskDataHandler.get(k);
-				if(task.getCode().equals(code))
-				{
-					task_idx= k;
-					found= true;
-					break;
-				}
+				task_idx= Integer.parseInt(Application.input.nextLine())-1;
 			}
-			if(!found)
+			catch(NumberFormatException e)
 			{
-				System.out.println("\033[31mTask not found!\033[0m");
-				System.out.print("\033[33mTry again? [Y/N]:\033[0m ");
-				String retry= Application.input.next();
-				if(retry.equals("Y")||retry.equals("y"))
-					continue;
-				else
-					return;//to main menu
+				System.out.println("\033[31mPlease select a valid number from the tasks list!\033[0m");
+				continue;
 			}
-			break;
+			if(task_idx==-1)
+				break;
+			if(task_idx<0||task_idx>=count_tasks)
+			{
+				System.out.println("\033[31mPlease select a valid number from the tasks list!\033[0m");
+				continue;
+			}
+			task= Application.taskDataHandler.get(task_idx);
+			System.out.print("New Task Phase: ");
+			String phase= Application.input.nextLine();
+			task.setTaskPhase(phase);
+			Application.taskDataHandler.update(task_idx, task);
+			System.out.print(
+				"\033[32mSuccessfully modified task phase!\033[0m\n"+
+				"Press any key to continue...\n"
+			);
+			Application.input.nextLine();
 		}
-		System.out.print("New Task Phase: ");
-		String phase= Application.input.next();
-		task.setTaskPhase(phase);
-		Application.taskDataHandler.update(task_idx, task);
-		System.out.println("\033[33m\""+task.getTitle()+"\"\'s phase was successfully modified to \""+task.getTaskPhase()+"\" in project \""+task.getProject()+"\"!\033[0m");
 	}
 }
