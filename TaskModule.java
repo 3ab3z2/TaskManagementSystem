@@ -277,7 +277,6 @@ public class TaskModule extends Module {
                     break;
             }
         }
-        startModule();
     }
 
     public TaskLog createTaskLog(Task task, LocalDateTime fromTime, LocalDateTime toTime) throws IOException {
