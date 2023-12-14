@@ -310,7 +310,7 @@ public class Application {
 		int value;
 		while (true) {
 			try {
-				System.out.println(print);
+				System.out.print(print);
 				value = input.nextInt();
 				break;
 			} catch (InputMismatchException ex) {
@@ -321,8 +321,8 @@ public class Application {
 		return value;
 	}
 
-	public static double inputIntln(String print) {
-		return inputDouble(print + "\n");
+	public static int inputIntln(String print) {
+		return inputInt(print + "\n");
 	}
 
 	public static double inputDouble(String print) {
