@@ -500,7 +500,7 @@ public class EmployeeModule extends Module {
                            "║╒══╤════════════════════════════════════════════════════════════════════════════════╕║ \n" +
                            "║│1)│Change the reason of the request.                                               │║ \n" +
                            "║│2)│Return to menu.                                                                 │║ \n" +
-                           "╠╧╧══════════════════════════════════════════════════════════════════════════════════╧╣ \n" +
+                           "╠╧══╧════════════════════════════════════════════════════════════════════════════════╧╣ \n" +
                            "║ Please enter your choice: ");
         int choice = Application.input.nextInt();
         switch (choice) {
