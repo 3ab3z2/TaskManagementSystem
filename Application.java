@@ -107,7 +107,7 @@ public class Application {
 			currentModule.startModule();
 		} else {
 			Employee employee = null;
-			
+
 			for (int i = 0; i < employeeDataHandler.getLength(); i++) {
 				if (employeeDataHandler.get(i).canlogin(user.getUsername(), user.getPassword())) {
 					employee = employeeDataHandler.get(i);
@@ -305,37 +305,43 @@ public class Application {
 			}
 		}
 	}
-	public static int inputInt(String print)
-	{
+
+	public static int inputInt(String print) {
 		int value;
 		while (true) {
-			try{
+			try {
 				System.out.println(print);
 				value = input.nextInt();
 				break;
-			}
-			catch(InputMismatchException ex){
-				System.err.println("Input must be an integer!");
+			} catch (InputMismatchException ex) {
+				System.err.print("Input must be an integer!");
 				input.next();
 			}
 		}
 		return value;
 	}
-	public static double inputDouble(String print)
-	{
+
+	public static double inputIntln(String print) {
+		return inputDouble(print + "\n");
+	}
+
+	public static double inputDouble(String print) {
 		double value;
 		while (true) {
-			try{
+			try {
 				System.out.println(print);
 				value = input.nextDouble();
 				break;
-			}
-			catch(InputMismatchException ex){
-				System.err.println("Input must be an number!");
+			} catch (InputMismatchException ex) {
+				System.err.print("Input must be an number!");
 				input.next();
 			}
 		}
 		return value;
 	}
-}
 
+	public static double inputDoubleln(String print) {
+		return inputDouble(print + "\n");
+	}
+
+}

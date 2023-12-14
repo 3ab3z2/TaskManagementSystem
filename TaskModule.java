@@ -410,9 +410,11 @@ public class TaskModule extends Module {
                     addTask();
                     break;
                 case 2:
+                    viewTasks();
                     deleteTask();
                     break;
                 case 3:
+                    viewTasks();
                     updateTask();
                     break;
 
@@ -432,20 +434,31 @@ public class TaskModule extends Module {
         while (true) {
 
             // input task data
-            System.out.println("Enter Task details:");
+            System.out.println("---Task details---");
 
             // code
-            String taskCode = Application.taskDataHandler.get(Application.taskDataHandler.getLength() - 1).getCode();
-
+            
+            System.out.print("Code: ");
+            String taskCode = Application.input.next().trim();
+            Application.input.nextLine();
+            
+                for(int i = 0; i< Application.taskDataHandler.getLength();i++)
+                    if(Application.taskDataHandler.get(i).getCode().equals(taskCode))
+                    {
+                            System.err.println("Code already exists!");
+                            continue;
+                    }
+                
+            
+            
             // title
             System.out.print("Title: ");
-            String taskTitle = Application.input.nextLine().trim();
+            String taskTitle = Application.input.next().trim();
             Application.input.nextLine();
 
             // desc
-
             System.out.print("Description: ");
-            String taskDescription = Application.input.nextLine().trim();
+            String taskDescription = Application.input.next().trim();
             Application.input.nextLine();
 
             // task phase
@@ -457,172 +470,126 @@ public class TaskModule extends Module {
             int choice;
             Task.Priority priority = null;
             boolean exit = false;
-            System.out.println("\n1-easy\n2-normal\n3-high\nPriority: ");
+            System.out.println("");
             while (!exit) {
-                try {
-                    choice = Application.input.nextInt();
-                    Application.input.nextLine();
-                    switch (choice) {
-                        case 1:
-                            priority = Task.Priority.easy;
-                            exit = true;
-                            break;
-                        case 2:
-                            priority = Task.Priority.normal;
-                            exit = true;
-                            break;
-                        case 3:
-                            priority = Task.Priority.high;
-                            exit = true;
-                            break;
+                choice = Application.inputInt("\n1-easy\n2-normal\n3-high\nPriority: ");
+                Application.input.nextLine();
+                switch (choice) {
+                    case 1:
+                        priority = Task.Priority.easy;
+                        exit = true;
+                        break;
+                    case 2:
+                        priority = Task.Priority.normal;
+                        exit = true;
+                        break;
+                    case 3:
+                        priority = Task.Priority.high;
+                        exit = true;
+                        break;
 
-                        default:
-                            System.out.println("Unknown choice, please try again.");
-                            break;
-                    }
-                } catch (InputMismatchException ex) {
-                    System.err.println("input was not a number try again!");
-                    Application.input.next();
+                    default:
+                        System.out.println("Unknown choice, please try again.");
+                        break;
                 }
             }
 
             // assigned employee
             Employee employee = null;
             exit = false;
-
             while (!exit) {
                 System.out.println("Employees:");
                 for (int i = 0; i < Application.employeeDataHandler.getLength(); i++) {
                     employee = Application.employeeDataHandler.get(i);
                     System.out.println((i + 1) + "- " + employee.getUsername());
                 }
-                System.out.println("Assign to: ");
+                choice = Application.inputInt("Assign to: ");
+                if (choice > Application.employeeDataHandler.getLength() || choice < 1) {
+                    System.out.println("Invalid choice, please try again.");
+                    continue;
+                } else {
+                    employee = Application.employeeDataHandler.get(choice - 1);
+                    exit = true;
+                }
+
+            }
+         
+            // date & EST & task creation
+             exit = false;
+            while (!exit) {
                 try {
-                    choice = Application.input.nextInt();
-                    if (choice > Application.employeeDataHandler.getLength() || choice < 1) {
-                        System.out.println("Invalid choice, please try again.");
-                        continue;
-                    } else {
-                        employee = Application.employeeDataHandler.get(choice - 1);
-                        exit = true;
-                    }
 
-                } catch (InputMismatchException ex) {
-                    System.err.println("Input was not a number!");
-                    Application.input.next();
-                }
-            }
-            //date & EST & task creation
-            boolean dateExit = false;
-            while (!dateExit) {
-            try{
-                
-                // Start date
-                int year, month, day, yearEnd, monthEnd, dayEnd;
-                System.out.println("---Start date---");
-                while (true) {
-                    try {
-                        
-                        System.out.print("Enter the year: ");
-                        year = Application.input.nextInt();
+                    // Start date
+                    int year, month, day, yearEnd, monthEnd, dayEnd;
+                    System.out.println("---Start date---");
+                    year = Application.inputInt("Enter the year");
+                    month = Application.inputInt("Enter the month");
+                    day = Application.inputInt("Enter the day");
+                    LocalDate startDate = LocalDate.of(year, month, day);
+                    // End date
+                    System.out.println("---Enter the End date---");
+                    yearEnd = Application.inputInt("Enter the year");
+                    monthEnd = Application.inputInt("Enter the month");
+                    dayEnd = Application.inputInt("Enter the day");
+                    LocalDate endDate = LocalDate.of(yearEnd, monthEnd, dayEnd);
+                    // EST
+                    double taskEST;
+                    taskEST = Duration.between(startDate, endDate).toDays() * 8 * (5 / 7);
+                    // Task Creation
+                    if (endDate.compareTo(startDate) > 0) {
+                        Task task = new Task(taskCode, taskTitle, taskDescription, employee, taskPhase,
+                                project, priority, currentEmployee, startDate, endDate, taskEST);
+                        Application.taskDataHandler.add(task);
+                        project.getListOfTasks().add(task);
                         break;
-                    } catch (InputMismatchException err) {
-                        System.err.println(err.getMessage());
-                        Application.input.next();
-                    }   
-                }
+                    } else
+                        System.out.println("begin date can't be bigger than the end date");
 
-                while (true) {
-                    try {
-                        System.out.print("\nEnter the month: ");
-                        month = Application.input.nextInt();
-                    } catch (InputMismatchException err) {
-                        System.err.println(err.getMessage());
-                        Application.input.next();
-                    }
-                    
-                }
-                while (true) {
-                    try {
-                        System.out.print("\nEnter the day: ");
-                        day = Application.input.nextInt();
-                    } catch (InputMismatchException err) {
-                        System.err.println(err.getMessage());
-                        Application.input.next();
-                    }
-                    
-                }
-                LocalDate startDate = LocalDate.of(year, month, day);
-
-                // End date
-                System.out.println("---Enter the End date---");
-                yearEnd =Application.inputInt("Enter the year");
-                
-                try{
-                    System.out.print("\nEnter the month: ");
-                    monthEnd = Application.input.nextInt();
-                } catch (InputMismatchException err) {
+                } catch (DateTimeException err) {
                     System.err.println(err.getMessage());
-                    Application.input.next();
                 }
-                try{
-                    System.out.print("\nEnter the day: ");
-                    dayEnd = Application.input.nextInt();
-                } catch (InputMismatchException err) {
-                    System.err.println(err.getMessage());
-                    Application.input.next();
-                }
-                LocalDate endDate = LocalDate.of(yearEnd, monthEnd, dayEnd);
-                
-                // EST
-                double taskEST;
-                taskEST = Duration.between(startDate, endDate).toDays() * 8 * (5 / 7);
-                // Task Creation
-                
-                if (endDate.compareTo(startDate) > 0) {
-                    Task task = new Task(taskCode, taskTitle, taskDescription, employee, taskPhase,
-                            project, priority, currentEmployee, startDate, endDate, taskEST);
-                    Application.taskDataHandler.add(task);
-                    project.getListOfTasks().add(task);
-                    break;
-                } else
-                    System.out.println("begin date can't be bigger than the end date");
 
-            } catch (DateTimeException err) {
-                System.err.println(err.getMessage());
             }
-
         }
     }
 
     public void deleteTask() throws IOException {
-        System.out.println("Enter task code to delete: ");
-        String taskCode = Application.input.next();
-        Task task = null;
-        for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
-            if (taskCode.equals(Application.taskDataHandler.get(i).getCode())) {
-                task = Application.taskDataHandler.get(i);
-                project.getListOfTasks().remove(task);
-                TaskLog taskLog = null;
-                for (int j = 0; j < Application.taskLogDataHandler.getLength(); j++) {
-                    taskLog = Application.taskLogDataHandler.get(i);
-                    if (taskLog.getTask() == task) {
-                        project.getListOfTaskLogs().remove(taskLog);
-                        Application.taskLogDataHandler.delete(i);
-                        j--;
+        while (true) {
+            
+            System.out.println("Enter task code to delete: ");
+            String taskCode = Application.input.next();
+            Application.input.nextLine();
+            Task task = null;
+            for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
+                if (taskCode.equals(Application.taskDataHandler.get(i).getCode())) {
+                    task = Application.taskDataHandler.get(i);
+                    project.getListOfTasks().remove(task);
+                    TaskLog taskLog = null;
+                    for (int j = 0; j < Application.taskLogDataHandler.getLength(); j++) {
+                        taskLog = Application.taskLogDataHandler.get(i);
+                        if (taskLog.getTask() == task) {
+                            project.getListOfTaskLogs().remove(taskLog);
+                            Application.taskLogDataHandler.delete(i);
+                            j--;
+                        }
                     }
+                    Application.taskDataHandler.delete(i);
+                    break;
                 }
-                Application.taskDataHandler.delete(i);
-                break;
+            }
+            if (task == null)
+            {
+                System.out.println("task doesn't exist");
+                continue;
             }
         }
-        if (task == null)
-            System.out.println("task doesn't exist");
     }
 
     public void updateTask() throws IOException {
         System.out.println("Enter task code to modify: ");
         String taskCode = Application.input.next();
+        Application.input.nextLine();
+
         Task task = null;
         for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
             if (taskCode.equals(Application.taskDataHandler.get(i).getCode())) {
@@ -634,6 +601,7 @@ public class TaskModule extends Module {
             System.out.println("task doesn't exist");
 
         else {
+            
 
             viewTask(task);
             // update task menu
@@ -646,7 +614,7 @@ public class TaskModule extends Module {
             System.out.println("6-exit");
 
             boolean exit = true;
-            int choice = Application.input.nextInt();
+            int choice = Application.inputInt("enter Choice");
             while (exit) {
                 switch (choice) {
                     case 1:
