@@ -31,7 +31,7 @@ public class AdminModule extends Module {
 				"\t3.Manage Projects\n"+
 				"\t4.Manage Employee Type\n"+
 				"\t5.Modify Task Phases\n"+
-				"\t6.Logout\n"+
+				"\t0.Logout\n"+
 				"input>> ");
 			try
 			{
@@ -45,6 +45,9 @@ public class AdminModule extends Module {
 			}
 			switch(choice)
 			{
+			case 0:
+				exit= true;
+				break;
 			case 1:
 				manageUsers();
 				break;
@@ -60,13 +63,12 @@ public class AdminModule extends Module {
 			case 5:
 				manageTaskPhases();
 				break;
-			case 6:
-				exit= true;
-				break;
 			default:
 				System.out.println("\033[31mInvalid Operation!\033[0m");
 			}
 		}
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
 	}
 	public void manageUsers() throws IOException
 	{
@@ -811,7 +813,7 @@ public class AdminModule extends Module {
 			//         "|| 4)\u001B[35m\tBack.\u001B[0m\t\t\t\t\t\t||");
 			System.out.print(
 				"Managing Projects..\n"+
-				"1.Add 2.Update 3.Delete 4.Back\n"+
+				"1.Add 2.Update 3.Delete 0.Back\n"+
 				"input>> ");
 			try
 			{
@@ -822,33 +824,38 @@ public class AdminModule extends Module {
 				System.out.println("\033[31mIllegal Character!\033[0m");
 				continue;
 			}
-			catch(InputMismatchException e)
+			switch(choice)
 			{
-				System.out.println("\033[31mInvalid Operation!\033[0m");
-				Application.input.next();//consume invalid input from Scanner buffer
-				continue;
-			}
-			switch(choice) {
+			case 0://Back
+				exit= true;
+				break;
 			case 1://Add Projects
 				{
 					String project_name, project_description;
 					int count_employees= Application.employeeDataHandler.getLength();
 					Employee leader= null;
 
-					while(true)
+					while(true)//project name
 					{
 						boolean duplicate= false;
 						int count_projects= Application.projectDataHandler.getLength();
+
 						System.out.print("Project Name: ");
 						project_name= Application.input.nextLine().trim();
 						if(project_name.isBlank())
 						{
-							System.out.println("\033[31mThe project must have a name!\033[0m");
-							continue;
+							System.out.print(
+								"\033[31mThe project must have a name!\033[0m\n"+
+								"\033[33mTry Again? [Y/N]: \033[0m"
+							);
+							String retry= Application.input.nextLine();
+							if(retry.equals("Y")||retry.equals("y"))
+								continue;
+							continue menu_manageProjects;
 						}
-						for(int i = 0; i < count_projects; i++)
+						for(int k=0;k<count_projects;++k)
 						{
-							Project project= Application.projectDataHandler.get(i);
+							Project project= Application.projectDataHandler.get(k);
 							if(project.getName().equals(project_name))
 							{
 								duplicate= true;
@@ -857,37 +864,47 @@ public class AdminModule extends Module {
 						}
 						if(duplicate)
 						{
-							System.out.println("|| \033[31m"+"Project with the same name already in progress!\033[0m\t\t\t\t||\n");
-							System.out.println("|| \033[31m"+"Try again? [Y/N]: \033[0m\t\t\t\t||\n");
-							
+							System.out.print(
+								"\033[31mProject with the same name already in progress!\033[0m\n"+
+								"\033[33mTry again? [Y/N]: \033[0m"
+							);
 							String retry= Application.input.nextLine();
 							if(retry.equals("Y")||retry.equals("y"))
 								continue;
-							else
-								continue menu_manageProjects;
+							continue menu_manageProjects;
 						}
 						break;
 					}
-					while(true)
+					while(true)//project description
 					{
 						System.out.print("Project Description: ");
 						project_description= Application.input.nextLine();
 						if(project_description.isBlank())
 						{
-							System.out.println("\033[31mThe project must have a description!\033[0m");
-							continue;
+							System.out.print(
+								"\033[31mThe project must have a description!\033[0m\n"+
+								"\033[33mTry again? [Y/N]: \033[0m"
+							);
+							String retry= Application.input.nextLine();
+							if(retry.equals("Y")||retry.equals("y"))
+								continue;
+							continue menu_manageProjects;
 						}
 						break;
 					}
-					if(count_employees!=0)
+					if(count_employees!=0)//project leader
 					{
 						int leader_idx;
-						System.out.println("Available employees to assign a leader:");
+						System.out.print(
+							"Available employees to assign a leader:\n"+
+							"IDX\tNAME\tPOSITION\tMANAGER?\n"
+						);
 						for(int k=0;k<count_employees;++k)
 						{
 							Employee employee= Application.employeeDataHandler.get(k);
-							System.out.println((k+1)+".\t"+employee.getUsername()+"\t"+employee.getEmpType());
+							System.out.printf("%d.\t%s\t%s\n", k+1, employee.getUsername(), employee.getEmpType());
 						}
+						System.out.println("0. Don\'t assign anyone yet");
 						while(true)
 						{
 							System.out.print("Input>> ");
@@ -900,101 +917,287 @@ public class AdminModule extends Module {
 								System.out.println("\033[31mPlease select a valid number from the employees list!\033[0m");
 								continue;
 							}
+							if(leader_idx==-1)
+								break;
 							if(leader_idx<0||leader_idx>=count_employees)
 							{
 								System.out.println("\033[31mPlease select a valid number from the employees list!\033[0m");
 								continue;
 							}
 							leader= Application.employeeDataHandler.get(leader_idx);
-							if(leader==null)//not found
-							{
-								System.out.println("|| \033[31m"+"Employee not found!\033[0m\t\t\t\t||\n");
-								System.out.println("|| \033[31m"+"Try again? [Y/N]: \033[0m\t\t\t\t||\n");
-								String retry= Application.input.nextLine();
-								if(retry.equals("Y")||retry.equals("y"))
-									continue;
-								else
-									continue menu_manageProjects;
-							}
 							break;
 						}
 					}
 					Project project= new Project(project_name, project_description, leader);
 					Application.projectDataHandler.add(project);
-					System.out.println("\033[32mSuccessfully added project \""+project_name+"\"!\033[0m\nPress any key to continue...");
+					System.out.print(
+						"\033[32mSuccessfully added project \""+project_name+"\"!\033[0m\n"+
+						"Press any key to continue...\n"
+					);
 					Application.input.nextLine();
 				}
 				break;
 			case 2://Update Projects
-				//TODO: Update Projects
-				break;
-			case 3://Delete Projects
+			menu_manageProjects_update:
+				while(true)
 				{
-					Project project= null;
+					Project project;
 					int
 						count_projects= Application.projectDataHandler.getLength(),
 						project_idx= -1;
 
 					if(count_projects==0)
 					{
+						System.out.print(
+							"\033[33mNo Projects Found!\033[0m\n"+
+							"Press any key to continue..."
+						);
+						Application.input.nextLine();
+						break;
+					}
+					System.out.print("\033[H\033[2J"); System.out.flush();
+					System.out.print(
+						"Projects in progress:\n"+
+						"IDX\tNAME\tLEADER\tDESCRIPTION\n"
+					);
+					for(int k=0;k<count_projects;++k)
+					{
+						project= Application.projectDataHandler.get(k);
+						System.out.printf("%d.\t%s\t%s\t%s\n", k+1, project.getName(), project.getLeader()==null?"\033[33mTBD\033[0m":project.getLeader().getUsername(), project.getDescription());
+					}
+					System.out.println("0. Back");
+					while(true)
+					{
+						System.out.print("Update>> ");
+						try
+						{
+							project_idx= Integer.parseInt(Application.input.nextLine())-1;
+						}
+						catch(NumberFormatException e)
+						{
+							System.out.println("\033[31mPlease select a valid number from the projects list!\033[0m");
+							continue;
+						}
+						if(project_idx==-1)
+							continue menu_manageProjects;
+						if(project_idx<0||project_idx>=count_projects)
+						{
+							System.out.println("\033[31mPlease select a valid number from the projects list!\033[0m");
+							continue;
+						}
+						project= Application.projectDataHandler.get(project_idx);
+						while(true)
+						{
+							System.out.print("\033[H\033[2J"); System.out.flush();
+							System.out.printf(
+								"\t1. Name:        %s\n"+
+								"\t2. Description: %s\n"+
+								"\t3. Leader:      %s\n"+
+								"\t0. Cancel\n"+
+								"Modify>> ",
+								project.getName(),
+								project.getDescription(),
+								project.getLeader()==null?"\033[33mTBD\033[0m":project.getLeader().getUsername()
+							);
+							try
+							{
+								choice= Integer.parseInt(Application.input.nextLine());
+							}
+							catch(NumberFormatException e)
+							{
+								System.out.println("\033[31mInvalid Operation!\033[0m");
+								continue;
+							}
+							switch(choice)
+							{
+							case 0://Cancel
+								continue menu_manageProjects_update;
+							case 1://Modify Project Name
+								while(true)
+								{
+									boolean duplicate= false;
+									String newname;
+
+									System.out.print("\tNew Name: ");
+									newname= Application.input.nextLine().trim();
+									if(newname.isBlank())
+									{
+										System.out.print(
+											"\033[31mThe project must have a name!\033[0m\n"+
+											"\033[33mTry Again? [Y/N]: \033[0m"
+										);
+										String retry= Application.input.nextLine();
+										if(retry.equals("Y")||retry.equals("y"))
+											continue;
+										break;
+									}
+									for(int k=0;k<count_projects;++k)
+									{
+										Project compare= Application.projectDataHandler.get(k);
+										if(compare.getName().equals(newname))
+										{
+											duplicate= true;
+											break;
+										}
+									}
+									if(duplicate)
+									{
+										System.out.print(
+											"\033[31mProject with the same name already in progress!\033[0m\n"+
+											"\033[33mTry again? [Y/N]: \033[0m"
+										);
+										String retry= Application.input.nextLine();
+										if(retry.equals("Y")||retry.equals("y"))
+											continue;
+										break;
+									}
+									project.setName(newname);
+									Application.projectDataHandler.update(project_idx, project);
+									break;
+								}
+								break;
+							case 2://Modify Project Description
+								while(true)
+								{
+									System.out.print("New Description: ");
+									String newdescription= Application.input.nextLine().trim();
+									if(newdescription.isBlank())
+									{
+										System.out.print(
+											"\033[31mThe project must have a brief description!\033[0m\n"+
+											"\033[33mTry Again? [Y/N]: \033[0m"
+										);
+										String retry= Application.input.nextLine();
+										if(retry.equals("Y")||retry.equals("y"))
+											continue;
+										break;
+									}
+									project.setDescription(newdescription);
+									Application.projectDataHandler.update(project_idx, project);
+									break;
+								}
+								break;
+							case 3://Modify Project Leader
+								{
+									int
+										leader_idx= -1,
+										count_employees= Application.employeeDataHandler.getLength();
+									
+									if(count_employees==0)
+									{
+										System.out.print(
+											"\033[33mNo employees available\033[0m\n"+
+											"Press any key to continue...\n"
+										);
+										Application.input.nextLine();
+										break;
+									}
+									System.out.print(
+										"Available employees to assign a leader:\n"+
+										"IDX\tNAME\tPOSITION\tMANAGER?\n"
+									);
+									for(int k=0;k<count_employees;++k)
+									{
+										Employee employee= Application.employeeDataHandler.get(k);
+										System.out.printf("%d.\t%s\t%s\n", k+1, employee.getUsername(), employee.getEmpType());
+									}
+									System.out.println("0. Don\'t assign anyone");
+									while(true)
+									{
+										System.out.print("Input>> ");
+										try
+										{
+											leader_idx= Integer.parseInt(Application.input.nextLine())-1;
+										}
+										catch(NumberFormatException e)
+										{
+											System.out.println("\033[31mPlease select a valid number from the employees list!\033[0m");
+											continue;
+										}
+										if(leader_idx==-1)
+										{
+											project.setLeader(null);
+											Application.projectDataHandler.update(project_idx, project);
+											break;
+										}
+										if(leader_idx<0||leader_idx>=count_employees)
+										{
+											System.out.println("\033[31mPlease select a valid number from the employees list!\033[0m");
+											continue;
+										}
+										project.setLeader(Application.employeeDataHandler.get(leader_idx));
+										Application.projectDataHandler.update(project_idx, project);
+										break;
+									}
+								}
+								break;
+							default:
+								System.out.println("\033[31mInvalid Operation!\033[0m");
+								break;
+							}
+						}
+					}
+				}
+				break;
+			case 3://Delete Projects
+				{
+					Project project;
+					int
+						count_projects= Application.projectDataHandler.getLength(),
+						count_tasks= Application.taskDataHandler.getLength(),//for cascade delete
+						project_idx= -1;
+
+					if(count_projects==0)
+					{
 						System.out.println("\033[33mNo Projects Found!\033[0m\nEnter any key to continue...");
-						Application.input.next();
+						Application.input.nextLine();
 						continue menu_manageProjects;
 					}
 					System.out.print("\033[H\033[2J");
 					System.out.flush();
 					System.out.print(
-						"Projects in progress\n"+
-						"--------------------------------\n"+
-						"NAME\tLEADER\tDESCRIPTION\n"
+						"Projects in progress:\n"+
+						"IDX\tNAME\tLEADER\tDESCRIPTION\n"
 					);
 					for(int k=0;k<count_projects;++k)
 					{
 						project= Application.projectDataHandler.get(k);
-						System.out.println(project.getName()+"\t"+project.getLeader()+"\t"+project.getDescription());
+						System.out.println((k+1)+".\t"+project.getName()+"\t"+project.getLeader().getUsername()+"\t"+project.getDescription());
 					}
-					// System.out.println("=====================================");
+					System.out.println("0. Cancel");
 					while(true)
 					{
-						System.out.println("|| \u001B[43m"+"Delete Project: \u001B[0m\t\t\t\t||\n");
-						String project_name= Application.input.next();
-						for(int k=0;k<count_projects;++k)
+						System.out.print("Delete>> ");
+						try
 						{
-							project= Application.projectDataHandler.get(k);
-							if(project.getName().equals(project_name))
-							{
-								project_idx= k;
-								break;
-							}
+							project_idx= Integer.parseInt(Application.input.nextLine())-1;
 						}
-						if(project_idx==-1)//not found
+						catch(NumberFormatException e)
 						{
-							System.out.println("|| \033[31m"+"Project not found!\033[0m\t\t\t\t||\n");
-							System.out.println("|| \033[31m"+"Try again? [Y/N]: \033[0m\t\t\t\t||\n");
-							String retry= Application.input.next();
-							if(retry.equals("Y")||retry.equals("y"))
-								continue;
-							else
-								continue menu_manageProjects;
+							System.out.println("\033[31mPlease select a valid number from the projects list!\033[0m");
+							continue;
 						}
-						break;
-					}
-					System.out.println("|| \u001B[43m"+"Are you sure you want to \033[31mDELETE\033[0m \""+project.getName()+"\"? [Y/N]\u001B[0m\t||\n");
-					String confirm= Application.input.next();
-					if(!confirm.equals("Y") && !confirm.equals("y"))//Don't Delete
-						continue menu_manageProjects;
-					Application.projectDataHandler.delete(project_idx);//delete project
-					int count_tasks= Application.taskDataHandler.getLength();
-					for(int k=0;k<count_tasks;++k)//delete all tasks associated with the project
-					{
-						Task task= Application.taskDataHandler.get(k);
-						if(task.getProject()==project)
-							Application.taskDataHandler.delete(k);
+						if(project_idx==-1)
+							break;
+						if(project_idx<0||project_idx>=count_projects)
+						{
+							System.out.println("\033[31mPlease select a valid number from the projects list!\033[0m");
+							continue;
+						}
+						project= Application.projectDataHandler.get(project_idx);
+						System.out.print("Are you sure you want to \033[31mDELETE\033[0m \""+project.getName()+"\"? [Y/N]: ");
+						String confirm= Application.input.nextLine();
+						if(!confirm.equals("Y") && !confirm.equals("y"))//don't delete
+							continue;
+						Application.projectDataHandler.delete(project_idx);//delete project
+						for(int k=0;k<count_tasks;++k)//delete all tasks associated with the project
+						{
+							Task task= Application.taskDataHandler.get(k);
+							if(task.getProject()==project)
+								Application.taskDataHandler.delete(k);
+						}
 					}
 				}
-				break;
-			case 4:
-				exit= true;
 				break;
 			default:
 				System.out.println("\033[31mInvalid Operation!\033[0m");
