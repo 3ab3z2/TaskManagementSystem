@@ -6,8 +6,8 @@ import java.time.Period;
 import java.util.InputMismatchException;
 
 
-///Reset: \u001B[0m
-///Red: \u001B[41m
+//use Application.inputDouble
+//use Application.inputInt
 
 public class EmployeeModule extends Module {
     Employee currentEmployee;
