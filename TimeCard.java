@@ -37,7 +37,7 @@ public class TimeCard implements LoadSave {
     public LoadSave fromString(String s) throws IllegalArgumentException {
         String[] parts=s.split("\t");
         if(parts.length>=3){
-            return new TimeCard(Application.employeeDataHandler.get(Integer.parseInt(parts[0])),LocalDateTime.parse(parts[1]), LocalTime.parse(parts[2]));
+            return new TimeCard(((Integer.parseInt(parts[0])!=-1)?Application.employeeDataHandler.get(Integer.parseInt(parts[0])):null),(parts[1].equals("null")?null:LocalDateTime.parse(parts[1])), (parts[2].equals("null")?null:LocalTime.parse(parts[2])));
         }
         else throw new IllegalArgumentException("not enough arguments");
     }

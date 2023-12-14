@@ -45,6 +45,9 @@ public class Request implements LoadSave {
                 case "rejected":
                     cApproval=Approval.rejected;
                     break;
+                case "null":
+                    cApproval=null;
+                    break;
                 default:
                     throw new IllegalArgumentException("unknown value "+parts[1]);
             }

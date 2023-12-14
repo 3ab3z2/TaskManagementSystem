@@ -41,8 +41,11 @@ public class TaskLog implements LoadSave {
     public LoadSave fromString(String s) throws IllegalArgumentException {
         String[] parts=s.split("\t");
         if(parts.length>=4){
-            Task cTask=Application.taskDataHandler.get(Integer.parseInt(parts[3]));
-            TaskLog tasklog =  new TaskLog(LocalDateTime.parse(parts[0]), LocalDateTime.parse(parts[1]), Application.employeeDataHandler.get(Integer.parseInt(parts[2])), cTask);
+            LocalDateTime cFromTime=parts[0].equals("null")?null:LocalDateTime.parse(parts[0]);
+            LocalDateTime cToTime=parts[1].equals("null")?null:LocalDateTime.parse(parts[1]);
+            Employee cAssignedEmployee=(Integer.parseInt(parts[2])!=-1)?Application.employeeDataHandler.get(Integer.parseInt(parts[2])):null;
+            Task cTask=(Integer.parseInt(parts[3])!=-1)?Application.taskDataHandler.get(Integer.parseInt(parts[3])):null;
+            TaskLog tasklog =  new TaskLog(cFromTime, cToTime, cAssignedEmployee, cTask);
             cTask.getProject().getListOfTaskLogs().add(tasklog);
             return tasklog;
         }
