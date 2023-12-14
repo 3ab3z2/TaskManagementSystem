@@ -176,7 +176,7 @@ public class Application {
 											if (projectDataHandler.get(i).getLeader().toString()
 													.equals(employee.toString())) {
 												projectArr[j] = projectDataHandler.get(i);
-												System.out.print("║│" + (j + 1) + ") │Project:"
+												System.out.print("║│" + (j + 1) + ")│Project:"
 														+ projectArr[j].getName()
 														+ "                                               │║ \n");
 												j++;
@@ -187,7 +187,9 @@ public class Application {
 														+
 														"║ Please enter your choice: ");
 										choice = input.nextInt();
-										if (choice > projectArr.length || choice < 1)
+										if (choice == 0)
+											System.out.println("going back....");
+										else if (choice > projectArr.length || choice < 1)
 											System.out.println("\u001B[41m"
 													+ "╠═════════════════════════════════════════════════════════════════════════════════════╣\n\u001B[0m"
 													+
