@@ -104,8 +104,7 @@ public class TaskModule extends Module {
             System.out.print("Your choice:🮶 ");
 
             choice = Application.input.nextInt();
-             exit = false;
-            while (!exit) {
+             
                 switch (choice) {
                     case 1:
                         try {
@@ -137,7 +136,6 @@ public class TaskModule extends Module {
                     "\n"+"\u001B[41m"+"╚═════════════════════════════════════════════════════════════════════════════════════╝\u001B[0m\n");
                         break;
                 }
-            }
             }
         }
 
