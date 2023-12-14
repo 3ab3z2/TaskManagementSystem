@@ -301,7 +301,8 @@ public class EmployeeModule extends Module {
                         "║│A string. Example: 'Can I Hang DedSec's logo on my wall?'                          │║\n" +
                         "╠╧═══════════════════════════════════════════════════════════════════════════════════╧╣\n" +
                         "║ Reason: ");
-        String reason = Application.input.next();
+                        Application.input.nextLine();
+        String reason = Application.input.nextLine();
         System.out.println("╚═════════════════════════════════════════════════════════════════════════════════════╝");
 
         System.out.println("");
@@ -366,7 +367,7 @@ public class EmployeeModule extends Module {
                         "║│A string. Example: 'Forgot the baby in the microwave'                              │║\n" +
                         "╠╧═══════════════════════════════════════════════════════════════════════════════════╧╣\n" +
                         "║ Reason: ");
-        Application.input.nextLine();
+                        Application.input.nextLine();
         String LeaveReason = Application.input.nextLine();
         System.out.println("╠═════════════════════════════════════════════════════════════════════════════════════╣");
         System.out.print("║                          🯇 Please Enter first day of the leave request              ║\n" +
@@ -507,7 +508,8 @@ public class EmployeeModule extends Module {
             case 1:
                 System.out.print("║ Please enter the new reason for your request: ");
                 try{
-                    String reason = Application.input.next();
+                    Application.input.nextLine();
+                    String reason = Application.input.nextLine();
                     request.setReason(reason);
                     System.out.println(request.toString());
                     String ok = Application.input.next();
