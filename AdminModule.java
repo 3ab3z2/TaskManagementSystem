@@ -894,7 +894,7 @@ public class AdminModule extends Module {
 						"\033[32mSuccessfully added project \""+project_name+"\"!\033[0m\n"+
 						"Press any key to continue...\n"
 					);
-					Application.input.nextLine();
+					System.in.read();
 				}
 				break;
 			case 2://Update Projects
@@ -912,7 +912,7 @@ public class AdminModule extends Module {
 							"\033[33mNo Projects Found!\033[0m\n"+
 							"Press any key to continue..."
 						);
-						Application.input.nextLine();
+						System.in.read();
 						break;
 					}
 					System.out.print("\033[H\033[2J"); System.out.flush();
@@ -1049,7 +1049,7 @@ public class AdminModule extends Module {
 											"\033[33mNo employees available\033[0m\n"+
 											"Press any key to continue...\n"
 										);
-										Application.input.nextLine();
+										System.in.read();
 										break;
 									}
 									System.out.print(
@@ -1236,7 +1236,7 @@ public class AdminModule extends Module {
 						"\033[32mSuccessfully added employee type \""+empString+"\"!\033[0m\n"+
 						"Press any key to continue...\n"
 					);
-					Application.input.nextLine();
+					System.in.read();
 				}
 				break;
 			case 2://Update Employee Type
@@ -1253,7 +1253,7 @@ public class AdminModule extends Module {
 							"\033[33mNo Employee Types Defined Yet!\033[0m\n"+
 							"Press any key to continue...\n"
 						);
-						Application.input.nextLine();
+						System.in.read();
 						break;
 					}
 					System.out.print("\033[H\033[2J"); System.out.flush();
@@ -1357,7 +1357,7 @@ public class AdminModule extends Module {
 										"\033[33mSuccessfully updated employee type!\033[0m\n"+
 										"Press any key to continue...\n"
 									);
-									Application.input.nextLine();
+									System.in.read();
 									break;
 								}
 								break;
@@ -1375,7 +1375,7 @@ public class AdminModule extends Module {
 										"\033[32mSuccessfully modified managerial position!\033[0m\n"+
 										"Press any key to continue...\n"
 									);
-									Application.input.nextLine();
+									System.in.read();
 								}
 								break;
 							default:
@@ -1451,7 +1451,7 @@ public class AdminModule extends Module {
 							}
 						}
 						System.out.println("Press any key to continue...");
-						Application.input.nextLine();
+						System.in.read();
 					}
 				}
 				break;
@@ -1528,7 +1528,7 @@ public class AdminModule extends Module {
 				"\033[32mSuccessfully modified task phase!\033[0m\n"+
 				"Press any key to continue...\n"
 			);
-			Application.input.nextLine();
+			System.in.read();
 		}
 	}
 }
