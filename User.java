@@ -41,6 +41,8 @@ public class User implements LoadSave {
                     return new User(parts[0], parts[1], utype.admin);
                 case "employee":
                     return new User(parts[0], parts[1], utype.employee);
+                case "null":
+                    return new User(parts[0], parts[1], null);
                 default:
                     throw new IllegalArgumentException("unknown value "+parts[2]);
             }

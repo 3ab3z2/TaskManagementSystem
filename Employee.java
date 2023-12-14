@@ -53,13 +53,17 @@ public class Employee extends User {
                 case "employee":
                     cUserType=utype.employee;
                     break;
+                case "null":
+                    cUserType=null;
+                    break;
                 default:
                     throw new IllegalArgumentException("unknown value "+parts[2]);
             }
-            Employee employee = new Employee(parts[0], parts[1], cUserType, Application.empTypeDataHandler.get(Integer.parseInt(parts[3])));
+            EmpType cEmpType = (Integer.parseInt(parts[3])!=-1)?Application.empTypeDataHandler.get(Integer.parseInt(parts[3])):null;
+            Employee employee = new Employee(parts[0], parts[1], cUserType, cEmpType);
             if(parts.length>=5){
                 for(String index : parts[4].split(",")){
-                    if(!index.isEmpty()) {
+                    if(!index.isEmpty()&&(Integer.parseInt(index)!=-1)) {
                         Request request=Application.requestDataHandler.get(Integer.parseInt(index));
                         employee.getMissionRequests().add(request);
                         request.setEmployee(employee);
@@ -68,7 +72,7 @@ public class Employee extends User {
             }
             if(parts.length>=6){
                 for(String index : parts[5].split(",")){
-                    if(!index.isEmpty()) {
+                    if(!index.isEmpty()&&(Integer.parseInt(index)!=-1)) {
                         Request request=Application.requestDataHandler.get(Integer.parseInt(index));
                         employee.getPermissionRequests().add(request);
                         request.setEmployee(employee);
@@ -77,7 +81,7 @@ public class Employee extends User {
             }
             if(parts.length>=7){
                 for(String index : parts[6].split(",")){
-                    if(!index.isEmpty()) {
+                    if(!index.isEmpty()&&(Integer.parseInt(index)!=-1)) {
                         LeaveRequest request=Application.leaveRequestDataHandler.get(Integer.parseInt(index));
                         employee.getLeaveRequests().add(request);
                         request.setEmployee(employee);
