@@ -10,6 +10,8 @@ public class DataHandler<T extends LoadSave> {
     private FileWriter fileWriter;
     private Scanner fileReader;
     private ArrayList<T> list;
+
+    @SuppressWarnings("unchecked")
     public DataHandler(String path, T oi) throws IOException{
         filePath=path;
         file=new File(filePath);
