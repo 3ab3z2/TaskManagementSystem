@@ -118,8 +118,8 @@ public class Task implements LoadSave {
             Employee cAssignedEmployee=(Integer.parseInt(parts[3])!=-1)?Application.employeeDataHandler.get(Integer.parseInt(parts[3])):null;
             Project cProject=(Integer.parseInt(parts[3])!=-1)?Application.projectDataHandler.get(Integer.parseInt(parts[5])):null;
             Employee cCreator=(Integer.parseInt(parts[7])!=-1)?Application.employeeDataHandler.get(Integer.parseInt(parts[7])):null;
-            LocalDate cStartDate=parts[8].equals("null")?null:LocalDateTime.parse(parts[8]);
-            LocalDate cEndDate=parts[9].equals("null")?null:LocalDateTime.parse(parts[9]);
+            LocalDate cStartDate=parts[8].equals("null")?null:LocalDate.parse(parts[8]);
+            LocalDate cEndDate=parts[9].equals("null")?null:LocalDate.parse(parts[9]);
             
             Task task =  new Task(parts[0], parts[1], parts[2], cAssignedEmployee, parts[4], cProject, cPriority, cCreator, cStartDate, cEndDate, Double.parseDouble(parts[10]));
             cProject.getListOfTasks().add(task);
