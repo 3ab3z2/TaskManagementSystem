@@ -114,15 +114,7 @@ public class Application {
 							boolean projexit = false;
 							while (!projexit) {
 								Project[] projectArr = new Project[projectDataHandler.getLength()];
-								for (int i = 0, j = 0; i < projectDataHandler.getLength(); i++)
-								{
-									if(projectDataHandler.get(i).getLeader() == employee)
-									{
-										projectArr[j] = projectDataHandler.get(i);
-										System.out.println((j + 1) + "-Project: " + projectArr[j].getName());
-										j++;
-									}
-								}
+								
 								System.out.print("╔═════════════════════════════════════════════════════════════════════════════════════╗\n" +
 								 "║                     🯇 Please choose one of the following options:🯈                  ║ \n" +
 								 "║╒══╤════════════════════════════════════════════════════════════════════════════════╕║ \n" +
@@ -130,9 +122,26 @@ public class Application {
 								 "║│2)│Go back.                                                                        │║ \n" +
 								 "╠╧══╧════════════════════════════════════════════════════════════════════════════════╧╣ \n" +
 								 "║ Please enter your choice: ");
-								switch (choice) {
+								int choicep = input.nextInt();
+								switch (choicep) {
 									case 1:
-										choice = input.nextInt();
+									for (int i = 0, j = 0; i < projectDataHandler.getLength(); i++)
+										{
+											if(projectDataHandler.get(i).getLeader() == employee)
+											{
+												projectArr[j] = projectDataHandler.get(i);
+												System.out.println((j + 1) + "-Project: " + projectArr[j].getName());
+												j++;
+											}
+										}
+								System.out.print("╔═════════════════════════════════════════════════════════════════════════════════════╗\n" +
+								 "║                     🯇 Please choose one of the following options:🯈                  ║ \n" +
+								 "║╒══╤════════════════════════════════════════════════════════════════════════════════╕║ \n" +
+								 "║│1)│Enter the project number.                                                       │║ \n" +
+								 "║│2)│Go back.                                                                        │║ \n" +
+								 "╠╧══╧════════════════════════════════════════════════════════════════════════════════╧╣ \n" +
+								 "║ Please enter your choice: ");
+								 		choice = input.nextInt();
 										if (choice > projectArr.length || choice < 1)
 											System.out.println("\u001B[41m" + "╠═════════════════════════════════════════════════════════════════════════════════════╣\n\u001B[0m" +
 			"\u001B[41m"+"║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Chosen project is not found! 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 ║"+"\u001B[0m" +

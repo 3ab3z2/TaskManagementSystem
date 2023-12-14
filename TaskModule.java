@@ -202,7 +202,7 @@ public class TaskModule extends Module {
                     break;
             }
         }
-
+        
     }
 
     public void viewTask(Task task) throws IOException {
@@ -277,6 +277,7 @@ public class TaskModule extends Module {
                     break;
             }
         }
+        startModule();
     }
 
     public TaskLog createTaskLog(Task task, LocalDateTime fromTime, LocalDateTime toTime) throws IOException {
