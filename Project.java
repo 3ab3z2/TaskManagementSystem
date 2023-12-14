@@ -69,7 +69,7 @@ public class Project implements LoadSave {
     public LoadSave fromString(String s) throws IllegalArgumentException {
         String[] parts=s.split("\t");
         if(parts.length>=3){
-            return new Project(parts[0], parts[1],Application.employeeDataHandler.get(Integer.parseInt(parts[1])));
+            return new Project(parts[0], parts[1], Application.employeeDataHandler.get(Integer.parseInt(parts[2])));
         }
         else throw new IllegalArgumentException("not enough arguments");
     }
