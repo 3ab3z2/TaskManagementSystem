@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Application {
@@ -304,4 +305,37 @@ public class Application {
 			}
 		}
 	}
+	public static int inputInt(String print)
+	{
+		int value;
+		while (true) {
+			try{
+				System.out.println(print);
+				value = input.nextInt();
+				break;
+			}
+			catch(InputMismatchException ex){
+				System.err.println("Input must be an integer!");
+				input.next();
+			}
+		}
+		return value;
+	}
+	public static double inputDouble(String print)
+	{
+		double value;
+		while (true) {
+			try{
+				System.out.println(print);
+				value = input.nextDouble();
+				break;
+			}
+			catch(InputMismatchException ex){
+				System.err.println("Input must be an number!");
+				input.next();
+			}
+		}
+		return value;
+	}
 }
+
