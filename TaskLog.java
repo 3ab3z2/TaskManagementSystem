@@ -1,3 +1,4 @@
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class TaskLog implements LoadSave {
@@ -52,7 +53,6 @@ public class TaskLog implements LoadSave {
         return fromTime+"\t"+toTime+"\t"+Application.employeeDataHandler.getIndex(assignedEmployee)+"\t"+Application.taskDataHandler.getIndex(task);
     }
     public double calculateHours() {
-        // TODO
-        return 0;
+        return Duration.between(fromTime,toTime).toHours();
     }
 }
