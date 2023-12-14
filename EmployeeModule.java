@@ -21,6 +21,8 @@ public class EmployeeModule extends Module {
     public void startModule() throws IOException{
         int choice=0;
         boolean exit = false;
+
+        System.out.print("\033[H\033[2J"); System.out.flush();
         
         while(!exit){
             do {
@@ -92,12 +94,13 @@ public class EmployeeModule extends Module {
                     "\n"+"\u001B[41m"+"╚═════════════════════════════════════════════════════════════════════════════════════╝\u001B[0m\n");
                         break;
                 }
-            } while (choice != 8);
+            } while (choice != 7);
         }
     }
 
     public void viewTimeCards() throws IOException{
         boolean exit = false;
+        System.out.print("\033[H\033[2J"); System.out.flush();
         
         while(!exit){
             System.out.println("╔═════════════════════════════════════════════════════════════════════════════════════╗\n" +
@@ -151,6 +154,8 @@ public class EmployeeModule extends Module {
         LocalTime departure = LocalTime.now();
         LocalDateTime attendance = LocalDateTime.now();
         boolean exit = false;
+
+        System.out.print("\033[H\033[2J"); System.out.flush();
 
         while(!exit){
             System.out.println("╔═════════════════════════════════════════════════════════════════════════════════════╗\n" +
@@ -232,6 +237,7 @@ public class EmployeeModule extends Module {
     public void viewRequests() throws IOException{
         boolean exit = false;
 
+        System.out.print("\033[H\033[2J"); System.out.flush();
 
         while(!exit){
             System.out.println("╔═════════════════════════════════════════════════════════════════════════════════════╗\n" +
@@ -284,6 +290,8 @@ public class EmployeeModule extends Module {
 
     public void makeRequest(Request request) throws IOException{
         boolean exit = false;
+
+        System.out.print("\033[H\033[2J"); System.out.flush();
 
         while(!exit){
             Request.Approval approval = null;
@@ -349,6 +357,7 @@ public class EmployeeModule extends Module {
         LeaveRequest.LeaveType leaveType=null;
         boolean exit = false;
 
+        System.out.print("\033[H\033[2J"); System.out.flush();
 
         while(!exit){
             System.out.print("╔═════════════════════════════════════════════════════════════════════════════════════╗\n" +
@@ -497,6 +506,9 @@ public class EmployeeModule extends Module {
         while(!exit){
             System.out.print("╔═════════════════════════════════════════════════════════════════════════════════════╗\n" +
                             "║                     🯇 Please choose one of the following options:🯈                  ║ \n" +
+                            "║╭╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╮║ \n" +
+                            "║│                         " + request.toString() + "                                │║ \n" +
+                            "║╰╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╯║ \n" +
                             "║╒══╤════════════════════════════════════════════════════════════════════════════════╕║ \n" +
                             "║│1)│Change the reason of the request.                                               │║ \n" +
                             "║│2)│Return to menu.                                                                 │║ \n" +
