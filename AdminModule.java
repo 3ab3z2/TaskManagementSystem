@@ -1,8 +1,8 @@
 import java.io.IOException;
-import java.util.InputMismatchException;
-
-public class AdminModule extends Module {
-	AdminModule(User currentUser) {
+public class AdminModule extends Module
+{
+	AdminModule(User currentUser)
+	{
 		this.currentUser= currentUser;
 	}
 	@Override
@@ -12,7 +12,7 @@ public class AdminModule extends Module {
 		do
 		{
 			System.out.print("\033[H\033[2J"); System.out.flush();
-			System.out.print(
+			choice= Application.inputInt(
 				"Admin Module\n"+
 				"\t1.Manage Users\n"+
 				"\t2.Manage Employees\n"+
@@ -20,16 +20,8 @@ public class AdminModule extends Module {
 				"\t4.Manage Employee Type\n"+
 				"\t5.Modify Task Phases\n"+
 				"\t0.Logout\n"+
-				"input>> ");
-			try
-			{
-				choice= Integer.parseInt(Application.input.nextLine());
-			}
-			catch(NumberFormatException e)
-			{
-				System.err.println("\033[31mInvalid Operation!\033[0m");
-				continue;
-			}
+				"choose>> "
+			);
 			switch(choice)
 			{
 			case 0://exit module
@@ -62,20 +54,11 @@ public class AdminModule extends Module {
 		do
 		{
 			System.out.print("\033[H\033[2J"); System.out.flush();
-			System.out.print(
+			choice= Application.inputInt(
 				"Managing Users..\n"+
 				"1.Add 2.Update 3.Delete 0.Back\n"+
-				"input>> "
+				"choose>> "
 			);
-			try
-			{
-				choice= Integer.parseInt(Application.input.nextLine());
-			}
-			catch(NumberFormatException e)
-			{
-				System.err.println("\033[31mInvalid Operation!\033[0m");
-				continue;
-			}
 			switch(choice)
 			{
 			case 0://Back
@@ -370,104 +353,98 @@ public class AdminModule extends Module {
 	public void manageEmployees() throws IOException
 	{
 		int choice= 0;
-		boolean exit= false;
-	menu:
-		while(!exit)
+		do
 		{
 			System.out.print("\033[H\033[2J"); System.out.flush();
-			System.out.print(
+			choice= Application.inputInt(
 				"Managing Employees..\n"+
-				"1.Add  2.Update  3.Delete  4.Back\n"+
-				"input>> ");
-			try
+				"1.Add  2.Update  3.Delete  0.Back\n"+
+				"choose>> "
+			);
+			switch(choice)
 			{
-				choice= Application.input.nextInt();
-			}
-			catch(InputMismatchException e)
-			{
-				System.out.println("\033[31mInvalid Operation!\033[0m");
-				Application.input.next();//consume invalid input from Scanner buffer
-				continue;
-			}
-			switch(choice) {
 			case 1://Add Employees
 				{
+					Employee employee= null;
 					User user= null;
+					String uname= null;
 					int
+						empType_idx= -1,
 						count_users= Application.userDataHandler.getLength(),
-						count_employees= Application.employeeDataHandler.getLength();
+						count_emptypes= Application.empTypeDataHandler.getLength();
+					boolean unregistered= false;
+					
 					if(count_users==0)
 					{
-						System.out.println("\033[33mNo Registered Users Found!\033[0m\nEnter any key to continue...");
-						Application.input.next();
-						continue menu;
+						System.out.print(
+							"\033[33mNo Registered Users Found!\033[0m\n"+
+							"Press enter to continue...\n"
+						);
+						Application.input.nextLine();
+						break;//back to menu
 					}
-					boolean unregistered= false;
-					for(int i=0;i<count_users;i++)
+					do
 					{
-						boolean found= false;
-						User user_registered= Application.userDataHandler.get(i);
-						if(user_registered.getUserType()!=User.utype.employee)
-							continue;
-						for(int j=0;j<count_employees;j++)
+						int count_employees= Application.employeeDataHandler.getLength();
+						for(int i=0;i<count_users;i++)
 						{
-							Employee employee_registered= Application.employeeDataHandler.get(j);
-							if(employee_registered.getUsername().equals(user_registered.getUsername()))
-							{
-								found= true;
-								break;
-							}
-						}
-						if(!found)
-						{
-							unregistered= true;
-							break;
-						}
-					}
-					if(!unregistered)
-					{
-						System.out.println("\033[33mAll employee user accounts have already been approved!\033[0m\nEnter any key to continue...");
-						Application.input.next();
-						continue menu;
-					}
-					System.out.print("\033[H\033[2J");
-					System.out.flush();
-					// System.out.println("=====================================");
-					// System.out.print("|| \u001B[43m"+"Registered Users\u001B[0m\t\t\t\t||\n" +
-					//         "|| \u001B[43m"+"--------------------------------\u001B[0m\t\t\t||\n" +
-					//         "|| \u001B[43m"+"USERNAME\tTYPE\u001B[0m\t\t\t\t||\n" +
-					//         "||");
-					System.out.print(
-						"Registered Accounts\n"+
-						"--------------------------------\n"+
-						"USERNAME\tTYPE\n"+
-						"--------------------------------\n"
-					);
-					for(int k=0;k<count_users;++k)
-					{
-						user= Application.userDataHandler.get(k);
-						if(user.getUserType()!=User.utype.employee)
-							continue;
+							boolean found= false;
+							User user_registered= Application.userDataHandler.get(i);
 
-						boolean duplicate= false;
-						for(int i=0;i<count_employees;++i)
-						{
-							if(Application.employeeDataHandler.get(i).getUsername().equals(user.getUsername()))
+							if(user_registered.getUserType()!=User.utype.employee)
+								continue;
+							for(int j=0;j<count_employees;j++)
 							{
-								duplicate= true;
+								Employee employee_registered= Application.employeeDataHandler.get(j);
+								if(employee_registered.getUsername().equals(user_registered.getUsername()))
+								{
+									found= true;
+									break;
+								}
+							}
+							if(!found)
+							{
+								unregistered= true;
 								break;
 							}
 						}
-						if(!duplicate)
-							System.out.println(user.getUsername()+"\t"+user.getUserType());
-					}
-					// System.out.println("=====================================");
-					while(true)
-					{
-						// System.out.println("|| \u001B[43m"+"Username: \u001B[0m\t\t\t\t||\n");
-						System.out.print("Username: ");
-						String uname= Application.input.next();
-						boolean found= false;
+						if(!unregistered)
+						{
+							System.out.print(
+								"\033[33mAll employee user accounts have already been registered & approved!\033[0m\n"+
+								"Enter any key to continue...\n"
+							);
+							Application.input.nextLine();
+							break;//back to manageEmployees;
+						}
+						System.out.print("\033[H\033[2J"); System.out.flush();
+						System.out.print(
+							"Registered Accounts:\n"+
+							"USERNAME\tTYPE\n"
+						);
+						for(int k=0;k<count_users;++k)
+						{
+							user= Application.userDataHandler.get(k);
+							if(user.getUserType()!=User.utype.employee)
+								continue;
+
+							unregistered= false;
+							for(int i=0;i<count_employees;++i)
+							{
+								if(Application.employeeDataHandler.get(i).getUsername().equals(user.getUsername()))
+								{
+									unregistered= true;
+									break;
+								}
+							}
+							if(!unregistered)
+								System.out.printf("%s\t%s\n", user.getUsername(), user.getUserType());
+						}
+						System.out.println("\"exit\" to go back");
+						uname= Application.inputString("Choose>> ");
+						if(uname.equals("exit"))
+							break;
+						Boolean found= false;
 						for(int k=0;k<count_users;++k)
 						{
 							user= Application.userDataHandler.get(k);
@@ -479,172 +456,220 @@ public class AdminModule extends Module {
 						}
 						if(!found)
 						{
-							// System.out.println("|| \033[31m"+"User not found!\033[0m\t\t\t\t||\n");
-							// System.out.println("|| \033[31m"+"Try again? [Y/N]: \033[0m\t\t\t\t||\n");
-							System.out.println("\033[31mUser not found!\033[0m");
-							System.out.print("\033[33mTry again? [Y/N]: \033[0m");
-							String retry= Application.input.next();
-							if(retry.equals("Y")||retry.equals("y"))
-								continue;
-							else
-								continue menu;
+							System.err.println("\033[31mPlease select a valid user account from the list!\033[0m");
+							continue;
 						}
-						break;
-					}
+						if(count_emptypes==0)
+						{
+							employee= new Employee(user.getUsername(), user.getPassword(), User.utype.employee, null);
+							Application.employeeDataHandler.add(employee);
+						}
+						else
+						{
+							do
+							{
+								EmpType empType= null;
 
-					int empType_idx= -1;
-					int count_emptypes= Application.empTypeDataHandler.getLength();
-					if(count_emptypes!=0)
-					{
-						System.out.print(
-							"Defined Employee Types\n"+
-							"--------------------------------\n"+
-							"NUM\tTYPE\tMANAGER\n"+
-							"--------------------------------\n"
-						);
-						for(int k=0;k<count_emptypes;++k)
-						{
-							EmpType empType= Application.empTypeDataHandler.get(k);
-							System.out.println((k+1)+"\t"+empType.getName()+"\t"+empType.isManager());
-						}
-						// System.out.println("=====================================");
-						while(true)
-						{
-							System.out.print("Number: ");
-							try
-							{
-								empType_idx= Application.input.nextInt()-1;
-							}
-							catch(InputMismatchException e)
-							{
-								System.out.println("\033[31mInvalid Input!\033[0m Please, enter valid type number!");
-								Application.input.next();//consume invalid input from Scanner buffer
-								continue;
-							}
-							if(empType_idx<0||empType_idx>=count_emptypes)
-							{
-								System.out.println("\033[31mNumber Out of Bounds!\033[0m");
-								System.out.print("\033[33mTry again? [Y/N]:\033[0m ");
-								String retry= Application.input.next();
-								if(retry.equals("Y")||retry.equals("y"))
+								System.out.print("\033[H\033[2J"); System.out.flush();
+								System.out.print(
+									"Defined Employee Types:\n"+
+									"IDX\tTYPE\tMANAGER?\n"
+								);
+								for(int k=0;k<count_emptypes;++k)
+								{
+									empType= Application.empTypeDataHandler.get(k);
+									System.out.printf("%d.\t%s\t%s\n", k+1, empType.getName(), empType.isManager()?"Yes":"No");
+								}
+								System.out.print(
+									"0. Cancel\n"+
+									"-1. TBD\n"
+								);
+								empType_idx= Application.inputInt("Choose>> ")-1;
+								if(empType_idx==-1)
+									break;
+								if(empType_idx==-2)
+								{
+									employee= new Employee(user.getUsername(), user.getPassword(), User.utype.employee, null);
+									Application.employeeDataHandler.add(employee);
+									break;
+								}
+								if(empType_idx<0||empType_idx>=count_emptypes)
+								{
+									System.err.println("\033[31mPlease select a valid number from the employee type list!\033[0m");
 									continue;
-								else
-									continue menu;
-							}
-							break;
+								}
+								empType= Application.empTypeDataHandler.get(empType_idx);
+								employee= new Employee(user.getUsername(), user.getPassword(), User.utype.employee, empType);
+								Application.employeeDataHandler.add(employee);
+								break;
+							} while(empType_idx!=-1);
 						}
-					}
-					EmpType empType= null;
-					if(empType_idx!=-1)
-						empType= Application.empTypeDataHandler.get(empType_idx);
-					Employee employee= new Employee(user.getUsername(), user.getPassword(), User.utype.employee, empType);
-					Application.employeeDataHandler.add(employee);
+					} while(!uname.equals("exit"));
 				}
 				break;
 			case 2://Update Employees
 				{
-					int count_employees= Application.employeeDataHandler.getLength();
+					Employee employee= null;
+					int
+						employee_idx= -1,
+						empType_idx= -1,
+						count_employees= Application.employeeDataHandler.getLength();
+						
+					if(count_employees==0)
+					{
+						System.out.print(
+							"\033[33mNo Employees Registered!\033[0m\n"+
+							"Press Enter to continue...\n"
+						);
+						Application.input.nextLine();
+						break;
+					}
+					do
+					{
+						System.out.print("\033[H\033[2J"); System.out.flush();
+						System.out.print(
+							"Registered Employees:\n"+
+							"IDX\tNAME\tPOSITION\n"
+						);
+						for(int k=0;k<count_employees;++k)
+						{
+							employee= Application.employeeDataHandler.get(k);
+							System.out.printf(
+								"%d.\t%s\t%s\n",
+								k+1,
+								employee.getUsername(),
+								employee.getEmpType()==null?"TBD":employee.getEmpType().getName()
+							);
+						}
+						System.out.println("0. Back");
+						employee_idx= Application.inputInt("Update>> ")-1;
+						if(employee_idx==-1)
+						 	break;
+						if(employee_idx<0||employee_idx>=count_employees)
+						{
+							System.err.println("\033[31mPlease select a valid number from the employees list!\033[0m");
+							continue;
+						}
+						do
+						{
+							EmpType empType= null;
+							int count_emptypes= Application.empTypeDataHandler.getLength();
+
+							System.out.print("\033[H\033[2J"); System.out.flush();
+							System.out.print(
+								"Defined Employee Types:\n"+
+								"IDX\tTYPE\tMANAGER?\n"
+							);
+							for(int k=0;k<count_emptypes;++k)
+							{
+								empType= Application.empTypeDataHandler.get(k);
+								System.out.printf("%d.\t%s\t%s\n", k+1, empType.getName(), empType.isManager()?"Yes":"No");
+							}
+							System.out.print(
+								"0. Cancel\n"+
+								"-1. TBD\n"
+							);
+							empType_idx= Application.inputInt("Choose>> ")-1;
+							if(empType_idx==-1)
+								break;
+							if(empType_idx==-2)
+							{
+								employee.setEmpType(null);
+								Application.employeeDataHandler.update(employee_idx, employee);
+								break;
+							}
+							if(empType_idx<0||empType_idx>=count_emptypes)
+							{
+								System.err.println("\033[31mPlease select a valid number from the employee type list!\033[0m");
+								continue;
+							}
+							empType= Application.empTypeDataHandler.get(empType_idx);
+							employee.setEmpType(empType);
+							Application.employeeDataHandler.update(employee_idx, employee);
+							break;
+						} while(empType_idx!=-1);
+					} while(employee_idx!=-1);
 				}
-				//TODO: Update Employees
 				break;
 			case 3://Delete Employees
+				while(true)
 				{
 					Employee employee= null;
-					String uname;
-					int employee_idx= -1;
-					int len= Application.employeeDataHandler.getLength();
+					int
+						employee_idx= -1,
+						count_employees= Application.employeeDataHandler.getLength(),
+						count_users= Application.userDataHandler.getLength(),//for cascade deletion
+						count_tasks= Application.taskDataHandler.getLength(),//for nullifying
+						count_projects= Application.projectDataHandler.getLength();//for nullifying
 
-					if(len==0)
+					if(count_employees==0)
 					{
-						System.out.println("\033[33mNo Employees Yet!\033[0m\nEnter any key to continue...");
-						Application.input.next();
-						continue menu;
+						System.out.print(
+							"\033[33mNo Employees Yet!\033[0m\n"+
+							"Press enter to continue...\n"
+						);
+						Application.input.nextLine();
+						break;//back to menu
 					}
 					System.out.print("\033[H\033[2J"); System.out.flush();
 					System.out.print(
-						"--------------------------------\n"+
-						"\tRegistered Employees\n"+
-						"USERNAME\tTYPE\n"
+						"Registered Employees:\n"+
+						"IDX\tUSERNAME\tTYPE\n"
 					);
-					for(int k=0;k<len;++k)
+					for(int k=0;k<count_employees;++k)
 					{
 						employee= Application.employeeDataHandler.get(k);
-						System.out.println(employee.getUsername()+"\t"+employee.getEmpType());
+						System.out.printf("%d.\t%s\t%s\n", k+1, employee.getUsername(), employee.getEmpType()==null?"TBD":employee.getEmpType().getName());
 					}
-					// System.out.println("=====================================");
-					while(true)
-					{
-						System.out.println("|| \u001B[43m"+"Username: \u001B[0m\t\t\t\t||\n");
-						uname= Application.input.next();
-						boolean found= false;
-						for(int k=0;k<len;++k)
-						{
-							employee= Application.employeeDataHandler.get(k);
-							if(employee.getUsername().equals(uname))
-							{
-								employee_idx= k;
-								found= true;
-								break;
-							}
-						}
-						if(!found)
-						{
-							System.out.println("|| \033[31m"+"User not found!\033[0m\t\t\t\t||\n");
-							System.out.println("|| \033[31m"+"Try again? [Y/N]: \033[0m\t\t\t\t||\n");
-							String retry= Application.input.next();
-							if(retry.equals("Y")||retry.equals("y"))
-								continue;
-							else
-								continue menu;
-						}
+					System.out.println("0. Cancel");
+					employee_idx= Application.inputInt("Delete>> ")-1;
+					if(employee_idx==-1)
 						break;
+					if(employee_idx<0||employee_idx>=count_employees)
+					{
+						System.err.println("\033[31mPlease select a valid number from the users list!\033[0m");
+						continue;
 					}
-					System.out.println("|| \u001B[43m"+"Are you sure you want to \033[31mDELETE\033[0m \""+employee.getUsername()+"\"? [Y/N]\u001B[0m\t||\n");
-					String confirm= Application.input.next();
-					if(!confirm.equals("Y") && !confirm.equals("y"))//Don't Delete
-						continue menu;
+					employee= Application.employeeDataHandler.get(employee_idx);
+					String confirm= Application.inputString("Are you sure you want to \033[31mDELETE\033[0m \""+employee.getUsername()+"\"? [y/N]: ");
+					if(!confirm.equals("Y") && !confirm.equals("y"))//don't delete
+						continue;
 					Application.employeeDataHandler.delete(employee_idx);//delete employee
-					int
-						len_users= Application.userDataHandler.getLength(),
-						len_tasks= Application.taskDataHandler.getLength(),
-						len_projects= Application.projectDataHandler.getLength();
-					for(int k=0;k<len_users;++k)
+					for(int k=0;k<count_users;++k)
 					{
 						User user= Application.userDataHandler.get(k);
-						if(user.getUsername().equals(uname))//delete user account
+						if(user.getUsername().equals(employee.getUsername()))//delete user account
 						{
 							Application.userDataHandler.delete(k);
 							break;
 						}
 					}
-					for(int k=0;k<len_tasks;++k)//nullify assigned tasks
+					for(int k=0;k<count_tasks;++k)//nullify assigned tasks
 					{
 						Task task= Application.taskDataHandler.get(k);
-						if(task.getAssignedEmployee().getUsername().equals(uname))
+						if(task.getAssignedEmployee().getUsername().equals(employee.getUsername()))
 						{
 							task.setAssignedEmployee(null);
 							Application.taskDataHandler.update(k, task);
 						}
 					}
-					for(int k=0;k<len_projects;++k)//nullify any assigned projects 
+					for(int k=0;k<count_projects;++k)//nullify any assigned projects 
 					{
 						Project project= Application.projectDataHandler.get(k);
-						if(project.getLeader().getUsername().equals(uname))
+						if(project.getLeader().getUsername().equals(employee.getUsername()))
 						{
 							project.setLeader(null);
 							Application.projectDataHandler.update(k, project);
 						}
 					}
-					System.out.println("|| \033[33m"+"\""+employee.getUsername()+"\" \033[32m was successfully removed!\033[0m\t||\n");
 				}
 				break;
 			case 4:
-				exit= true;
 				break;
 			default:
 				System.out.println("\033[31mInvalid Operation!\033[0m");
 			}
-		}
+		} while(choice!=0);
 	}
 	public void manageProjects() throws IOException
 	{
