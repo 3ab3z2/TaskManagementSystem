@@ -1,2 +1,2 @@
-B7AB	first	fucking	0	task	0	high	0	2020-12-10	2024-10-05	200.0
-7CAW	second	freaking	0	tasky	0	normal	0	1998-12-12	2025-10-07	200.0
+B7AB	first	fucking	0	finished	0	high	0	2020-12-10	2024-10-05	200.0
+7CAW	second	freaking	0	in progress	0	normal	0	1998-12-12	2025-10-07	200.0

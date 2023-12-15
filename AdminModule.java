@@ -1379,64 +1379,50 @@ public class AdminModule extends Module
 		{
 			System.out.print(
 				"\033[33mNo Tasks Yet!\033[0m\n"+
-				"Enter any key to continue..."
+				"Press enter to continue..."
 			);
 			Application.input.nextLine();
 			return;//to menu
 		}
-		System.out.print("\033[H\033[2J"); System.out.flush();
-		System.out.print(
-			"Current Tasks:\n"+
-			"IDX\tCODE\tTITLE\tPROJECT\tPRIORITY\tPHASE\tDESCRIPTION\tSTARTS\tENDS\tEST\tCREATOR\tASSIGNED\n"
-		);
-		for(int k=0;k<count_tasks;++k)
-		{
-			task= Application.taskDataHandler.get(k);
-			System.out.printf(
-				"%d.\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%f\t%s\t%s\n",
-				k+1,
-				task.getCode(),
-				task.getTitle(),
-				task.getProject().getName(),
-				task.getPriority().toString(),
-				task.getTaskPhase(),
-				task.getDescription(),
-				task.getStartDate().toString(),
-				task.getEndDate().toString(),
-				task.getEST(),
-				task.getCreator().getUsername(),
-				task.getAssignedEmployee().getUsername()
-			);
-		}
 		while(true)
 		{
-			System.out.print("Modify>> ");
-			try
+			System.out.print("\033[H\033[2J"); System.out.flush();
+			System.out.print(
+				"Current Tasks:\n"+
+				"IDX\tCODE\tTITLE\tPROJECT\tPRIORITY\tPHASE\tDESCRIPTION\tSTARTS\tENDS\tEST\tCREATOR\tASSIGNED\n"
+			);
+			for(int k=0;k<count_tasks;++k)
 			{
-				task_idx= Integer.parseInt(Application.input.nextLine())-1;
+				task= Application.taskDataHandler.get(k);
+				System.out.printf(
+					"%d.\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%f\t%s\t%s\n",
+					k+1,
+					task.getCode(),
+					task.getTitle(),
+					task.getProject().getName(),
+					task.getPriority().toString(),
+					task.getTaskPhase(),
+					task.getDescription(),
+					task.getStartDate().toString(),
+					task.getEndDate().toString(),
+					task.getEST(),
+					task.getCreator().getUsername(),
+					task.getAssignedEmployee().getUsername()
+				);
 			}
-			catch(NumberFormatException e)
-			{
-				System.out.println("\033[31mPlease select a valid number from the tasks list!\033[0m");
-				continue;
-			}
+			System.out.println("0. Cancel");
+			task_idx= Application.inputInt("Modify>> ")-1;
 			if(task_idx==-1)
 				break;
 			if(task_idx<0||task_idx>=count_tasks)
 			{
-				System.out.println("\033[31mPlease select a valid number from the tasks list!\033[0m");
+				System.err.println("\033[31mPlease select a valid number from the tasks list!\033[0m");
 				continue;
 			}
 			task= Application.taskDataHandler.get(task_idx);
-			System.out.print("New Task Phase: ");
-			String phase= Application.input.nextLine();
+			String phase= Application.inputString("New Task Phase: ");
 			task.setTaskPhase(phase);
 			Application.taskDataHandler.update(task_idx, task);
-			System.out.print(
-				"\033[32mSuccessfully modified task phase!\033[0m\n"+
-				"Press any key to continue...\n"
-			);
-			System.in.read();
 		}
 	}
 }
