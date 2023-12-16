@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
 public class Employee extends User {
-    EmpType empType;
-    ArrayList<Request> missionRequests;
-    ArrayList<Request> permissionRequests;
-    ArrayList<LeaveRequest> leaveRequests;
+    private EmpType empType;
+    private ArrayList<Request> missionRequests;
+    private ArrayList<Request> permissionRequests;
+    private ArrayList<LeaveRequest> leaveRequests;
     public Employee(String username, String password, User.utype userType, EmpType empType,
             ArrayList<Request> missionRequests, ArrayList<Request> permissionRequests,
             ArrayList<LeaveRequest> leaveRequests) {

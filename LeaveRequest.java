@@ -1,10 +1,10 @@
 import java.time.Period;
 
 public class LeaveRequest extends Request {
-    Period duration;
+    private Period duration;
     //check enum if correct
     public enum LeaveType{sickleave, vacation, urgent};
-    LeaveType leaveType;
+    private LeaveType leaveType;
     public LeaveRequest(Employee employee, String reason, Request.Approval approval, Period duration,
             LeaveRequest.LeaveType leaveType) {
         super(employee, reason, approval);

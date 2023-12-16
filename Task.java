@@ -1,18 +1,18 @@
 import java.time.LocalDate;
 
 public class Task implements LoadSave {
-    String code;
-    String title;
-    String description;
-    Employee assignedEmployee;
-    String taskPhase;
-    Project project;
+    private String code;
+    private String title;
+    private String description;
+    private Employee assignedEmployee;
+    private String taskPhase;
+    private Project project;
     public enum Priority{easy,normal,high};
-    Priority priority;
-    Employee creator;
-    LocalDate startDate;
-    LocalDate endDate;
-    double EST;
+    private Priority priority;
+    private Employee creator;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private double EST;
     public Task(String code, String title, String description, Employee assignedEmployee, String taskPhase,
             Project project, Task.Priority priority, Employee creator, LocalDate startDate, LocalDate endDate,
             double eST) {

@@ -2,9 +2,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class TimeCard implements LoadSave {
-    Employee employee;
-    LocalDateTime attendance;
-    LocalTime departure;
+    private Employee employee;
+    private LocalDateTime attendance;
+    private LocalTime departure;
     
     public TimeCard(Employee employee, LocalDateTime attendance, LocalTime departure) {
         this.employee = employee;

@@ -1,7 +1,7 @@
 import java.io.IOException;
 
 public abstract class Module {
-    User currentUser;
+    protected User currentUser;
     
     public abstract void startModule() throws IOException;
 }

@@ -3,10 +3,10 @@ import java.time.LocalDateTime;
 
 public class TaskLog implements LoadSave {
     //include datetime package
-    LocalDateTime fromTime;
-    LocalDateTime toTime;
-    Employee assignedEmployee;
-    Task task;
+    private LocalDateTime fromTime;
+    private LocalDateTime toTime;
+    private Employee assignedEmployee;
+    private Task task;
     public TaskLog(LocalDateTime fromTime, LocalDateTime toTime, Employee assignedEmployee, Task task) {
         this.fromTime = fromTime;
         this.toTime = toTime;
