@@ -244,13 +244,10 @@ public class EmployeeModule extends Module {
                             "║                           These are your opened requests                            ║\n" +
                             "║╒═══════════════════════════════════════════════════════════════════════════════════╕║\n" +
                             "║│                                                                                   │║");
-            for(int i = 0 , j = 0; i < Application.requestDataHandler.getLength(); i++, j++){
-                Employee employee = Application.requestDataHandler.get(i).getEmployee();
-                if (currentEmployee.getUsername().equals(employee.getUsername())) {
-                    System.out.println("|| "+(j+1) +") " + Application.requestDataHandler.get(i).toString());
+            for(int i = 0 , j = 0; i < currentEmployee.getPermissionRequests().size(); i++, j++){
+                    System.out.println("|| "+(j+1) +") " + currentEmployee.getPermissionRequests().get(i).getReason()+ "  " + "Approval: " + currentEmployee.getPermissionRequests().get(i).getApproval());
                     j++;
                     System.out.println("║╞═══════════════════════════════════════════════════════════════════════════════════╡║");
-                }
             };
             System.out.println("╚╧═══════════════════════════════════════════════════════════════════════════════════╧╝");
 
@@ -294,7 +291,7 @@ public class EmployeeModule extends Module {
         System.out.print("\033[H\033[2J"); System.out.flush();
 
         while(!exit){
-            Request.Approval approval = null;
+            Request.Approval approval = Request.Approval.pending;
                     System.out.print("╔═════════════════════════════════════════════════════════════════════════════════════╗\n" +
                             "║                          🯇 Please Enter the reason for the request                  ║\n" +
                             "║╒═══════════════════════════════════════════════════════════════════════════════════╕║\n" +
@@ -308,7 +305,9 @@ public class EmployeeModule extends Module {
             System.out.println("");
             try {
                 Request newrequest = new Request(currentEmployee, reason, approval);
+                currentEmployee.getPermissionRequests().add(newrequest);
                 Application.requestDataHandler.add(newrequest);
+                Application.employeeDataHandler.update(Application.employeeDataHandler.getIndex(currentEmployee), currentEmployee);
             } catch (IOException e) {
                     System.out.println("\u001B[41m" + "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m" +
                     "\u001B[41m"+"║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Error occured while writing to request 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 ║"+"\u001B[0m" +
