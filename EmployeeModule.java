@@ -5,10 +5,6 @@ import java.time.LocalTime;
 import java.time.Period;
 import java.util.InputMismatchException;
 
-
-// TODO: use Application.inputDouble
-// TODO: use Application.inputInt
-
 public class EmployeeModule extends Module {
     private Employee currentEmployee;
 
@@ -486,8 +482,7 @@ public class EmployeeModule extends Module {
             System.out.println("╠╧═══════════════════════════════════════════════════════════════════════════════════╧╣");
             System.out.println("║ Please enter the ID of the request you want to manage: (0 to exit)                  ║");
             try{
-                System.out.print("║ ID: ");
-                int ID = Application.input.nextInt()-1;
+                int ID = Application.inputInt("║ ID: ")-1;
                 if(ID == -1){
                     exit = true;
                     break;
@@ -521,7 +516,7 @@ public class EmployeeModule extends Module {
                             "║│2)│Return to menu.                                                                 │║ \n" +
                             "╠╧══╧════════════════════════════════════════════════════════════════════════════════╧╣ \n" +
                             "║ Please enter your choice: ");
-            int choice = Application.input.nextInt();
+            int choice = Application.inputInt("");
             switch (choice) {
                 case 1:
                     System.out.print("║ Please enter the new reason for your request: ");
