@@ -121,34 +121,33 @@ public class TaskModule extends Module {
                 }
 
             } else {
-                System.out.println(
-                        "║╭╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╮║ █\n" +
-                                "║│                                  🯅 Position: Employee                             │║ █\n"
-                                +
-                                "║╰╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╯║ █\n"
-                                +
-                                "║                     🯇 Please choose one of the following options:🯈                  ║ █\n"
-                                +
-                                "║╒══╤════════════════════════════════════════════════════════════════════════════════╕║ █\n"
-                                +
-                                "║│1)│View tasks.                                                                     │║ █\n"
-                                +
-                                "║│2)│Show calendar.                                                                  │║ █\n"
-                                +
-                                "║│3)│Go back.                                                                        │║ █\n"
-                                +
-                                "╚╧══╧════════════════════════════════════════════════════════════════════════════════╧╝ █\n"
-                                +
-                                " ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇█\n");
-                System.out.print("Your choice:🮶 ");
-
-                choice = Application.input.nextInt();
                 exit = false;
                 while (!exit) {
+                    System.out.println(
+                            "║╭╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╮║ █\n"
+                                    +
+                                    "║│                                  🯅 Position: Employee                             │║ █\n"
+                                    +
+                                    "║╰╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╯║ █\n"
+                                    +
+                                    "║                     🯇 Please choose one of the following options:🯈                  ║ █\n"
+                                    +
+                                    "║╒══╤════════════════════════════════════════════════════════════════════════════════╕║ █\n"
+                                    +
+                                    "║│1)│View tasks.                                                                     │║ █\n"
+                                    +
+                                    "║│2)│Show calendar.                                                                  │║ █\n"
+                                    +
+                                    "║│3)│Go back.                                                                        │║ █\n"
+                                    +
+                                    "╚╧══╧════════════════════════════════════════════════════════════════════════════════╧╝ █\n"
+                                    +
+                                    " ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇█\n");
+
+                    choice = Application.inputInt("Your choice:🮶 ");
                     switch (choice) {
                         case 1:
                             try {
-                                viewTasks();
                                 viewTasksMenu();
                             } catch (IOException e) {
                                 System.out.println("\u001B[41m"
@@ -215,7 +214,7 @@ public class TaskModule extends Module {
         else {
             for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
                 Task task = Application.taskDataHandler.get(i);
-                if (task.assignedEmployee == currentEmployee)
+                if (task.getAssignedEmployee().toString().equals(currentEmployee.toString()))
                     System.out.println("║│ Code:" + task.getCode() + "│Title: " + task.getTitle());
             }
         }
@@ -394,7 +393,6 @@ public class TaskModule extends Module {
                     updateTask();
                     break;
 
-
                 default:
                     System.out.println("Invalid choice, please try again.");
                     break;
@@ -416,15 +414,14 @@ public class TaskModule extends Module {
                 taskCode = Application.input.next().trim();
                 Application.input.nextLine();
                 for (int i = 0; i < Application.taskDataHandler.getLength(); i++)
-                if (Application.taskDataHandler.get(i).getCode().equals(taskCode)) {
-                    System.err.println("Code already exists!");
-                    codeExist = true;
-                    break;
-                }
-                if(!codeExist)
+                    if (Application.taskDataHandler.get(i).getCode().equals(taskCode)) {
+                        System.err.println("Code already exists!");
+                        codeExist = true;
+                        break;
+                    }
+                if (!codeExist)
                     break;
             }
-
 
             // title
             System.out.print("Title: ");
@@ -487,7 +484,7 @@ public class TaskModule extends Module {
             }
 
             // date & EST & task creation
-            
+
             while (true) {
                 try {
 
@@ -509,7 +506,7 @@ public class TaskModule extends Module {
 
                     // TODO: EXECPTION ERROR
                     double taskEST;
-                    //taskEST = Duration.between(startDate, endDate).toDays() * 8 * (5 / 7);
+                    // taskEST = Duration.between(startDate, endDate).toDays() * 8 * (5 / 7);
                     taskEST = 0;
                     // Task Creation
                     if (endDate.compareTo(startDate) > 0) {
@@ -537,7 +534,7 @@ public class TaskModule extends Module {
             String taskCode = Application.input.next();
             Application.input.nextLine();
             boolean found = false;
-            if( taskCode.equals("0"))
+            if (taskCode.equals("0"))
                 break;
 
             for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
@@ -563,8 +560,7 @@ public class TaskModule extends Module {
     }
 
     public void updateTask() throws IOException {
-        while(true)
-        {
+        while (true) {
             viewTasks();
             System.out.println("0)Go Back");
             System.out.print("Choice: ");
@@ -577,16 +573,16 @@ public class TaskModule extends Module {
                     break;
                 }
             }
-            
-            if(taskCode.equals("0"))
+
+            if (taskCode.equals("0"))
                 break;
             if (task == null)
                 System.out.println("Task Code Doesn't exist!");
-    
+
             else {
-    
+
                 // update task menu
-                
+
                 boolean exit = false;
                 while (!exit) {
                     viewTask(task);
@@ -671,16 +667,23 @@ public class TaskModule extends Module {
     }
 
     public void showCalender() {
+        boolean check = false;
         System.out.println("\n-----------------");
         for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
             Task task = Application.taskDataHandler.get(i);
             if (task.project.toString().equals(project.toString())) {
+                check = true;
                 System.out.println("Task: " + task.getTitle());
                 System.out.println("Task phase: " + task.getTaskPhase());
                 System.out.println("Assigned employee: " + task.getAssignedEmployee().getUsername());
                 System.out.println("-----------------\n");
             }
         }
+        if (!check) {
+            System.out.println("There are no tasks in this project");
+        }
+        System.out.print("Press Enter to continue: ");
+        Application.input.nextLine();
     }
 
 }

@@ -35,34 +35,38 @@ public class Application {
 		String username = "";
 		String pass = "";
 
-		System.out.print("\033[H\033[2J"); System.out.flush();
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
 
 		// credentials input
-		username= inputString(
-			//prompt
-			"╔═════════════════════════════════════════════════════════════════════════════════════╗\n"+
-			"║                     🯇 Please Enter the Username and password🯈   	                 ║\n"+
-			"║╒═══════════════════════════════════════════════════════════════════════════════════╕║\n"+
-			"║│🯅 🯆 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🮲🮳 🯇 🯉 🯉 🯉 🯉 🯉 🯉 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 │║\n"+
-			"╠╧═══════════════════════════════════════════════════════════════════════════════════╧╣\n"+
-			"║ Username: ",
-			//err message
-			"\u001B[41m╠═════════════════════════════════════════════════════════════════════════════════════╣\u001B[0m\n"+
-			"\u001B[41m║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Username cannot be empty my bro! 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 ║\u001B[0m\n"+
-			"\u001B[41m╠═════════════════════════════════════════════════════════════════════════════════════╣\u001B[0m\n"
-		);
-		if(username.equals("exit"))
+		username = inputString(
+				// prompt
+				"╔═════════════════════════════════════════════════════════════════════════════════════╗\n" +
+						"║                     🯇 Please Enter the Username and password🯈   	                 ║\n" +
+						"║╒═══════════════════════════════════════════════════════════════════════════════════╕║\n" +
+						"║│🯅 🯆 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🮲🮳 🯇 🯉 🯉 🯉 🯉 🯉 🯉 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 │║\n"
+						+
+						"╠╧═══════════════════════════════════════════════════════════════════════════════════╧╣\n" +
+						"║ Username: ",
+				// err message
+				"\u001B[41m╠═════════════════════════════════════════════════════════════════════════════════════╣\u001B[0m\n"
+						+
+						"\u001B[41m║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Username cannot be empty my bro! 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 ║\u001B[0m\n"
+						+
+						"\u001B[41m╠═════════════════════════════════════════════════════════════════════════════════════╣\u001B[0m\n");
+		if (username.equals("exit"))
 			return;
 
-		pass= inputString(
-			//prompt
-			"║ Password: ",
-			//err message
-			"\u001B[41m╠═════════════════════════════════════════════════════════════════════════════════════╣\u001B[0m\n"+
-			"\u001B[41m║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Passwords cannot be empty my bro! 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀║\u001B[0m\n"+
-			"\u001B[41m╠═════════════════════════════════════════════════════════════════════════════════════╣\u001B[0m\n"
-		);
-		if(pass.equals("exit"))
+		pass = inputString(
+				// prompt
+				"║ Password: ",
+				// err message
+				"\u001B[41m╠═════════════════════════════════════════════════════════════════════════════════════╣\u001B[0m\n"
+						+
+						"\u001B[41m║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Passwords cannot be empty my bro! 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀║\u001B[0m\n"
+						+
+						"\u001B[41m╠═════════════════════════════════════════════════════════════════════════════════════╣\u001B[0m\n");
+		if (pass.equals("exit"))
 			return;
 
 		// check user's credentials
@@ -91,8 +95,7 @@ public class Application {
 		if (user.getUserType() == User.utype.admin) {
 			currentModule = new AdminModule(user);
 			currentModule.startModule();
-		}
-		else {
+		} else {
 			Employee employee = null;
 
 			for (int i = 0; i < employeeDataHandler.getLength(); i++) {
@@ -106,35 +109,45 @@ public class Application {
 				int choice;
 				boolean exit = false;
 				while (!exit) {
-					choice= inputInt(
-						"╠═════════════════════════════════════════════════════════════════════════════════════╣\n"+
-						"║                     🯇 Please choose one of the following options:🯈                  ║\n"+
-						"║╒══╤════════════════════════════════════════════════════════════════════════════════╕║\n"+
-						"║│1)│Employee Module.                                                                │║\n"+
-						"║│2)│Task Module.                                                                    │║\n"+
-						"║│3)│Go back.                                                                        │║\n"+
-						"╠╧══╧════════════════════════════════════════════════════════════════════════════════╧╣\n"+
-						"║ Please enter your choice: "
-					);
+					choice = inputInt(
+							"╠═════════════════════════════════════════════════════════════════════════════════════╣\n"
+									+
+									"║                     🯇 Please choose one of the following options:🯈                  ║\n"
+									+
+									"║╒══╤════════════════════════════════════════════════════════════════════════════════╕║\n"
+									+
+									"║│1)│Employee Module.                                                                │║\n"
+									+
+									"║│2)│Task Module.                                                                    │║\n"
+									+
+									"║│3)│Go back.                                                                        │║\n"
+									+
+									"╠╧══╧════════════════════════════════════════════════════════════════════════════════╧╣\n"
+									+
+									"║ Please enter your choice: ");
 					switch (choice) {
 						case 1:
-							currentModule= new EmployeeModule(employee);
+							currentModule = new EmployeeModule(employee);
 							currentModule.startModule();
 							break;
 						case 2:
 							boolean projexit = false;
 							while (!projexit) {
-								Project[] projectArr = new Project[projectDataHandler.getLength()];
 
-								choice= inputInt(
-									"╔═════════════════════════════════════════════════════════════════════════════════════╗\n"+
-									"║                     🯇 Please choose one of the following options:🯈                  ║\n"+
-									"║╒══╤════════════════════════════════════════════════════════════════════════════════╕║\n"+
-									"║│1)│Choose Project.                                                                 │║\n"+
-									"║│2)│Go back.                                                                        │║\n"+
-									"╠╧══╧════════════════════════════════════════════════════════════════════════════════╧╣\n"+
-									"║ Please enter your choice: "
-								);
+								choice = inputInt(
+										"╔═════════════════════════════════════════════════════════════════════════════════════╗\n"
+												+
+												"║                     🯇 Please choose one of the following options:🯈                  ║\n"
+												+
+												"║╒══╤════════════════════════════════════════════════════════════════════════════════╕║\n"
+												+
+												"║│1)│Choose Project.                                                                 │║\n"
+												+
+												"║│2)│Go back.                                                                        │║\n"
+												+
+												"╠╧══╧════════════════════════════════════════════════════════════════════════════════╧╣\n"
+												+
+												"║ Please enter your choice: ");
 								switch (choice) {
 									case 1:
 										System.out.print(
@@ -145,24 +158,20 @@ public class Application {
 														"║╒══╤════════════════════════════════════════════════════════════════════════════════╕║ \n"
 														+
 														"║│0)│Go back.                                                                        │║ \n");
-										for (int i = 0, j = 0; i < projectDataHandler.getLength(); i++) {
+										for (int i = 0; i < projectDataHandler.getLength(); i++) {
 
-											if (projectDataHandler.get(i).getLeader().toString()
-													.equals(employee.toString())) {
-												projectArr[j] = projectDataHandler.get(i);
-												System.out.print("║│" + (j + 1) + ")│Project:"
-														+ projectArr[j].getName()
-														+ "                                               │║ \n");
-												j++;
-											}
+											System.out.print("║│" + (i + 1) + ")│Project:"
+													+ projectDataHandler.get(i).getName()
+													+ "                                               │║ \n");
+
 										}
-										choice= inputInt(
-											"╠╧══╧════════════════════════════════════════════════════════════════════════════════╧╣\n"+
-											"║ Please enter your choice: "
-										);
+										choice = inputInt(
+												"╠╧══╧════════════════════════════════════════════════════════════════════════════════╧╣\n"
+														+
+														"║ Please enter your choice: ");
 										if (choice == 0)
 											System.out.println("going back....");
-										else if (choice > projectArr.length || choice < 1)
+										else if (choice > projectDataHandler.getLength() || choice < 1)
 											System.out.println("\u001B[41m"
 													+ "╠═════════════════════════════════════════════════════════════════════════════════════╣\n\u001B[0m"
 													+
@@ -172,7 +181,7 @@ public class Application {
 													"\n" + "\u001B[41m"
 													+ "╠═════════════════════════════════════════════════════════════════════════════════════╣\u001B[0m\n");
 										else {
-											currentModule = new TaskModule(employee, projectArr[choice - 1]);
+											currentModule = new TaskModule(employee, projectDataHandler.get(choice - 1));
 											currentModule.startModule();
 											projexit = true;
 										}
@@ -228,7 +237,8 @@ public class Application {
 		int choice;
 		boolean exit = false;
 
-		System.out.print("\033[H\033[2J"); System.out.flush();
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
 
 		while (!exit) {
 			System.out.println(
@@ -280,19 +290,14 @@ public class Application {
 		}
 	}
 
-	public static int inputInt(String print)
-	{
+	public static int inputInt(String print) {
 		int value;
-		while(true)
-		{
-			try
-			{
+		while (true) {
+			try {
 				System.out.print(print);
-				value= Integer.parseInt(input.nextLine());
+				value = Integer.parseInt(input.nextLine());
 				break;
-			}
-			catch(NumberFormatException ex)
-			{
+			} catch (NumberFormatException ex) {
 				System.err.println("\033[31mInput must be an integer!\033[0m");
 				continue;
 			}
@@ -300,15 +305,12 @@ public class Application {
 		return value;
 	}
 
-	public static String inputString(String prompt)
-	{
+	public static String inputString(String prompt) {
 		String value;
-		while(true)
-		{
+		while (true) {
 			System.out.print(prompt);
-			value= input.nextLine();
-			if(value.isBlank())
-			{
+			value = input.nextLine();
+			if (value.isBlank()) {
 				System.err.println("\033[31mInput must not be empty!\033[0m");
 				continue;
 			}
@@ -316,16 +318,14 @@ public class Application {
 		}
 		return value;
 	}
-	//Waits for the user to acknowledge message
-	public static String inputString(String prompt, String isBlank_message) throws IOException
-	{
+
+	// Waits for the user to acknowledge message
+	public static String inputString(String prompt, String isBlank_message) throws IOException {
 		String value;
-		while(true)
-		{
+		while (true) {
 			System.out.print(prompt);
-			value= input.nextLine();
-			if(value.isBlank())
-			{
+			value = input.nextLine();
+			if (value.isBlank()) {
 				System.err.print(isBlank_message);
 				input.nextLine();
 				continue;
@@ -334,43 +334,38 @@ public class Application {
 		}
 		return value;
 	}
-	public static String inputStringln(String prompt)
-	{
-		return inputString(prompt+"\n");
+
+	public static String inputStringln(String prompt) {
+		return inputString(prompt + "\n");
 	}
 
-	//public static int inputInt(String print) {
-	//	int value;
-	//	while (true) {
-	//		try {
-	//			System.out.print(print);
-	//			value = input.nextInt();
-	//			break;
-	//		} catch (InputMismatchException ex) {
-	//			System.err.print("Input must be an integer!");
-	//			input.next();
-	//		}
-	//	}
-	//	return value;
-	//}
+	// public static int inputInt(String print) {
+	// int value;
+	// while (true) {
+	// try {
+	// System.out.print(print);
+	// value = input.nextInt();
+	// break;
+	// } catch (InputMismatchException ex) {
+	// System.err.print("Input must be an integer!");
+	// input.next();
+	// }
+	// }
+	// return value;
+	// }
 
 	public static int inputIntln(String print) {
 		return inputInt(print + "\n");
 	}
 
-	public static double inputDouble(String print)
-	{
+	public static double inputDouble(String print) {
 		double value;
-		while(true)
-		{
-			try
-			{
+		while (true) {
+			try {
 				System.out.print(print);
-				value= Double.parseDouble(input.nextLine());
+				value = Double.parseDouble(input.nextLine());
 				break;
-			}
-			catch(NumberFormatException ex)
-			{
+			} catch (NumberFormatException ex) {
 				System.err.print("\033[31mInput must be an number!\033[0m");
 				continue;
 			}
@@ -378,20 +373,20 @@ public class Application {
 		return value;
 	}
 
-	//public static double inputDouble(String print) {
-	//	double value;
-	//	while (true) {
-	//		try {
-	//			System.out.println(print);
-	//			value = input.nextDouble();
-	//			break;
-	//		} catch (InputMismatchException ex) {
-	//			System.err.print("Input must be an number!");
-	//			input.next();
-	//		}
-	//	}
-	//	return value;
-	//}
+	// public static double inputDouble(String print) {
+	// double value;
+	// while (true) {
+	// try {
+	// System.out.println(print);
+	// value = input.nextDouble();
+	// break;
+	// } catch (InputMismatchException ex) {
+	// System.err.print("Input must be an number!");
+	// input.next();
+	// }
+	// }
+	// return value;
+	// }
 
 	public static double inputDoubleln(String print) {
 		return inputDouble(print + "\n");
