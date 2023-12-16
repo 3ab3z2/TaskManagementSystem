@@ -666,6 +666,7 @@ public class AdminModule extends Module {
 						}
 						break;
 					}
+					if(nameexit) break;
 					boolean desexit = false;
 					while (!desexit)// project description
 					{
@@ -683,6 +684,7 @@ public class AdminModule extends Module {
 						}
 						break;
 					}
+					if(desexit) break;
 					if (count_employees != 0)// project leader
 					{
 						int leader_idx;
