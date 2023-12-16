@@ -1,8 +1,8 @@
 public class User implements LoadSave {
-    String username;
-    String password;
+    protected String username;
+    protected String password;
     public enum utype{admin,employee};
-    utype userType;
+    protected utype userType;
 
     public User(String username, String password, User.utype userType) {
         this.username = username;

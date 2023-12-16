@@ -1,6 +1,6 @@
 public class EmpType implements LoadSave {
-    String name;
-    boolean isManager;
+    private String name;
+    private boolean isManager;
     public EmpType(String name, boolean isManager) {
         this.name = name;
         this.isManager = isManager;

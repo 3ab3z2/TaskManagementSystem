@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 
 public class Project implements LoadSave {
-    String name;
-    String description;
-    ArrayList<Task> listOfTasks;
-    ArrayList<TaskLog> listOfTaskLogs;
-    Employee Leader;
+    private String name;
+    private String description;
+    private ArrayList<Task> listOfTasks;
+    private ArrayList<TaskLog> listOfTaskLogs;
+    private Employee Leader;
 
     public Project(String name, String description, ArrayList<Task> listOfTasks, ArrayList<TaskLog> listOfTaskLogs,
             Employee leader) {

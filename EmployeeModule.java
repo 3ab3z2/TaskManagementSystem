@@ -10,7 +10,7 @@ import java.util.InputMismatchException;
 // TODO: use Application.inputInt
 
 public class EmployeeModule extends Module {
-    Employee currentEmployee;
+    private Employee currentEmployee;
 
     public EmployeeModule(Employee currentEmployee) throws IOException{
         this.currentEmployee = currentEmployee;

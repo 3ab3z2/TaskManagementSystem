@@ -1,8 +1,8 @@
 public class Request implements LoadSave {
-    Employee employee;
-    String reason;
+    protected Employee employee;
+    protected String reason;
     public enum Approval{pending, rejected, approved};
-    Approval approval;
+    protected Approval approval;
     public Request(Employee employee, String reason, Request.Approval approval) {
         this.employee = employee;
         this.reason = reason;

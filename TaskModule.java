@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 public class TaskModule extends Module {
-    Employee currentEmployee;
-    Project project;
+    private Employee currentEmployee;
+    private Project project;
 
     public TaskModule(Employee currentEmployee, Project project) {
         this.currentEmployee = currentEmployee;
@@ -727,7 +727,7 @@ public class TaskModule extends Module {
         System.out.println("\n-----------------");
         for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
             Task task = Application.taskDataHandler.get(i);
-            if (task.project.toString().equals(project.toString())) {
+            if (task.getProject().toString().equals(project.toString())) {
                 check = true;
                 System.out.println("Task: " + task.getTitle());
                 System.out.println("Task phase: " + task.getTaskPhase());
