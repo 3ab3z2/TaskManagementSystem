@@ -631,7 +631,7 @@ public class AdminModule extends Module {
 			choice = Application.inputInt(
 				"Managing Projects..\n" +
 				"1.Add 2.Update 3.Delete 0.Back\n" +
-				"input>> "
+				"choose>> "
 			);
 			switch(choice)
 			{
@@ -957,206 +957,75 @@ public class AdminModule extends Module {
 	}
 	public void manageEmpType() throws IOException
 	{
-		int choice = 0;
-		boolean exit = false;
-		while (!exit) {
+		int choice= 0;
+		boolean exit_manageEmptype= false;
+		while(!exit_manageEmptype)
+		{
 			System.out.print("\033[H\033[2J");
 			System.out.flush();
-			System.out.print(
-					"Managing Types of Employees..\n" +
-							"1.Add  2.Update  3.Delete  0.Back\n" +
-							"input>> ");
-			try {
-				choice = Integer.parseInt(Application.input.nextLine());
-			} catch (NumberFormatException e) {
-				System.out.println("\033[31mInvalid Operation!\033[0m");
-				continue;
-			}
-			switch (choice) {
-				case 0:
-					exit = true;
-					break;
-				case 1:// Add Employee Type
+			choice= Application.inputInt(
+				"Managing Types of Employees..\n" +
+				"1.Add  2.Update  3.Delete  0.Back\n" +
+				"choose>> "
+			);
+			switch(choice)
+			{
+			case 0://Back
+				exit_manageEmptype= true;
+				break;
+			case 1://Add Employee Type
+				while(true)
 				{
-					EmpType empType = null;
-					String empString = null;
+					EmpType empType= null;
+					String name= "", manager= "";
+					int count_emptypes= Application.empTypeDataHandler.getLength();
+					boolean duplicate= false;
 
-					while (true) {
-						boolean duplicate = false;
-						int count_emptypes = Application.empTypeDataHandler.getLength();
-						System.out.print("New Type of Employee: ");
-						empString = Application.input.nextLine();
-						for (int k = 0; k < count_emptypes; ++k) {
-							EmpType compare = Application.empTypeDataHandler.get(k);
-							if (compare.getName().equals(empString)) {
-								duplicate = true;
-								break;
-							}
-						}
-						if (duplicate) {
-							String retry = Application.inputStringOneWord(
-											"\033[31mType with the same name already exists!\033[0m\n" +
-											"\033[33mTry again? [Y/N]: \033[0m");
-							if (retry.equals("Y") || retry.equals("y"))
-								continue;
-							else {
-								exit = true;
-								break;
-							}
-						}
+					name= Application.inputString("New Type of Employee: ");
+					if(name.equals("exit"))
 						break;
+					for(int k=0;k<count_emptypes;++k)
+					{
+						EmpType compare= Application.empTypeDataHandler.get(k);
+						if(compare.getName().equals(name))
+						{
+							duplicate = true;
+							break;
+						}
 					}
-					System.out.print("Categorize as manager? [y/N]: ");
-					String isManager = Application.input.nextLine();
-					if (isManager.equals("Y") || isManager.equals("y"))
-						empType = new EmpType(empString, true);
+					if(duplicate)
+					{
+						System.out.println("\033[31mType with the same name already exists! Try again or type \"exit\" to go back\033[0m\n");
+						continue;
+					}
+					manager= Application.inputString("Categorize as manager? [y/N]: ");
+					if(manager.equals("exit"))
+						break;
+					if(manager.equals("Y")||manager.equals("y"))
+						empType= new EmpType(name, true);
 					else
-						empType = new EmpType(empString, false);
+						empType= new EmpType(name, false);
 					Application.empTypeDataHandler.add(empType);
 					System.out.print(
-							"\033[32mSuccessfully added employee type \"" + empString + "\"!\033[0m\n" +
-									"Press any key to continue...\n");
-					System.in.read();
+						"\033[32mSuccessfully added employee type \""+name+"\"!\033[0m\n"+
+						"Press enter to continue...\n"
+					);
+					Application.input.nextLine();
+					break;
 				}
-					break;
-				case 2:// Update Employee Type
-					boolean upexit = false;
-					while (!upexit) {
-						EmpType emptype = null;
-						int emptype_idx = -1;
-						int count_emptype = Application.empTypeDataHandler.getLength();
-
-						if (count_emptype == 0) {
-							System.out.print(
-									"\033[33mNo Employee Types Defined Yet!\033[0m\n" +
-											"Press any key to continue...\n");
-							System.in.read();
-							break;
-						}
-						System.out.print("\033[H\033[2J");
-						System.out.flush();
-						System.out.print(
-								"Defined Employee Types:\n" +
-										"IDX\tTYPE\tMANAGER?\n");
-						for (int k = 0; k < count_emptype; ++k) {
-							emptype = Application.empTypeDataHandler.get(k);
-							System.out.printf("%d.\t%s\t%s\n", k + 1, emptype.getName(),
-									emptype.isManager() ? "Yes" : "No");
-						}
-						System.out.println("0. Cancel");
-						while (true) {
-
-							emptype_idx = Application.inputInt("Update>> ") - 1;
-
-							if (emptype_idx == -1) {
-								upexit = true;
-								break;
-							}
-							if (emptype_idx < 0 || emptype_idx >= count_emptype) {
-								System.out.println("\033[31mPlease select a valid number from the type list!\033[0m");
-								continue;
-							}
-							emptype = Application.empTypeDataHandler.get(emptype_idx);
-							boolean upexit_1 = false;
-							while (!upexit_1) {
-								System.out.print("\033[H\033[2J");
-								System.out.flush();
-
-								choice = Application.inputInt(
-										"1. Type    : " + emptype.getName() + "\n" +
-												"2. Manager?: " + (emptype.isManager() ? "Yes" : "No") + "\n" +
-												"0. Cancel\n" +
-												"Modify>> ");
-
-								switch (choice) {
-									case 0:
-										upexit_1 = true;
-										upexit = true;
-										continue;
-									case 1:// Modify Type
-										while (true) {
-											String newtype, oldtype = emptype.getName();
-											int count_employees = Application.employeeDataHandler.getLength();
-											boolean duplicate = false;
-
-											System.out.print("New Type: ");
-											newtype = Application.input.nextLine();
-
-											for (int k = 0; k < count_emptype; ++k) {
-												EmpType compare = Application.empTypeDataHandler.get(k);
-												if (compare.getName().equals(newtype)) {
-													duplicate = true;
-													break;
-												}
-											}
-											if (duplicate) {
-												System.out.print(
-														"\033[31mType with the same name already in exists!\033[0m\n" +
-																"\033[33mTry again? [Y/N]: \033[0m");
-												String retry = Application.input.nextLine();
-												if (retry.equals("Y") || retry.equals("y"))
-													continue;
-												break;
-											}
-											emptype.setName(newtype);
-											Application.empTypeDataHandler.update(emptype_idx, emptype);
-											for (int k = 0; k < count_employees; ++k)// update all employees with this
-																						// type
-											{
-												Employee employee = Application.employeeDataHandler.get(k);
-												if (employee.getEmpType().getName().equals(oldtype)) {
-													employee.setEmpType(emptype);
-													Application.employeeDataHandler.update(k, employee);
-													System.out.printf(
-															"\033[33m\"%s\" has been promoted to \"%s\"!\033[0m\n",
-															employee.getUsername(), newtype);
-												}
-											}
-											System.out.print(
-													"\033[33mSuccessfully updated employee type!\033[0m\n" +
-															"Press any key to continue...\n");
-											System.in.read();
-											break;
-										}
-										break;
-									case 2:// Modify Managerial Position
-									{
-										String isManager = null;
-										System.out.print("Categorize as manager? [y/N]: ");
-										isManager = Application.input.nextLine();
-										if (isManager.equals("Y") || isManager.equals("y"))
-											emptype.setManager(true);
-										else
-											emptype.setManager(false);
-										Application.empTypeDataHandler.update(emptype_idx, emptype);
-										System.out.print(
-												"\033[32mSuccessfully modified managerial position!\033[0m\n" +
-														"Press any key to continue...\n");
-										System.in.read();
-									}
-										break;
-									default:
-										System.out.println("\033[31mInvalid Operation!\033[0m");
-										break;
-								}
-								break;
-							}
-							break;
-						}
-					}
-					break;
-				case 3:// Delete Employee Type
-				{
+				break;
+			case 2://Update Employee Type
+				boolean upexit = false;
+				while (!upexit) {
 					EmpType emptype = null;
-					int emptype_idx = -1,
-							count_emptypes = Application.empTypeDataHandler.getLength(),
-							count_employees = Application.employeeDataHandler.getLength();// for nullifying
+					int emptype_idx = -1;
+					int count_emptype = Application.empTypeDataHandler.getLength();
 
-					if (count_emptypes == 0) {
+					if (count_emptype == 0) {
 						System.out.print(
 								"\033[33mNo Employee Types Defined Yet!\033[0m\n" +
-										"Enter any key to continue...\n");
-						Application.input.nextLine();
+										"Press any key to continue...\n");
+						System.in.read();
 						break;
 					}
 					System.out.print("\033[H\033[2J");
@@ -1164,47 +1033,173 @@ public class AdminModule extends Module {
 					System.out.print(
 							"Defined Employee Types:\n" +
 									"IDX\tTYPE\tMANAGER?\n");
-					for (int k = 0; k < count_emptypes; ++k) {
+					for (int k = 0; k < count_emptype; ++k) {
 						emptype = Application.empTypeDataHandler.get(k);
 						System.out.printf("%d.\t%s\t%s\n", k + 1, emptype.getName(),
 								emptype.isManager() ? "Yes" : "No");
 					}
 					System.out.println("0. Cancel");
 					while (true) {
-						
-							emptype_idx = Application.inputInt("Delete>> ") - 1;
-						
-						if (emptype_idx == -1)
+
+						emptype_idx = Application.inputInt("Update>> ") - 1;
+
+						if (emptype_idx == -1) {
+							upexit = true;
 							break;
-						if (emptype_idx < 0 || emptype_idx >= count_emptypes) {
+						}
+						if (emptype_idx < 0 || emptype_idx >= count_emptype) {
 							System.out.println("\033[31mPlease select a valid number from the type list!\033[0m");
 							continue;
 						}
 						emptype = Application.empTypeDataHandler.get(emptype_idx);
-						System.out.printf("Are you sure you want to \033[31mDELETE\033[0m \"%s\" type? [y/N]: ",
-								emptype.getName());
-						String confirm = Application.input.nextLine();
-						if (!confirm.equals("Y") && !confirm.equals("y"))// Don't Delete
-							break;
-						for (int k = 0; k < count_employees; ++k)// nullify all employees with this type
-						{
-							Employee employee = Application.employeeDataHandler.get(k);
-							if (employee.getEmpType() == emptype)
-							{
-								employee.setEmpType(null);
-								Application.employeeDataHandler.update(k, employee);
-								System.out.printf("\033[33mType has been removed from %s\033[0m\n",
-										employee.getUsername());
+						boolean upexit_1 = false;
+						while (!upexit_1) {
+							System.out.print("\033[H\033[2J");
+							System.out.flush();
+
+							choice = Application.inputInt(
+									"1. Type    : " + emptype.getName() + "\n" +
+											"2. Manager?: " + (emptype.isManager() ? "Yes" : "No") + "\n" +
+											"0. Cancel\n" +
+											"Modify>> ");
+
+							switch (choice) {
+								case 0:
+									upexit_1 = true;
+									upexit = true;
+									continue;
+								case 1:// Modify Type
+									while (true) {
+										String newtype, oldtype = emptype.getName();
+										int count_employees = Application.employeeDataHandler.getLength();
+										boolean duplicate = false;
+
+										System.out.print("New Type: ");
+										newtype = Application.input.nextLine();
+
+										for (int k = 0; k < count_emptype; ++k) {
+											EmpType compare = Application.empTypeDataHandler.get(k);
+											if (compare.getName().equals(newtype)) {
+												duplicate = true;
+												break;
+											}
+										}
+										if (duplicate) {
+											System.out.print(
+													"\033[31mType with the same name already in exists!\033[0m\n" +
+															"\033[33mTry again? [Y/N]: \033[0m");
+											String retry = Application.input.nextLine();
+											if (retry.equals("Y") || retry.equals("y"))
+												continue;
+											break;
+										}
+										emptype.setName(newtype);
+										Application.empTypeDataHandler.update(emptype_idx, emptype);
+										for (int k = 0; k < count_employees; ++k)// update all employees with this
+																					// type
+										{
+											Employee employee = Application.employeeDataHandler.get(k);
+											if (employee.getEmpType().getName().equals(oldtype)) {
+												employee.setEmpType(emptype);
+												Application.employeeDataHandler.update(k, employee);
+												System.out.printf(
+														"\033[33m\"%s\" has been promoted to \"%s\"!\033[0m\n",
+														employee.getUsername(), newtype);
+											}
+										}
+										System.out.print(
+												"\033[33mSuccessfully updated employee type!\033[0m\n" +
+														"Press any key to continue...\n");
+										System.in.read();
+										break;
+									}
+									break;
+								case 2:// Modify Managerial Position
+								{
+									String isManager = null;
+									System.out.print("Categorize as manager? [y/N]: ");
+									isManager = Application.input.nextLine();
+									if (isManager.equals("Y") || isManager.equals("y"))
+										emptype.setManager(true);
+									else
+										emptype.setManager(false);
+									Application.empTypeDataHandler.update(emptype_idx, emptype);
+									System.out.print(
+											"\033[32mSuccessfully modified managerial position!\033[0m\n" +
+													"Press any key to continue...\n");
+									System.in.read();
+								}
+									break;
+								default:
+									System.out.println("\033[31mInvalid Operation!\033[0m");
+									break;
 							}
+							break;
 						}
-						Application.empTypeDataHandler.delete(emptype_idx);// delete type
-						System.out.println("Press any key to continue...");
-						System.in.read();
+						break;
 					}
 				}
+				break;
+			case 3://Delete Employee Type
+			{
+				EmpType emptype = null;
+				int emptype_idx = -1,
+						count_emptypes = Application.empTypeDataHandler.getLength(),
+						count_employees = Application.employeeDataHandler.getLength();// for nullifying
+
+				if (count_emptypes == 0) {
+					System.out.print(
+							"\033[33mNo Employee Types Defined Yet!\033[0m\n" +
+									"Enter any key to continue...\n");
+					Application.input.nextLine();
 					break;
-				default:
-					System.out.println("\033[31mInvalid Operation!\033[0m");
+				}
+				System.out.print("\033[H\033[2J");
+				System.out.flush();
+				System.out.print(
+						"Defined Employee Types:\n" +
+								"IDX\tTYPE\tMANAGER?\n");
+				for (int k = 0; k < count_emptypes; ++k) {
+					emptype = Application.empTypeDataHandler.get(k);
+					System.out.printf("%d.\t%s\t%s\n", k + 1, emptype.getName(),
+							emptype.isManager() ? "Yes" : "No");
+				}
+				System.out.println("0. Cancel");
+				while (true) {
+					
+						emptype_idx = Application.inputInt("Delete>> ") - 1;
+					
+					if (emptype_idx == -1)
+						break;
+					if (emptype_idx < 0 || emptype_idx >= count_emptypes) {
+						System.out.println("\033[31mPlease select a valid number from the type list!\033[0m");
+						continue;
+					}
+					emptype = Application.empTypeDataHandler.get(emptype_idx);
+					System.out.printf("Are you sure you want to \033[31mDELETE\033[0m \"%s\" type? [y/N]: ",
+							emptype.getName());
+					String confirm = Application.input.nextLine();
+					if (!confirm.equals("Y") && !confirm.equals("y"))// Don't Delete
+						break;
+					for (int k = 0; k < count_employees; ++k)// nullify all employees with this type
+					{
+						Employee employee = Application.employeeDataHandler.get(k);
+						if (employee.getEmpType() == emptype)
+						{
+							employee.setEmpType(null);
+							Application.employeeDataHandler.update(k, employee);
+							System.out.printf("\033[33mType has been removed from %s\033[0m\n",
+									employee.getUsername());
+						}
+					}
+					Application.empTypeDataHandler.delete(emptype_idx);// delete type
+					System.out.println("Press any key to continue...");
+					System.in.read();
+				}
+			}
+				break;
+			default:
+				System.out.println("\033[31mInvalid Operation!\033[0m");
 			}
 		}
 	}
