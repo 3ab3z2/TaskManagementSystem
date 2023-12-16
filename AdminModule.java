@@ -1141,73 +1141,72 @@ public class AdminModule extends Module {
 				}
 				break;
 			case 3://Delete Employee Type
-			{
-				EmpType emptype = null;
-				int emptype_idx = -1,
-						count_emptypes = Application.empTypeDataHandler.getLength(),
-						count_employees = Application.employeeDataHandler.getLength();// for nullifying
-
-				if (count_emptypes == 0) {
-					System.out.print(
-							"\033[33mNo Employee Types Defined Yet!\033[0m\n" +
-									"Enter any key to continue...\n");
-					Application.input.nextLine();
-					break;
-				}
-				System.out.print("\033[H\033[2J");
-				System.out.flush();
-				System.out.print(
-						"Defined Employee Types:\n" +
-								"IDX\tTYPE\tMANAGER?\n");
-				for (int k = 0; k < count_emptypes; ++k) {
-					emptype = Application.empTypeDataHandler.get(k);
-					System.out.printf("%d.\t%s\t%s\n", k + 1, emptype.getName(),
-							emptype.isManager() ? "Yes" : "No");
-				}
-				System.out.println("0. Cancel");
-				while (true) {
-					
-						emptype_idx = Application.inputInt("Delete>> ") - 1;
-					
-					if (emptype_idx == -1)
+				while(true)
+				{
+					EmpType emptype= null;
+					int
+						emptype_idx= -1,
+						count_emptypes= Application.empTypeDataHandler.getLength(),
+						count_employees= Application.employeeDataHandler.getLength();//for nullifying
+	
+					if(count_emptypes==0)
+					{
+						System.out.print(
+							"\033[33mNo Employee Types Defined!\033[0m\n"+
+							"Press enter to continue...\n"
+						);
+						Application.input.nextLine();
 						break;
-					if (emptype_idx < 0 || emptype_idx >= count_emptypes) {
+					}
+					System.out.print("\033[H\033[2J"); System.out.flush();
+					System.out.print(
+						"Defined Employee Types:\n"+
+						"IDX\tTYPE\tMANAGER?\n"
+					);
+					for(int k=0;k<count_emptypes;++k)
+					{
+						emptype= Application.empTypeDataHandler.get(k);
+						System.out.printf("%d.\t%s\t%s\n", k+1, emptype.getName(), emptype.isManager()?"Yes":"No");
+					}
+					System.out.println("0. Cancel");
+					emptype_idx= Application.inputInt("Delete>> ")-1;
+					if(emptype_idx==-1)
+						break;
+					if(emptype_idx<0||emptype_idx>=count_emptypes)
+					{
 						System.out.println("\033[31mPlease select a valid number from the type list!\033[0m");
 						continue;
 					}
-					emptype = Application.empTypeDataHandler.get(emptype_idx);
-					System.out.printf("Are you sure you want to \033[31mDELETE\033[0m \"%s\" type? [y/N]: ",
-							emptype.getName());
-					String confirm = Application.input.nextLine();
-					if (!confirm.equals("Y") && !confirm.equals("y"))// Don't Delete
-						break;
-					for (int k = 0; k < count_employees; ++k)// nullify all employees with this type
+					emptype= Application.empTypeDataHandler.get(emptype_idx);
+					String confirm= Application.inputString("Are you sure you want to \033[31mDELETE\033[0m \""+emptype.getName()+"\" type? [y/N]: ");
+					if(!confirm.equals("Y") && !confirm.equals("y"))// Don't Delete
+						continue;
+					for(int k=0;k<count_employees;++k)// nullify all employees with this type
 					{
-						Employee employee = Application.employeeDataHandler.get(k);
-						if (employee.getEmpType() == emptype)
+						Employee employee= Application.employeeDataHandler.get(k);
+						if(employee.getEmpType()==emptype)
 						{
 							employee.setEmpType(null);
 							Application.employeeDataHandler.update(k, employee);
-							System.out.printf("\033[33mType has been removed from %s\033[0m\n",
-									employee.getUsername());
+							System.out.printf("\033[33m\'%s\' position has been nullified\033[0m\n", employee.getUsername());
 						}
 					}
-					Application.empTypeDataHandler.delete(emptype_idx);// delete type
-					System.out.println("Press any key to continue...");
-					System.in.read();
+					Application.empTypeDataHandler.delete(emptype_idx);//delete type
+					System.out.println("Press enter to continue...");
+					Application.input.nextLine();
 				}
-			}
 				break;
 			default:
 				System.out.println("\033[31mInvalid Operation!\033[0m");
 			}
 		}
 	}
-
-	public void manageTaskPhases() throws IOException {
+	public void manageTaskPhases() throws IOException
+	{
 		Task task = null;
-		int task_idx = -1,
-				count_tasks = Application.taskDataHandler.getLength();
+		int
+			task_idx = -1,
+			count_tasks = Application.taskDataHandler.getLength();
 
 		if (count_tasks == 0) {
 			System.out.print(

@@ -1,5 +1,4 @@
 IT	false
 HR	true
 PM	true
-test	true
 Janitorial	false
