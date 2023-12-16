@@ -1,4 +1,4 @@
-IT	false
-HR	true
-PM	true
+IT	true
+Marketing	true
+PM	false
 Janitorial	false
