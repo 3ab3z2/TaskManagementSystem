@@ -905,7 +905,7 @@ public class AdminModule extends Module {
 					if (count_projects == 0) {
 						System.out.println("\033[33mNo Projects Found!\033[0m\nEnter any key to continue...");
 						Application.input.nextLine();
-						continue menu_manageProjects;
+						break;
 					}
 					System.out.print("\033[H\033[2J");
 					System.out.flush();
