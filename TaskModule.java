@@ -3,6 +3,7 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 
 public class TaskModule extends Module {
     private Employee currentEmployee;
@@ -229,9 +230,9 @@ public class TaskModule extends Module {
     }
 
     public void viewTasksMenu() throws IOException {
-        System.out.println("0)Go back");
-        viewTasks();
         while (true) {
+            viewTasks();
+            System.out.println("0)Go back");
             String taskCode = Application.inputStringOneWord("Press 0 to go back or enter Code: ", "Input cannot be empty!\n");
             boolean found = false;
             for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
@@ -269,11 +270,11 @@ public class TaskModule extends Module {
 
     public void viewTaskMenu(Task task) throws IOException {
         boolean exit = false;
-        viewTask(task);
-        System.out.println("0)Go Back");
-        System.out.println("1)View tasklogs");
-        System.out.println("2)Create tasklog");
         while (!exit) {
+            viewTask(task);
+            System.out.println("1)View tasklogs");
+            System.out.println("2)Create tasklog");
+            System.out.println("0)Go Back");
             int choice = Application.inputInt("Choice: ");
             switch (choice) {
                 case 0:
@@ -282,14 +283,13 @@ public class TaskModule extends Module {
                     break;
 
                 case 1:
-                    TaskLog[] tasklogArr = new TaskLog[Application.taskLogDataHandler.getLength()];
-                    for (int i = 0, j = 0; i < Application.taskLogDataHandler.getLength(); i++)
-                        if (Application.taskLogDataHandler.get(i).getTask().toString().equals(task.toString())) {
-                            tasklogArr[j] = Application.taskLogDataHandler.get(i);
-                            j++;
+                    ArrayList<TaskLog> taskLogslist = new ArrayList<>();
+                    for (int i = 0; i < Application.taskLogDataHandler.getLength(); i++)
+                        if (Application.taskLogDataHandler.get(i).getTask() == task) {
+                           taskLogslist.add(Application.taskLogDataHandler.get(i));
                         }
 
-                    viewTasklogsMenu(task, tasklogArr);
+                    viewTasklogsMenu(task, taskLogslist);
                     break;
 
                 case 2:
@@ -339,25 +339,26 @@ public class TaskModule extends Module {
         return null;
     }
 
-    public void viewTasklogs(TaskLog[] tasklogs) {
-        for (int i = 0; i < tasklogs.length; i++)
+    public void viewTasklogs(ArrayList<TaskLog> tasklogs) {
+        for (int i = 0; i < tasklogs.size(); i++)
             System.out.println(
-                    (i + 1) + ")From time: " + Application.taskLogDataHandler.get(i).getFromTime().toString()
-                            + " To time: " + Application.taskLogDataHandler.get(i).getToTime().toString());
+                    (i + 1) + ")From time: " + tasklogs.get(i).getFromTime().toString()
+                            + " To time: " +  tasklogs.get(i).getToTime().toString());
 
     }
 
-    public void viewTasklogsMenu(Task task, TaskLog[] tasklogs) {
-        System.out.println("\n0)Go Back");
-        viewTasklogs(tasklogs);
+    public void viewTasklogsMenu(Task task, ArrayList<TaskLog> tasklogs) {
         while (true) {
+            viewTasklogs(tasklogs);
+            System.out.println("0)Go Back");
             int choice = Application.inputInt("Tasklog number: ");
             if (choice == 0)
                 break;
-            else if (choice < 1 || choice > tasklogs.length)
-                System.out.println("Chosen tasklog doesn't exist");
+                
+            else if (choice < 1 || choice > tasklogs.size())
+                System.out.println("\033[31mChosen tasklog doesn't exist\033[0m\n");
             else
-                viewTasklog(tasklogs[choice - 1]);
+                viewTasklog(tasklogs.get(choice -1));
         }
     }
 
@@ -369,7 +370,7 @@ public class TaskModule extends Module {
         if (project.getLeader().getUsername().equals(currentEmployee.getUsername()))
             System.out.println("Assigned to: " + taskLog.getAssignedEmployee().getUsername());
         System.out.println("-----------------\n");
-        System.out.print("Press Enter to continue");
+        System.out.print("Press Enter to continue\n");
         Application.input.nextLine();
     }
 
@@ -377,7 +378,7 @@ public class TaskModule extends Module {
         int choice;
         boolean exit = false;
         while (!exit) {
-            System.out.println("---Manage Tasks---");
+            System.out.println("\n---Manage Tasks---");
             System.out.println("0)Go back");
             System.out.println("1)Add Task");
             System.out.println("2)Delete Task");
@@ -410,13 +411,13 @@ public class TaskModule extends Module {
         while (!addExit) {
 
             // input task data
-            System.out.println("---Task details---");
+            System.out.println("\n---Task details---");
 
             // code
             boolean codeExist = false;
             String taskCode;
             while (true) {
-                taskCode = Application.inputStringOneWord("Code: ", "Code cannot be empty!\n");
+                taskCode = Application.inputStringOneWord("\n---Code---\nCode: ", "Code cannot be empty!\n");
                 for (int i = 0; i < Application.taskDataHandler.getLength(); i++)
                     if (Application.taskDataHandler.get(i).getCode().equals(taskCode)) {
                         System.err.println("Code already exists!");
@@ -428,21 +429,21 @@ public class TaskModule extends Module {
             }
 
             // title
-            String taskTitle = Application.inputString("Title: ", "Title cannot be empty!\n");
+            String taskTitle = Application.inputString("\n---Title---\nTitle: ", "Title cannot be empty!\n");
             
 
             // desc
-            String taskDescription = Application.inputString("Description: ", "Description cannot be empty!\n");
+            String taskDescription = Application.inputString("\n---Description---\nDescription: ", "Description cannot be empty!\n");
             
             // task phase
-            String taskPhase = Application.inputStringOneWord("Task phase: ", "Task phase cannot be empty!\n");
+            String taskPhase = Application.inputStringOneWord("\n---Task phase---\nTask phase: ", "Task phase cannot be empty!\n");
            
             // Priority
             int choice;
             Task.Priority priority = null;
             boolean exit = false;
             while (!exit) {
-                choice = Application.inputInt("1-easy\n2-normal\n3-high\nPriority: ");
+                choice = Application.inputInt("\n---Priority---\n1)easy\n2)normal\n3)high\nPriority: ");
                 switch (choice) {
                     case 1:
                         priority = Task.Priority.easy;
@@ -466,6 +467,7 @@ public class TaskModule extends Module {
             // assigned employee
             Employee employee;
             while (true) {
+                System.out.println("\n---Employee---");
                 for (int i = 0; i < Application.employeeDataHandler.getLength(); i++) {
                     employee = Application.employeeDataHandler.get(i);
                     System.out.println((i + 1) + ") " + employee.getUsername());
@@ -496,7 +498,7 @@ public class TaskModule extends Module {
                     LocalDate startDate = LocalDate.of(year, month, day);
 
                     // End date
-                    System.out.println("---End date---");
+                    System.out.println("\n---End date---");
                     yearEnd = Application.inputInt("Enter the year: ");
                     monthEnd = Application.inputInt("Enter the month: ");
                     dayEnd = Application.inputInt("Enter the day: ");
@@ -513,6 +515,7 @@ public class TaskModule extends Module {
                         Application.taskDataHandler.add(task);
                         project.getListOfTasks().add(task);
                         addExit = true;
+                        System.out.println("\nTask added successfully!");
                         break;
                     } else
                         System.out.println("begin date can't be bigger than the end date");
@@ -540,18 +543,19 @@ public class TaskModule extends Module {
                     found = true;
                     project.getListOfTasks().remove(task);
                     for (int j = 0; j < Application.taskLogDataHandler.getLength(); j++) {
-                        TaskLog taskLog = Application.taskLogDataHandler.get(i);
+                        TaskLog taskLog = Application.taskLogDataHandler.get(j);
                         if (taskLog.getTask() == task) {
                             project.getListOfTaskLogs().remove(taskLog);
-                            Application.taskLogDataHandler.delete(i);
+                            Application.taskLogDataHandler.delete(j);
                             j--;
                         }
                     }
                     Application.taskDataHandler.delete(i);
+                    System.out.println("\nTask deleted successfully!");
                     break;
                 }
             }
-            if (found)
+            if (!found)
                 System.out.println("Task Code doesn't exist!");
         }
     }
@@ -581,7 +585,6 @@ public class TaskModule extends Module {
                 boolean exit = false;
                 while (!exit) {
                     viewTask(task);
-                    System.out.println("0)exit");
                     System.out.println("1)Title");
                     System.out.println("2)Description");
                     System.out.println("3)Assigned employee");
@@ -589,20 +592,23 @@ public class TaskModule extends Module {
                     System.out.println("5)Priority");
                     System.out.println("6)Start date");
                     System.out.println("7)End date");
+                    System.out.println("0)go back");
                     int choice = Application.inputInt("Choice: ");
                     switch (choice) {
                         case 0:
                             exit = true;
                             break;
                         case 1:
-                            System.out.println("current title: " + task.getTitle());
+                            System.out.println("\ncurrent title: " + task.getTitle());
                             String newTitle = Application.inputString("Title: ", "Title cannot be empty!\n");
                             task.setTitle(newTitle);
+                            System.out.println("\nTask updated successfully!");
                             break;
                         case 2:
-                            System.out.println("current descirption: " + task.getDescription());
+                            System.out.println("\ncurrent descirption: " + task.getDescription());
                             String newDescription = Application.inputString("Description: ", "Description cannot be empty!\n");
                             task.setDescription(newDescription);
+                            System.out.println("\nTask updated successfully!");
                             break;
                         case 3:
                             Employee employee;
@@ -620,32 +626,37 @@ public class TaskModule extends Module {
                                 } else {
                                     employee = Application.employeeDataHandler.get(choice - 1);
                                     task.setAssignedEmployee(employee);
+                                    System.out.println("\nTask updated successfully!");
                                     employeeExit = true;
                                     break;
                                 }
                             }
                             break;
                         case 4:
-                            System.out.println("current task phase: " + task.getTaskPhase());
+                            System.out.println("\ncurrent task phase: " + task.getTaskPhase());
                             String newPhase = Application.inputString("Task phase: ", "Task phase cannot be empty!\n");
                             task.setTaskPhase(newPhase);
+                            System.out.println("\nTask updated successfully!");
                             break;
                         case 5:
                             boolean priorityExit = false;
                             while (!priorityExit) {
-                                System.out.println("current priority: " + task.getPriority().toString());
+                                System.out.println("\ncurrent priority: " + task.getPriority().toString());
                                 choice = Application.inputInt("Priority: \n1- easy\n2- normal\n3- high\nPriority: ");
                                 switch (choice) {
                                     case 1:
                                         task.setPriority(Task.Priority.easy);
+                                        System.out.println("\nTask updated successfully!");
                                         priorityExit = true;
                                         break;
                                     case 2:
                                         task.setPriority(Task.Priority.normal);
+                                        System.out.println("\nTask updated successfully!");
                                         priorityExit = true;
                                         break;
                                     case 3:
                                         task.setPriority(Task.Priority.high);
+                                        System.out.println("\nTask updated successfully!");
                                         priorityExit = true;
                                         break;
                                     default:
@@ -658,7 +669,7 @@ public class TaskModule extends Module {
                         case 6:
                             int year, month, day;
                             while (true) {
-                                System.out.println("current start date: " + task.getStartDate().toString());
+                                System.out.println("\ncurrent start date: " + task.getStartDate().toString());
                                 System.out.println("current end date: " + task.getEndDate().toString());
                                 year = Application.inputInt("Enter the year: ");
                                 month = Application.inputInt("Enter the month: ");
@@ -671,6 +682,7 @@ public class TaskModule extends Module {
                                                     * (5.0 / 7.0));
                                     task.setStartDate(startDate);
                                     task.setEST(taskEstStart);
+                                    System.out.println("\nTask updated successfully!");
                                     break;
                                 } else
                                     System.out.println("\nstart date can't be bigger than the end date\n");
@@ -680,7 +692,7 @@ public class TaskModule extends Module {
                         case 7:
                             int yearEnd, monthEnd, dayEnd;
                             while (true) {
-                                System.out.println("current start date: " + task.getStartDate().toString());
+                                System.out.println("\ncurrent start date: " + task.getStartDate().toString());
                                 System.out.println("current end date: " + task.getEndDate().toString());
                                 yearEnd = Application.inputInt("Enter the year: ");
                                 monthEnd = Application.inputInt("Enter the month: ");
@@ -693,6 +705,7 @@ public class TaskModule extends Module {
                                                     * (5.0 / 7.0));
                                     task.setEndDate(endDate);
                                     task.setEST(taskEstEnd);
+                                    System.out.println("\nTask updated successfully!");
                                     break;
                                 } else
                                     System.out.println("\nstart date can't be bigger than the end date\n");
@@ -719,13 +732,15 @@ public class TaskModule extends Module {
                 System.out.println("Task: " + task.getTitle());
                 System.out.println("Task phase: " + task.getTaskPhase());
                 System.out.println("Assigned employee: " + task.getAssignedEmployee().getUsername());
+                System.out.println("Start Date: " + task.getStartDate().toString());
+                System.out.println("End Date: " + task.getEndDate().toString());
                 System.out.println("-----------------\n");
             }
         }
         if (!check) {
             System.out.println("There are no tasks in this project");
         }
-        System.out.print("Press Enter to continue");
+        System.out.print("Press Enter to continue\n");
         Application.input.nextLine();
     }
 
