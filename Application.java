@@ -120,7 +120,7 @@ public class Application {
 									+
 									"║│2)│Task Module.                                                                    │║\n"
 									+
-									"║│3)│Go back.                                                                        │║\n"
+									"║│0)│Sign Out.                                                                       │║\n"
 									+
 									"╠╧══╧════════════════════════════════════════════════════════════════════════════════╧╣\n"
 									+
@@ -202,7 +202,7 @@ public class Application {
 								}
 							}
 							break;
-						case 3:
+						case 0:
 							exit = true;
 							break;
 						default:

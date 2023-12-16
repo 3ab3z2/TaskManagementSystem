@@ -3,8 +3,9 @@ import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
-import java.util.InputMismatchException;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 
 public class TaskModule extends Module {
     Employee currentEmployee;
@@ -53,7 +54,7 @@ public class TaskModule extends Module {
                                 +
                                 "║│3)│Show calendar.                                                                  │║ █\n"
                                 +
-                                "║│4)│Go back.                                                                        │║ █\n"
+                                "║│0)│Go back.                                                                        │║ █\n"
                                 +
                                 "╚╧══╧════════════════════════════════════════════════════════════════════════════════╧╝ █\n"
                                 +
@@ -95,7 +96,7 @@ public class TaskModule extends Module {
                         showCalender();
                         break;
 
-                    case 4:
+                    case 0:
                         System.out.println("\u001B[42m" +
                                 "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m"
                                 +
@@ -137,7 +138,7 @@ public class TaskModule extends Module {
                                 +
                                 "║│2)│Show calendar.                                                                  │║ █\n"
                                 +
-                                "║│3)│Go back.                                                                        │║ █\n"
+                                "║│0)│Go back.                                                                        │║ █\n"
                                 +
                                 "╚╧══╧════════════════════════════════════════════════════════════════════════════════╧╝ █\n"
                                 +
@@ -164,7 +165,7 @@ public class TaskModule extends Module {
                         showCalender();
                         break;
 
-                    case 3:
+                    case 0:
                         System.out.println("\u001B[42m" +
                                 "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m"
                                 +
@@ -205,8 +206,7 @@ public class TaskModule extends Module {
         if (project.getLeader().toString().equals(currentEmployee.toString())) {
             for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
                 Task task = Application.taskDataHandler.get(i);
-                if (task.getProject().toString().equals(project.toString()))
-                {
+                if (task.getProject().toString().equals(project.toString())) {
 
                     System.out.println("║│ Code:" + task.getCode() + "│Title: " + task.getTitle());
                 }
@@ -240,13 +240,12 @@ public class TaskModule extends Module {
                     viewTaskMenu(task);
                 }
             }
-            if (!found)
-                System.out.println("task code doesn't exist");
-
             if (taskCode.equals("0")) {
                 System.out.println("Going to the previous page");
                 break;
             }
+            if (!found)
+                System.out.println("task code doesn't exist");
 
         }
     }
@@ -284,8 +283,10 @@ public class TaskModule extends Module {
                 case 1:
                     TaskLog[] tasklogArr = new TaskLog[Application.taskLogDataHandler.getLength()];
                     for (int i = 0, j = 0; i < Application.taskLogDataHandler.getLength(); i++)
-                        if (Application.taskLogDataHandler.get(i).getTask().toString().equals(task.toString()))
+                        if (Application.taskLogDataHandler.get(i).getTask().toString().equals(task.toString())) {
                             tasklogArr[j] = Application.taskLogDataHandler.get(i);
+                            j++;
+                        }
 
                     viewTasklogsMenu(task, tasklogArr);
                     break;
@@ -338,10 +339,10 @@ public class TaskModule extends Module {
     }
 
     public void viewTasklogs(TaskLog[] tasklogs) {
-
+        System.out.println("");
         for (int i = 0; i < tasklogs.length; i++)
             System.out.println(
-                    (i + 1) + ") From time: " + Application.taskLogDataHandler.get(i).getFromTime().toString()
+                    (i + 1) + ")From time: " + Application.taskLogDataHandler.get(i).getFromTime().toString()
                             + " To time: " + Application.taskLogDataHandler.get(i).getToTime().toString());
 
     }
@@ -405,7 +406,8 @@ public class TaskModule extends Module {
     }
 
     public void addTask() throws IOException {
-        while (true) {
+        boolean addExit = false;
+        while (!addExit) {
 
             // input task data
             System.out.println("---Task details---");
@@ -448,7 +450,6 @@ public class TaskModule extends Module {
             boolean exit = false;
             while (!exit) {
                 choice = Application.inputInt("1-easy\n2-normal\n3-high\nPriority: ");
-                Application.input.nextLine();
                 switch (choice) {
                     case 1:
                         priority = Task.Priority.easy;
@@ -508,16 +509,19 @@ public class TaskModule extends Module {
                     dayEnd = Application.inputInt("Enter the day: ");
                     LocalDate endDate = LocalDate.of(yearEnd, monthEnd, dayEnd);
 
-                    // TODO: EXECPTION ERROR
+                    // EST
                     double taskEST;
-                    // taskEST = Duration.between(startDate, endDate).toDays() * 8 * (5 / 7);
-                    taskEST = 0;
+                    taskEST = Math.ceil(startDate.until(endDate, ChronoUnit.DAYS) * 8.0 * (5.0 / 7.0));
+                    
+                            
+                    
                     // Task Creation
                     if (endDate.compareTo(startDate) > 0) {
                         Task task = new Task(taskCode, taskTitle, taskDescription, employee, taskPhase,
                                 project, priority, currentEmployee, startDate, endDate, taskEST);
                         Application.taskDataHandler.add(task);
                         project.getListOfTasks().add(task);
+                        addExit = true;
                         break;
                     } else
                         System.out.println("begin date can't be bigger than the end date");
@@ -596,6 +600,8 @@ public class TaskModule extends Module {
                     System.out.println("3)Assigned employee");
                     System.out.println("4)Task phase");
                     System.out.println("5)Priority");
+                     System.out.println("6)Start date");
+                    System.out.println("7)End date");
                     int choice = Application.inputInt("Choice: ");
                     switch (choice) {
                         case 0:
@@ -661,7 +667,14 @@ public class TaskModule extends Module {
                                 }
                             }
                             break;
-                        default:
+                        
+                        case 6:
+                            break;
+                        case 7:
+                            break;
+                        
+                        
+                            default:
                             System.out.println("Invalid option please choose again");
                             break;
                     }
