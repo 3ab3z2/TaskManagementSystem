@@ -349,14 +349,16 @@ public class AdminModule extends Module {
 							count_emptypes = Application.empTypeDataHandler.getLength();
 					boolean unregistered = false;
 
-					if (count_users == 0) {
+					if (count_users == 0)
+					{
 						System.out.print(
 								"\033[33mNo Registered Users Found!\033[0m\n" +
 										"Press enter to continue...\n");
 						Application.input.nextLine();
 						break;// back to menu
 					}
-					do {
+					do
+					{
 						int count_employees = Application.employeeDataHandler.getLength();
 						for (int i = 0; i < count_users; i++) {
 							boolean found = false;
@@ -376,7 +378,8 @@ public class AdminModule extends Module {
 								break;
 							}
 						}
-						if (!unregistered) {
+						if (!unregistered)
+						{
 							System.out.print(
 									"\033[33mAll employee user accounts have already been registered & approved!\033[0m\n"
 											+
@@ -423,23 +426,24 @@ public class AdminModule extends Module {
 						if (count_emptypes == 0) {
 							employee = new Employee(user.getUsername(), user.getPassword(), User.utype.employee, null);
 							Application.employeeDataHandler.add(employee);
-						} else {
+						}
+						else {
 							do {
 								EmpType empType = null;
 
 								System.out.print("\033[H\033[2J");
 								System.out.flush();
 								System.out.print(
-										"Defined Employee Types:\n" +
-												"IDX\tTYPE\tMANAGER?\n");
+									"Defined Employee Types:\n" +
+									"IDX\tTYPE\tMANAGER?\n");
 								for (int k = 0; k < count_emptypes; ++k) {
 									empType = Application.empTypeDataHandler.get(k);
 									System.out.printf("%d.\t%s\t%s\n", k + 1, empType.getName(),
 											empType.isManager() ? "Yes" : "No");
 								}
 								System.out.print(
-										"0. Cancel\n" +
-												"-1. TBD\n");
+									"0. Cancel\n" +
+									"-1. To Be Determined\n");
 								empType_idx = Application.inputInt("Choose>> ") - 1;
 								if (empType_idx == -1)
 									break;
@@ -451,7 +455,7 @@ public class AdminModule extends Module {
 								}
 								if (empType_idx < 0 || empType_idx >= count_emptypes) {
 									System.err.println(
-											"\033[31mPlease select a valid number from the employee type list!\033[0m");
+										"\033[31mPlease select a valid number from the employee type list!\033[0m");
 									continue;
 								}
 								empType = Application.empTypeDataHandler.get(empType_idx);
@@ -618,112 +622,117 @@ public class AdminModule extends Module {
 	}
 
 	public void manageProjects() throws IOException {
-		int choice = 0;
-		boolean exit = false;
-		while (!exit) {
+		int choice= 0;
+		boolean exit_manageProjects= false;
+		while(!exit_manageProjects)
+		{
 			System.out.print("\033[H\033[2J");
 			System.out.flush();
-
 			choice = Application.inputInt(
-					"Managing Projects..\n" +
-							"1.Add 2.Update 3.Delete 0.Back\n" +
-							"input>> ");
-
-			switch (choice) {
-				case 0:// Back
-					exit = true;
-					break;
-				case 1:// Add Projects
+				"Managing Projects..\n" +
+				"1.Add 2.Update 3.Delete 0.Back\n" +
+				"input>> "
+			);
+			switch(choice)
+			{
+			case 0://Back
+				exit_manageProjects= true;
+				break;
+			case 1://Add Projects
 				{
-					String project_name = "", project_description = "";
-					int count_employees = Application.employeeDataHandler.getLength();
-					Employee leader = null;
-					boolean nameexit = false;
-					while (!nameexit)// project name
+					Project project= null;
+					Employee leader= null;
+					String project_name= "", project_description = "", leader_name= "";
+					int count_employees= Application.employeeDataHandler.getLength();
+					boolean exit_name= false, exit_leader= false;
+
+					while(!exit_name)//project name
 					{
-						boolean duplicate = false;
-						int count_projects = Application.projectDataHandler.getLength();
+						boolean duplicate= false;
+						int count_projects= Application.projectDataHandler.getLength();
 
-						project_name = Application.inputString("Project Name: ",
-								"\033[31mThe project must have a name!\033[0m\n");
-
-						for (int k = 0; k < count_projects; ++k) {
-							Project project = Application.projectDataHandler.get(k);
-							if (project.getName().equals(project_name)) {
-								duplicate = true;
+						project_name= Application.inputString("Project Name: ", "\033[31mThe project must have a name!\033[0m\n");
+						if(project_name.equals("exit"))
+						{
+							exit_name= true;
+							break;
+						}
+						for(int k=0;k<count_projects;++k)
+						{
+							Project compare= Application.projectDataHandler.get(k);
+							if(compare.getName().equals(project_name))
+							{
+								duplicate= true;
 								break;
 							}
 						}
-						if (duplicate) {
-							System.out.print(
-									"\033[31mProject with the same name already in progress!\033[0m\n" +
-											"\033[33mTry again? [Y/N]: \033[0m");
-							String retry = Application.input.nextLine();
-							if (retry.equals("Y") || retry.equals("y"))
-								continue;
-							nameexit = true;
+						if(duplicate)
+						{
+							System.err.print("\033[31mProject with the same name already in progress! try again or type \"exit\" to go back\033[0m\n");
+							exit_name= true;
 							break;
 						}
 						break;
 					}
-					if(nameexit) break;
-					boolean desexit = false;
-					while (!desexit)// project description
-					{
-						System.out.print("Project Description: ");
-						project_description = Application.input.nextLine();
-						if (project_description.isBlank()) {
-							System.out.print(
-									"\033[31mThe project must have a description!\033[0m\n" +
-											"\033[33mTry again? [Y/N]: \033[0m");
-							String retry = Application.input.nextLine();
-							if (retry.equals("Y") || retry.equals("y"))
-								continue;
-							desexit = true;
-							break;
-						}
+					if(exit_name)
 						break;
-					}
-					if(desexit) break;
-					if (count_employees != 0)// project leader
+					//project description
+					project_description= Application.inputString("Project Description: ");
+					if(project_description.equals("exit"))
+						break;
+					if(count_employees != 0)//project leader
 					{
-						int leader_idx;
-						System.out.print(
-								"Available employees to assign a leader:\n" +
-										"IDX\tNAME\tPOSITION\tMANAGER?\n");
-						for (int k = 0; k < count_employees; ++k) {
-							Employee employee = Application.employeeDataHandler.get(k);
-							if (employee.getEmpType().isManager()) {
-								System.out.printf("%d.\t%s\t%s\n", k + 1, employee.getUsername(),
-										employee.getEmpType());
+						while(!exit_leader)
+						{
+							System.out.print(
+								"Available employees to assign a leader:\n"+
+								"NAME\tPOSITION\tMANAGER?\n"
+							);
+							for(int k=0;k<count_employees;++k)
+							{
+								Employee employee= Application.employeeDataHandler.get(k);
+								if(employee.getEmpType()==null)
+									continue;
+								if(employee.getEmpType().isManager())
+									System.out.printf("%s\t%s\t%s\n", employee.getUsername(), employee.getEmpType().getName(), employee.getEmpType().isManager()?"Yes":"No");
 							}
-
-						}
-						System.out.println("0. Don\'t assign anyone yet");
-						while (true) {
-							leader_idx = Application.inputInt("Input>> ") - 1;
-
-							if (leader_idx == -1)
+							leader_name= Application.inputString("Choose>> ");
+							if(leader_name.equals("exit"))
+							{
+								exit_leader= true;
 								break;
-							if (leader_idx < 0 || leader_idx >= count_employees
-									|| !Application.employeeDataHandler.get(leader_idx).getEmpType().isManager()) {
-								System.out.println(
-										"\033[31mPlease select a valid number from the employees list!\033[0m");
+							}
+							for(int k=0;k<count_employees;++k)
+							{
+								Employee employee= Application.employeeDataHandler.get(k);
+								if(employee.getEmpType()==null)
+									continue;
+								if(employee.getEmpType().isManager() && employee.getUsername().equals(leader_name))
+								{
+									leader= employee;
+									break;
+								}
+							}
+							if(leader==null)
+							{
+								System.err.println("\033[31mManager with that name not found! try again or type \"exit\" to go back\033[0m\n");
 								continue;
 							}
-							leader = Application.employeeDataHandler.get(leader_idx);
 							break;
 						}
 					}
-					Project project = new Project(project_name, project_description, leader);
+					if(exit_leader==true)
+						break;
+					project= new Project(project_name, project_description, leader);
 					Application.projectDataHandler.add(project);
 					System.out.print(
-							"\033[32mSuccessfully added project \"" + project_name + "\"!\033[0m\n" +
-									"Press any key to continue...\n");
-					System.in.read();
+						"\033[32mSuccessfully added project \""+project_name+"\"!\033[0m\n"+
+						"Press enter to continue...\n"
+					);
+					Application.input.nextLine();
 				}
-					break;
-				case 2:// Update Projects
+				break;
+			case 2:// Update Projects
 					boolean updexit = false;
 					while (!updexit) {
 						Project project;
@@ -880,7 +889,7 @@ public class AdminModule extends Module {
 						}
 					}
 					break;
-				case 3:// Delete Projects
+			case 3:// Delete Projects
 				{
 					Project project;
 					int count_projects = Application.projectDataHandler.getLength(),
