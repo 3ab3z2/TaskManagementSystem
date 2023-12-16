@@ -500,6 +500,7 @@ public class AdminModule extends Module {
 							System.err.println("\033[31mPlease select a valid number from the employees list!\033[0m");
 							continue;
 						}
+						employee = Application.employeeDataHandler.get(employee_idx);
 						do {
 							EmpType empType = null;
 							int count_emptypes = Application.empTypeDataHandler.getLength();
@@ -531,7 +532,6 @@ public class AdminModule extends Module {
 								continue;
 							}
 							empType = Application.empTypeDataHandler.get(empType_idx);
-							employee = Application.employeeDataHandler.get(employee_idx);
 							employee.setEmpType(empType);
 							Application.employeeDataHandler.update(employee_idx, employee);
 							break;
