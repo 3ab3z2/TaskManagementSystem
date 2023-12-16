@@ -733,162 +733,166 @@ public class AdminModule extends Module {
 				}
 				break;
 			case 2:// Update Projects
-					boolean updexit = false;
-					while (!updexit) {
+				{
+					boolean exit_update= false;
+					while(!exit_update)
+					{
 						Project project;
-						int count_projects = Application.projectDataHandler.getLength(),
-								project_idx = -1;
+						int
+							count_projects= Application.projectDataHandler.getLength(),
+							project_idx= -1;
+						boolean exit_update_selected= false;
 
-						if (count_projects == 0) {
+						if(count_projects==0)
+						{
 							System.out.print(
-									"\033[33mNo Projects Found!\033[0m\n" +
-											"Press any key to continue...");
-							System.in.read();
+								"\033[33mNo Projects Found!\033[0m\n" +
+								"Press enter to continue...");
+							Application.input.nextLine();
 							break;
 						}
-						System.out.print("\033[H\033[2J");
-						System.out.flush();
+						System.out.print("\033[H\033[2J"); System.out.flush();
 						System.out.print(
-								"Projects in progress:\n" +
-										"IDX\tNAME\tLEADER\tDESCRIPTION\n");
-						for (int k = 0; k < count_projects; ++k) {
-							project = Application.projectDataHandler.get(k);
-							System.out.printf("%d.\t%s\t%s\t%s\n", k + 1, project.getName(),
-									project.getLeader() == null ? "\033[33mTBD\033[0m"
-											: project.getLeader().getUsername(),
-									project.getDescription());
+							"Projects in progress:\n" +
+							"IDX\tNAME\tLEADER\tDESCRIPTION\n"
+						);
+						for(int k=0;k<count_projects;++k)
+						{
+							project= Application.projectDataHandler.get(k);
+							System.out.printf(
+								"%d.\t%s\t%s\t%s\n",
+								k+1,
+								project.getName(),
+								project.getLeader()==null?"\033[33mTBD\033[0m":project.getLeader().getUsername(),
+								project.getDescription()
+							);
 						}
 						System.out.println("0. Back");
-						boolean updexit_1 = false;
-						while (!updexit_1) {
-
-							project_idx = Application.inputInt("Update>> ") - 1;
-
-							if (project_idx == -1){
-								updexit = true;
-								break;
-							}
-							if (project_idx < 0 || project_idx >= count_projects) {
-								System.out
-										.println("\033[31mPlease select a valid number from the projects list!\033[0m");
+						project_idx= Application.inputInt("Update>> ")-1;
+						if(project_idx==-1)
+						{
+							exit_update= true;
+							continue;
+						}
+						if(project_idx<0||project_idx>=count_projects)
+						{
+							System.out.println("\033[31mPlease select a valid number from the projects list!\033[0m");
+							continue;
+						}
+						project= Application.projectDataHandler.get(project_idx);
+						while(!exit_update_selected)
+						{
+							System.out.print("\033[H\033[2J"); System.out.flush();
+							System.out.print(
+								"1. Name:        "+project.getName()+"\n"+
+								"2. Description: "+project.getDescription()+"\n"+
+								"3. Leader:      "+(project.getLeader()==null?"\033[33mTBD\033[0m":project.getLeader().getUsername())+"\n"+
+								"0. Cancel\n"
+							);
+							choice = Application.inputInt("Modify>> ");
+							switch(choice)
+							{
+							case 0://Cancel
+								exit_update_selected= true;
 								continue;
-							}
-							project = Application.projectDataHandler.get(project_idx);
-							boolean updexit_2 = false;
-							while (!updexit_2) {
-								System.out.print("\033[H\033[2J");
-								System.out.flush();
-									choice = Application.inputInt("\t1. Name:        "+ project.getName() +"\n" +
-												"\t2. Description: "+ project.getDescription() +"\n" +
-												"\t3. Leader:      "+ (project.getLeader() == null ? "\033[33mTBD\033[0m"
-												: project.getLeader().getUsername()) +"\n" +
-												"\t0. Cancel\n" +
-												"Modify>> ");
-								
-								switch (choice) {
-									case 0:// Cancel
-										updexit_1 = true;
-										updexit_2 = true;
-										continue;
-									case 1:// Modify Project Name
-										while (true) {
-											boolean duplicate = false;
-											String newname;
-
-											System.out.print("\tNew Name: ");
-											newname = Application.inputString("\tNew Name: ");
-											
-											for (int k = 0; k < count_projects; ++k) {
-												Project compare = Application.projectDataHandler.get(k);
-												if (compare.getName().equals(newname)) {
-													duplicate = true;
-													break;
-												}
-											}
-											if (duplicate) {
-												System.out.print(
-														"\033[31mProject with the same name already in progress!\033[0m\n"
-																+
-																"\033[33mTry again? [Y/N]: \033[0m");
-												String retry = Application.input.nextLine();
-												if (retry.equals("Y") || retry.equals("y"))
-													continue;
-												break;
-											}
-											project.setName(newname);
-											Application.projectDataHandler.update(project_idx, project);
-											break;
-										}
+							case 1://Modify Project Name
+								while(true)
+								{
+									boolean duplicate= false;
+									String newname= Application.inputString("New Name: ");
+									
+									if(newname.equals("exit"))
 										break;
-									case 2:// Modify Project Description
-										while (true) {
-											String newdescription = Application.inputString("New Description: ");
-											project.setDescription(newdescription);
-											Application.projectDataHandler.update(project_idx, project);
-											break;
-										}
-										break;
-									case 3:// Modify Project Leader
+									for(int k=0;k<count_projects;++k)
 									{
-										Employee leader;
-										int leader_idx = -1,
-												count_employees = Application.employeeDataHandler.getLength();
-
-										if (count_employees == 0) {
-											System.out.print(
-													"\033[33mNo employees available\033[0m\n" +
-															"Press any key to continue...\n");
-											System.in.read();
-											break;
-										}
-										System.out.print(
-												"Available employees to assign a leader:\n" +
-														"IDX\tNAME\tPOSITION\tMANAGER?\n");
-										for (int k = 0; k < count_employees; ++k) {
-											Employee employee = Application.employeeDataHandler.get(k);
-											if (employee.getEmpType().isManager())
-												System.out.printf("%d.\t%s\t%s\n", k + 1, employee.getUsername(),
-														employee.getEmpType());
-										}
-										System.out.println("0. Don\'t assign anyone");
-										while (true) {
-											leader_idx = Application.inputInt("Input>> ") - 1;
-
-											if (leader_idx == -1)
-												break;
-											if (leader_idx < 0 || leader_idx >= count_employees
-													|| !Application.employeeDataHandler.get(leader_idx).getEmpType()
-															.isManager()) {
-												System.out.println(
-														"\033[31mPlease select a valid number from the employees list!\033[0m");
-												continue;
-											}
-											leader = Application.employeeDataHandler.get(leader_idx);
-
-											if (leader_idx == -1) {
-												project.setLeader(null);
-												Application.projectDataHandler.update(project_idx, project);
-												break;
-											}
-											if (leader_idx < 0 || leader_idx >= count_employees) {
-												System.out.println(
-														"\033[31mPlease select a valid number from the employees list!\033[0m");
-												continue;
-											}
-											project.setLeader(Application.employeeDataHandler.get(leader_idx));
-											Application.projectDataHandler.update(project_idx, project);
+										Project compare= Application.projectDataHandler.get(k);
+										if(compare.getName().equals(newname))
+										{
+											duplicate= true;
 											break;
 										}
 									}
-										break;
-									default:
-										System.out.println("\033[31mInvalid Operation!\033[0m");
-										break;
+									if(duplicate)
+									{
+										System.out.print("\033[31mProject with the same name already in progress! Try again or type \"exit\" to go back\033[0m\n");
+										continue;
+									}
+									project.setName(newname);
+									Application.projectDataHandler.update(project_idx, project);
+									break;
 								}
+								break;
+							case 2://Modify Project Description
+								while(true)
+								{
+									String newdescription= Application.inputString("New Description: ");
+									if(newdescription.equals("exit"))
+										break;
+									project.setDescription(newdescription);
+									Application.projectDataHandler.update(project_idx, project);
+									break;
+								}
+								break;
+							case 3://Modify Project Leader
+								while(true)
+								{
+									Employee leader= null;
+									String leader_name= "";
+									int count_employees= Application.employeeDataHandler.getLength();
+
+									if(count_employees==0)
+									{
+										System.out.print(
+											"\033[33mNo employees available to assign a leader!\033[0m\n"+
+											"Press enter to continue...\n"
+										);
+										Application.input.nextLine();
+										continue;
+									}
+									System.out.print(
+										"Available employees to assign a leader:\n"+
+										"NAME\tPOSITION\n"
+									);
+									for(int k=0;k<count_employees;++k)
+									{
+										Employee employee= Application.employeeDataHandler.get(k);
+										if(employee.getEmpType()==null)
+											continue;
+										if(!employee.getEmpType().isManager())
+											continue;
+										System.out.printf("%s\t%s\n", employee.getUsername(), employee.getEmpType().getName());
+									}
+									leader_name= Application.inputString("Choose>> ");
+									if(leader_name.equals("exit"))
+										break;
+									for(int k=0;k<count_employees;++k)
+									{
+										Employee employee= Application.employeeDataHandler.get(k);
+										if(employee.getEmpType()==null)
+											continue;
+										if(!employee.getEmpType().isManager())
+											continue;
+										if(employee.getUsername().equals(leader_name))
+											leader= employee;
+									}
+									if(leader==null)
+									{
+										System.out.println("\033[31mManager with that name not found! try again or type \"exit\" to go back\033[0m\n");
+										continue;
+									}
+									project.setLeader(leader);
+									Application.projectDataHandler.update(project_idx, project);
+									break;
+								}
+								break;
+							default:
+								System.out.println("\033[31mInvalid Operation!\033[0m");
+								break;
 							}
 						}
 					}
-					break;
+				}
+				break;
 			case 3:// Delete Projects
 				{
 					Project project;
