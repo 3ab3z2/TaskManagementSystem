@@ -196,21 +196,28 @@ public class TaskModule extends Module {
 
         // display tasks
         System.out.println(
-                "╔═════════════════════════════════════════════════════════════════════════════════════╗\n" +
-                        "║                              These are your tasks                                   ║\n" +
-                        "║╒══╤════════════════════════════════════════════════════════════════════════════════╕║");
+                "╔═════════════════════════════════════════════════════════════════════════════════════╗");
+       
         // manager
         if (project.getLeader().toString().equals(currentEmployee.toString())) {
+             System.out.println(
+                "║                              These are the project's tasks                          ║\n" +
+                        "║╒══╤════════════════════════════════════════════════════════════════════════════════╕║");
             for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
                 Task task = Application.taskDataHandler.get(i);
                 if (task.getProject().toString().equals(project.toString())) {
 
-                    System.out.println("║│ Code:" + task.getCode() + "│Title: " + task.getTitle());
+                    System.out.println("║│ Code:" + task.getCode());
+                    System.out.println("║│ Title: " + task.getTitle());
+                    System.out.println("║│------------------------------");
                 }
             }
         }
         // employee
         else {
+             System.out.println(
+                "║                              These are your assigned tasks                          ║\n" +
+                        "║╒══╤════════════════════════════════════════════════════════════════════════════════╕║");
             for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
                 Task task = Application.taskDataHandler.get(i);
                 if (task.getAssignedEmployee().toString().equals(currentEmployee.toString()))
@@ -222,13 +229,10 @@ public class TaskModule extends Module {
     }
 
     public void viewTasksMenu() throws IOException {
+        System.out.println("0)Go back");
+        viewTasks();
         while (true) {
-            viewTasks();
-            System.out.println("0)Go back");
-
-            System.out.print("Enter Task Code: ");
-            String taskCode = Application.input.next();
-            Application.input.nextLine();
+            String taskCode = Application.inputStringOneWord("Press 0 to go back or enter Code: ", "Input cannot be empty!\n");
             boolean found = false;
             for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
                 Task task = Application.taskDataHandler.get(i);
@@ -265,11 +269,11 @@ public class TaskModule extends Module {
 
     public void viewTaskMenu(Task task) throws IOException {
         boolean exit = false;
+        viewTask(task);
+        System.out.println("0)Go Back");
+        System.out.println("1)View tasklogs");
+        System.out.println("2)Create tasklog");
         while (!exit) {
-            viewTask(task);
-            System.out.println("0)Go Back");
-            System.out.println("1)View tasklogs");
-            System.out.println("2)Create tasklog");
             int choice = Application.inputInt("Choice: ");
             switch (choice) {
                 case 0:
@@ -291,7 +295,7 @@ public class TaskModule extends Module {
                 case 2:
                     while (true) {
                         // from time input
-                        System.out.println("---From Time--");
+                        System.out.println("\n---From Time--");
                         int year = Application.inputInt("Enter the year: ");
                         int month = Application.inputInt("Enter the month: ");
                         int day = Application.inputInt("Enter the day: ");
@@ -299,7 +303,7 @@ public class TaskModule extends Module {
                         int minute = Application.inputInt("Enter the minute: ");
 
                         // to time input
-                        System.out.println("---To Time---");
+                        System.out.println("\n---To Time---");
                         int hourTo = Application.inputInt("Enter the hour: ");
                         int minuteTo = Application.inputInt("Enter the minute: ");
 
@@ -331,12 +335,11 @@ public class TaskModule extends Module {
             Application.taskLogDataHandler.add(newlog);
             return newlog;
         } else
-            System.err.println("To time smaller than the from time");
+            System.err.println("\nFrom time cant be bigger than the to time");
         return null;
     }
 
     public void viewTasklogs(TaskLog[] tasklogs) {
-        System.out.println("");
         for (int i = 0; i < tasklogs.length; i++)
             System.out.println(
                     (i + 1) + ")From time: " + Application.taskLogDataHandler.get(i).getFromTime().toString()
@@ -345,9 +348,9 @@ public class TaskModule extends Module {
     }
 
     public void viewTasklogsMenu(Task task, TaskLog[] tasklogs) {
+        System.out.println("\n0)Go Back");
+        viewTasklogs(tasklogs);
         while (true) {
-            viewTasklogs(tasklogs);
-            System.out.println("0)Go Back");
             int choice = Application.inputInt("Tasklog number: ");
             if (choice == 0)
                 break;
@@ -366,7 +369,7 @@ public class TaskModule extends Module {
         if (project.getLeader().getUsername().equals(currentEmployee.getUsername()))
             System.out.println("Assigned to: " + taskLog.getAssignedEmployee().getUsername());
         System.out.println("-----------------\n");
-        System.out.print("Press Enter to continue: ");
+        System.out.print("Press Enter to continue");
         Application.input.nextLine();
     }
 
@@ -413,9 +416,7 @@ public class TaskModule extends Module {
             boolean codeExist = false;
             String taskCode;
             while (true) {
-                System.out.print("Code: ");
-                taskCode = Application.input.next().trim();
-                Application.input.nextLine();
+                taskCode = Application.inputStringOneWord("Code: ", "Code cannot be empty!\n");
                 for (int i = 0; i < Application.taskDataHandler.getLength(); i++)
                     if (Application.taskDataHandler.get(i).getCode().equals(taskCode)) {
                         System.err.println("Code already exists!");
@@ -427,20 +428,15 @@ public class TaskModule extends Module {
             }
 
             // title
-            System.out.print("Title: ");
-            String taskTitle = Application.input.next().trim();
-            Application.input.nextLine();
+            String taskTitle = Application.inputString("Title: ", "Title cannot be empty!\n");
+            
 
             // desc
-            System.out.print("Description: ");
-            String taskDescription = Application.input.next().trim();
-            Application.input.nextLine();
-
+            String taskDescription = Application.inputString("Description: ", "Description cannot be empty!\n");
+            
             // task phase
-            System.out.print("Task phase: ");
-            String taskPhase = Application.input.next();
-            Application.input.nextLine();
-
+            String taskPhase = Application.inputStringOneWord("Task phase: ", "Task phase cannot be empty!\n");
+           
             // Priority
             int choice;
             Task.Priority priority = null;
@@ -533,9 +529,7 @@ public class TaskModule extends Module {
         while (true) {
             viewTasks();
             System.out.println("0)Go Back");
-            System.out.println("Choice: ");
-            String taskCode = Application.input.next();
-            Application.input.nextLine();
+            String taskCode = Application.inputStringOneWord("Press 0 to go back or enter Code: ", "Input cannot be empty!\n");
             boolean found = false;
             if (taskCode.equals("0"))
                 break;
@@ -566,9 +560,7 @@ public class TaskModule extends Module {
         while (true) {
             viewTasks();
             System.out.println("0)Go Back");
-            System.out.print("Choice: ");
-            String taskCode = Application.input.next();
-            Application.input.nextLine();
+            String taskCode = Application.inputString("Press 0 to go back or enter Code: ", "Code cannot be empty!\n");
             Task task = null;
             for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
                 if (taskCode.equals(Application.taskDataHandler.get(i).getCode())) {
@@ -603,24 +595,21 @@ public class TaskModule extends Module {
                             exit = true;
                             break;
                         case 1:
-                            System.out.println("current title: "+ task.getTitle());
-                            System.out.print("Enter the new title: ");
-                            String newTitle = Application.input.next();
-                            Application.input.nextLine();
+                            System.out.println("current title: " + task.getTitle());
+                            String newTitle = Application.inputString("Title: ", "Title cannot be empty!\n");
                             task.setTitle(newTitle);
                             break;
                         case 2:
-                            System.out.println("current descirption: "+ task.getDescription());
-                            System.out.print("Enter the new Description: ");
-                            String newDescription = Application.input.next();
-                            Application.input.nextLine();
+                            System.out.println("current descirption: " + task.getDescription());
+                            String newDescription = Application.inputString("Description: ", "Description cannot be empty!\n");
                             task.setDescription(newDescription);
                             break;
                         case 3:
-                        Employee employee;
-                        boolean employeeExit = false;
-                        while (!employeeExit) {
-                                System.out.println("current assigned employee: "+ task.getAssignedEmployee().getUsername());
+                            Employee employee;
+                            boolean employeeExit = false;
+                            while (!employeeExit) {
+                                System.out.println(
+                                        "current assigned employee: " + task.getAssignedEmployee().getUsername());
                                 for (int i = 0; i < Application.employeeDataHandler.getLength(); i++) {
                                     employee = Application.employeeDataHandler.get(i);
                                     System.out.println((i + 1) + ") " + employee.getUsername());
@@ -637,16 +626,14 @@ public class TaskModule extends Module {
                             }
                             break;
                         case 4:
-                            System.out.println("current task phase: "+ task.getTaskPhase());
-                            System.out.print("Enter the new Task phase: ");
-                            String newPhase = Application.input.next();
-                            Application.input.nextLine();
+                            System.out.println("current task phase: " + task.getTaskPhase());
+                            String newPhase = Application.inputString("Task phase: ", "Task phase cannot be empty!\n");
                             task.setTaskPhase(newPhase);
                             break;
                         case 5:
                             boolean priorityExit = false;
                             while (!priorityExit) {
-                                System.out.println("current priority: "+ task.getPriority().toString());
+                                System.out.println("current priority: " + task.getPriority().toString());
                                 choice = Application.inputInt("Priority: \n1- easy\n2- normal\n3- high\nPriority: ");
                                 switch (choice) {
                                     case 1:
@@ -670,46 +657,46 @@ public class TaskModule extends Module {
 
                         case 6:
                             int year, month, day;
-                            while (true){
-                                System.out.println("current start date: "+ task.getStartDate().toString());
-                                System.out.println("current end date: "+ task.getEndDate().toString());
+                            while (true) {
+                                System.out.println("current start date: " + task.getStartDate().toString());
+                                System.out.println("current end date: " + task.getEndDate().toString());
                                 year = Application.inputInt("Enter the year: ");
                                 month = Application.inputInt("Enter the month: ");
                                 day = Application.inputInt("Enter the day: ");
                                 LocalDate startDate = LocalDate.of(year, month, day);
-                                 if (task.getEndDate().compareTo(startDate) > 0) {
-                                     double taskEstStart;
-                                     taskEstStart = Math
-                                     .ceil(startDate.until(task.getEndDate(), ChronoUnit.DAYS) * 8.0 * (5.0 / 7.0));
-                                     task.setStartDate(startDate);
-                                     task.setEST(taskEstStart);
-                                     break;
-                                }
-                                else
-                                   System.out.println("\nstart date can't be bigger than the end date\n");    
+                                if (task.getEndDate().compareTo(startDate) > 0) {
+                                    double taskEstStart;
+                                    taskEstStart = Math
+                                            .ceil(startDate.until(task.getEndDate(), ChronoUnit.DAYS) * 8.0
+                                                    * (5.0 / 7.0));
+                                    task.setStartDate(startDate);
+                                    task.setEST(taskEstStart);
+                                    break;
+                                } else
+                                    System.out.println("\nstart date can't be bigger than the end date\n");
                             }
-                            
+
                             break;
                         case 7:
-                            int yearEnd,monthEnd,dayEnd;
+                            int yearEnd, monthEnd, dayEnd;
                             while (true) {
-                                System.out.println("current start date: "+ task.getStartDate().toString());
-                                System.out.println("current end date: "+ task.getEndDate().toString());
+                                System.out.println("current start date: " + task.getStartDate().toString());
+                                System.out.println("current end date: " + task.getEndDate().toString());
                                 yearEnd = Application.inputInt("Enter the year: ");
                                 monthEnd = Application.inputInt("Enter the month: ");
                                 dayEnd = Application.inputInt("Enter the day: ");
                                 LocalDate endDate = LocalDate.of(yearEnd, monthEnd, dayEnd);
                                 if (endDate.compareTo(task.getStartDate()) > 0) {
-                                     double taskEstEnd;
-                                     taskEstEnd = Math
-                                     .ceil(task.getStartDate().until(endDate, ChronoUnit.DAYS) * 8.0 * (5.0 / 7.0));
-                                     task.setEndDate(endDate);
-                                     task.setEST(taskEstEnd);
-                                     break;
-                                }
-                                else
+                                    double taskEstEnd;
+                                    taskEstEnd = Math
+                                            .ceil(task.getStartDate().until(endDate, ChronoUnit.DAYS) * 8.0
+                                                    * (5.0 / 7.0));
+                                    task.setEndDate(endDate);
+                                    task.setEST(taskEstEnd);
+                                    break;
+                                } else
                                     System.out.println("\nstart date can't be bigger than the end date\n");
-                                    
+
                             }
                             break;
 
@@ -738,7 +725,7 @@ public class TaskModule extends Module {
         if (!check) {
             System.out.println("There are no tasks in this project");
         }
-        System.out.print("Press Enter to continue: ");
+        System.out.print("Press Enter to continue");
         Application.input.nextLine();
     }
 
