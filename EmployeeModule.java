@@ -6,8 +6,8 @@ import java.time.Period;
 import java.util.InputMismatchException;
 
 
-//use Application.inputDouble
-//use Application.inputInt
+// TODO: use Application.inputDouble
+// TODO: use Application.inputInt
 
 public class EmployeeModule extends Module {
     Employee currentEmployee;
