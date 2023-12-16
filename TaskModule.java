@@ -509,9 +509,7 @@ public class TaskModule extends Module {
                     // EST
                     double taskEST;
                     taskEST = Math.ceil(startDate.until(endDate, ChronoUnit.DAYS) * 8.0 * (5.0 / 7.0));
-                    
-                            
-                    
+
                     // Task Creation
                     if (endDate.compareTo(startDate) > 0) {
                         Task task = new Task(taskCode, taskTitle, taskDescription, employee, taskPhase,
@@ -597,7 +595,7 @@ public class TaskModule extends Module {
                     System.out.println("3)Assigned employee");
                     System.out.println("4)Task phase");
                     System.out.println("5)Priority");
-                     System.out.println("6)Start date");
+                    System.out.println("6)Start date");
                     System.out.println("7)End date");
                     int choice = Application.inputInt("Choice: ");
                     switch (choice) {
@@ -605,21 +603,24 @@ public class TaskModule extends Module {
                             exit = true;
                             break;
                         case 1:
+                            System.out.println("current title: "+ task.getTitle());
                             System.out.print("Enter the new title: ");
                             String newTitle = Application.input.next();
                             Application.input.nextLine();
                             task.setTitle(newTitle);
                             break;
                         case 2:
+                            System.out.println("current descirption: "+ task.getDescription());
                             System.out.print("Enter the new Description: ");
                             String newDescription = Application.input.next();
                             Application.input.nextLine();
                             task.setDescription(newDescription);
                             break;
                         case 3:
-                            Employee employee;
-                            boolean employeeExit = false;
-                            while (!employeeExit) {
+                        Employee employee;
+                        boolean employeeExit = false;
+                        while (!employeeExit) {
+                                System.out.println("current assigned employee: "+ task.getAssignedEmployee().getUsername());
                                 for (int i = 0; i < Application.employeeDataHandler.getLength(); i++) {
                                     employee = Application.employeeDataHandler.get(i);
                                     System.out.println((i + 1) + ") " + employee.getUsername());
@@ -636,6 +637,7 @@ public class TaskModule extends Module {
                             }
                             break;
                         case 4:
+                            System.out.println("current task phase: "+ task.getTaskPhase());
                             System.out.print("Enter the new Task phase: ");
                             String newPhase = Application.input.next();
                             Application.input.nextLine();
@@ -644,6 +646,7 @@ public class TaskModule extends Module {
                         case 5:
                             boolean priorityExit = false;
                             while (!priorityExit) {
+                                System.out.println("current priority: "+ task.getPriority().toString());
                                 choice = Application.inputInt("Priority: \n1- easy\n2- normal\n3- high\nPriority: ");
                                 switch (choice) {
                                     case 1:
@@ -664,14 +667,53 @@ public class TaskModule extends Module {
                                 }
                             }
                             break;
-                        
+
                         case 6:
+                            int year, month, day;
+                            while (true){
+                                System.out.println("current start date: "+ task.getStartDate().toString());
+                                System.out.println("current end date: "+ task.getEndDate().toString());
+                                year = Application.inputInt("Enter the year: ");
+                                month = Application.inputInt("Enter the month: ");
+                                day = Application.inputInt("Enter the day: ");
+                                LocalDate startDate = LocalDate.of(year, month, day);
+                                 if (task.getEndDate().compareTo(startDate) > 0) {
+                                     double taskEstStart;
+                                     taskEstStart = Math
+                                     .ceil(startDate.until(task.getEndDate(), ChronoUnit.DAYS) * 8.0 * (5.0 / 7.0));
+                                     task.setStartDate(startDate);
+                                     task.setEST(taskEstStart);
+                                     break;
+                                }
+                                else
+                                   System.out.println("\nstart date can't be bigger than the end date\n");    
+                            }
+                            
                             break;
                         case 7:
+                            int yearEnd,monthEnd,dayEnd;
+                            while (true) {
+                                System.out.println("current start date: "+ task.getStartDate().toString());
+                                System.out.println("current end date: "+ task.getEndDate().toString());
+                                yearEnd = Application.inputInt("Enter the year: ");
+                                monthEnd = Application.inputInt("Enter the month: ");
+                                dayEnd = Application.inputInt("Enter the day: ");
+                                LocalDate endDate = LocalDate.of(yearEnd, monthEnd, dayEnd);
+                                if (endDate.compareTo(task.getStartDate()) > 0) {
+                                     double taskEstEnd;
+                                     taskEstEnd = Math
+                                     .ceil(task.getStartDate().until(endDate, ChronoUnit.DAYS) * 8.0 * (5.0 / 7.0));
+                                     task.setEndDate(endDate);
+                                     task.setEST(taskEstEnd);
+                                     break;
+                                }
+                                else
+                                    System.out.println("\nstart date can't be bigger than the end date\n");
+                                    
+                            }
                             break;
-                        
-                        
-                            default:
+
+                        default:
                             System.out.println("Invalid option please choose again");
                             break;
                     }
