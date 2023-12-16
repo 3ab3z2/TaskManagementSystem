@@ -3,7 +3,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Period;
-import java.util.InputMismatchException;
 
 public class EmployeeModule extends Module {
     private Employee currentEmployee;
@@ -105,16 +104,10 @@ public class EmployeeModule extends Module {
 							"║│0)│Logout.                                                                         │║ █\n" +
 							"╚╧══╧════════════════════════════════════════════════════════════════════════════════╧╝ █\n" +
 							" ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇█\n");
-					try{
 						choice = Application.inputInt("Your choice:🮶 ");
-					}
-					catch(InputMismatchException e){
-						System.out.println("\u001B[41m" + "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m" +
-						"\u001B[41m"+"║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Invalid Choice, please try again 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 ║"+"\u001B[0m" +
-						"\n"+"\u001B[41m"+"╚═════════════════════════════════════════════════════════════════════════════════════╝\u001B[0m\n");
-						Application.input.next();
-						continue;
-					}
+
+                        //TODO purge all try and catch blocks and replace with inputInt and inputString methods
+					
 					switch (choice) {
 						case 1:
 							viewTimeCards();
