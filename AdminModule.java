@@ -531,6 +531,7 @@ public class AdminModule extends Module {
 								continue;
 							}
 							empType = Application.empTypeDataHandler.get(empType_idx);
+							employee = Application.employeeDataHandler.get(employee_idx);
 							employee.setEmpType(empType);
 							Application.employeeDataHandler.update(employee_idx, employee);
 							break;
