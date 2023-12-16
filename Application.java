@@ -274,7 +274,7 @@ public class Application {
 		while (true) {
 			try {
 				System.out.print(print);
-				value = Integer.parseInt(input.nextLine());
+				value = Integer.parseInt(input.nextLine().trim());
 				break;
 			} catch (NumberFormatException ex) {
 				System.err.print(error);
@@ -293,10 +293,10 @@ public class Application {
 		String value;
 		while (true) {
 			System.out.print(prompt);
-			value = input.nextLine();
+			value = input.nextLine().trim();
 			if (value.isBlank()) {
 				System.err.print(isBlank_message);
-				input.nextLine();
+				//input.nextLine();
 				continue;
 			}
 			break;
@@ -333,7 +333,7 @@ public class Application {
 		while (true) {
 			try {
 				System.out.print(print);
-				value = Double.parseDouble(input.nextLine());
+				value = Double.parseDouble(input.nextLine().trim());
 				break;
 			} catch (NumberFormatException ex) {
 				System.err.print(error);
