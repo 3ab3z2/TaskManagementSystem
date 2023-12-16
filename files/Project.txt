@@ -1,5 +1,4 @@
 lol2	desc2	1
-banana	banananana	0
 delulu	test	1
 testing	for test	1
 pql	project quantum leap	1
