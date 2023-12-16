@@ -283,7 +283,7 @@ public class Application {
 	}
 
 	public static String inputString(String prompt) {
-		return inputString(prompt, "\033[31mInput must not be empty!\033[0m");
+		return inputString(prompt, "\033[31mInput must not be empty!\033[0m\n");
 	}
 
 	// Waits for the user to acknowledge message
@@ -294,7 +294,6 @@ public class Application {
 			value = input.nextLine().trim();
 			if (value.isBlank()) {
 				System.err.print(isBlank_message);
-				//input.nextLine();
 				continue;
 			}
 			break;
