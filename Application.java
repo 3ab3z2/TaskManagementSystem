@@ -290,7 +290,19 @@ public class Application {
 		}
 	}
 
-	public static int inputInt(String print) {
+	public static int inputInt(String print){
+		return inputInt(print, "\033[31mInput must be an integer!\033[0m\n");
+	}
+
+	public static int inputIntln(String print) {
+		return inputInt(print + "\n");
+	}
+
+	public static int inputIntln(String print, String error) {
+		return inputInt(print + "\n",error+"\n");
+	}
+
+	public static int inputInt(String print,String error) {
 		int value;
 		while (true) {
 			try {
@@ -298,7 +310,7 @@ public class Application {
 				value = Integer.parseInt(input.nextLine());
 				break;
 			} catch (NumberFormatException ex) {
-				System.err.println("\033[31mInput must be an integer!\033[0m");
+				System.err.print(error);
 				continue;
 			}
 		}
@@ -306,17 +318,7 @@ public class Application {
 	}
 
 	public static String inputString(String prompt) {
-		String value;
-		while (true) {
-			System.out.print(prompt);
-			value = input.nextLine();
-			if (value.isBlank()) {
-				System.err.println("\033[31mInput must not be empty!\033[0m");
-				continue;
-			}
-			break;
-		}
-		return value;
+		return inputString(prompt,"\033[31mInput must not be empty!\033[0m");
 	}
 	//Waits for the user to acknowledge message
 	public static String inputString(String prompt, String isBlank_message)
@@ -355,26 +357,7 @@ public class Application {
 		return inputStringln(prompt, isBlank_message).split(" ")[0];
 	}
 
-	// public static int inputInt(String print) {
-	// int value;
-	// while (true) {
-	// try {
-	// System.out.print(print);
-	// value = input.nextInt();
-	// break;
-	// } catch (InputMismatchException ex) {
-	// System.err.print("Input must be an integer!");
-	// input.next();
-	// }
-	// }
-	// return value;
-	// }
-
-	public static int inputIntln(String print) {
-		return inputInt(print + "\n");
-	}
-
-	public static double inputDouble(String print) {
+	public static double inputDouble(String print, String error) {
 		double value;
 		while (true) {
 			try {
@@ -382,30 +365,23 @@ public class Application {
 				value = Double.parseDouble(input.nextLine());
 				break;
 			} catch (NumberFormatException ex) {
-				System.err.print("\033[31mInput must be an number!\033[0m");
+				System.err.print(error);
 				continue;
 			}
 		}
 		return value;
 	}
 
-	// public static double inputDouble(String print) {
-	// double value;
-	// while (true) {
-	// try {
-	// System.out.println(print);
-	// value = input.nextDouble();
-	// break;
-	// } catch (InputMismatchException ex) {
-	// System.err.print("Input must be an number!");
-	// input.next();
-	// }
-	// }
-	// return value;
-	// }
+	public static double inputDouble(String print){
+		return inputDouble(print, "\033[31mInput must be an number!\033[0m\n");
+	}
 
 	public static double inputDoubleln(String print) {
 		return inputDouble(print + "\n");
+	}
+
+	public static double inputDoubleln(String print, String error) {
+		return inputDouble(print + "\n",error+"\n");
 	}
 
 }
