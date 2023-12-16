@@ -1171,13 +1171,9 @@ public class AdminModule extends Module {
 					}
 					System.out.println("0. Cancel");
 					while (true) {
-						System.out.print("Delete>> ");
-						try {
-							emptype_idx = Integer.parseInt(Application.input.nextLine()) - 1;
-						} catch (NumberFormatException e) {
-							System.out.println("\033[31mPlease select a valid number from the type list!\033[0m");
-							continue;
-						}
+						
+							emptype_idx = Application.inputInt("Delete>> ") - 1;
+						
 						if (emptype_idx == -1)
 							break;
 						if (emptype_idx < 0 || emptype_idx >= count_emptypes) {
@@ -1190,19 +1186,18 @@ public class AdminModule extends Module {
 						String confirm = Application.input.nextLine();
 						if (!confirm.equals("Y") && !confirm.equals("y"))// Don't Delete
 							break;
-						Application.empTypeDataHandler.delete(emptype_idx);// delete type
 						for (int k = 0; k < count_employees; ++k)// nullify all employees with this type
 						{
 							Employee employee = Application.employeeDataHandler.get(k);
-							if (employee.getEmpType().getName().equals(emptype.getName()))
-								;
+							if (employee.getEmpType() == emptype)
 							{
 								employee.setEmpType(null);
 								Application.employeeDataHandler.update(k, employee);
-								System.out.printf("\033[33m\"%s\" type has been nullified!\033[0m\n",
+								System.out.printf("\033[33mType has been removed from %s\033[0m\n",
 										employee.getUsername());
 							}
 						}
+						Application.empTypeDataHandler.delete(emptype_idx);// delete type
 						System.out.println("Press any key to continue...");
 						System.in.read();
 					}
