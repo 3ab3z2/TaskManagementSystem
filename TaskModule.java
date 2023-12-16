@@ -221,7 +221,7 @@ public class TaskModule extends Module {
                         "║╒══╤════════════════════════════════════════════════════════════════════════════════╕║");
             for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
                 Task task = Application.taskDataHandler.get(i);
-                if (task.getAssignedEmployee().toString().equals(currentEmployee.toString()))
+                if (task.getProject().toString().equals(project.toString()) && task.getAssignedEmployee().toString().equals(currentEmployee.toString()))
                     System.out.println("║│ Code:" + task.getCode() + "│Title: " + task.getTitle());
             }
         }
