@@ -247,7 +247,7 @@ public class TaskModule extends Module {
                 break;
             }
             if (!found)
-                System.out.println("task code doesn't exist");
+                System.out.println("\033[31mtask code doesn't exist\033[0m");
 
         }
     }
@@ -323,7 +323,7 @@ public class TaskModule extends Module {
                     break;
 
                 default:
-                    System.out.println("Invalid choice, please try again.");
+                    System.out.println("\033[31mInvalid choice, please try again.\033[0m");
                     break;
             }
         }
@@ -335,7 +335,7 @@ public class TaskModule extends Module {
             Application.taskLogDataHandler.add(newlog);
             return newlog;
         } else
-            System.err.println("\nFrom time cant be bigger than the to time");
+            System.err.println("\n\033[31mFrom time cant be bigger than the to time\033[0m");
         return null;
     }
 
@@ -353,7 +353,10 @@ public class TaskModule extends Module {
             System.out.println("0)Go Back");
             int choice = Application.inputInt("Tasklog number: ");
             if (choice == 0)
+            {
+                System.out.println("Going to the previous page");
                 break;
+            }
                 
             else if (choice < 1 || choice > tasklogs.size())
                 System.out.println("\033[31mChosen tasklog doesn't exist\033[0m\n");
@@ -400,7 +403,7 @@ public class TaskModule extends Module {
                     break;
 
                 default:
-                    System.out.println("Invalid choice, please try again.");
+                    System.out.println("\033[31mInvalid choice, please try again.\033[0m");
                     break;
             }
         }
@@ -417,10 +420,10 @@ public class TaskModule extends Module {
             boolean codeExist = false;
             String taskCode;
             while (true) {
-                taskCode = Application.inputStringOneWord("\n---Code---\nCode: ", "Code cannot be empty!\n");
+                taskCode = Application.inputStringOneWord("\n---Code---\nCode: ", "\033[31mCode cannot be empty!\033[0m\n");
                 for (int i = 0; i < Application.taskDataHandler.getLength(); i++)
                     if (Application.taskDataHandler.get(i).getCode().equals(taskCode)) {
-                        System.err.println("Code already exists!");
+                        System.err.println("\033[31mCode already exists!\033[0m");
                         codeExist = true;
                         break;
                     }
@@ -429,14 +432,14 @@ public class TaskModule extends Module {
             }
 
             // title
-            String taskTitle = Application.inputString("\n---Title---\nTitle: ", "Title cannot be empty!\n");
+            String taskTitle = Application.inputString("\n---Title---\nTitle: ", "\033[31mTitle cannot be empty!\033[0m\n");
             
 
             // desc
-            String taskDescription = Application.inputString("\n---Description---\nDescription: ", "Description cannot be empty!\n");
+            String taskDescription = Application.inputString("\n---Description---\nDescription: ", "\033[31mDescription cannot be empty!\033[0m\n");
             
             // task phase
-            String taskPhase = Application.inputStringOneWord("\n---Task phase---\nTask phase: ", "Task phase cannot be empty!\n");
+            String taskPhase = Application.inputStringOneWord("\n---Task phase---\nTask phase: ", "\033[31mTask phase cannot be empty!\033[0m\n");
            
             // Priority
             int choice;
@@ -459,7 +462,7 @@ public class TaskModule extends Module {
                         break;
 
                     default:
-                        System.out.println("Unknown choice, please try again.");
+                        System.out.println("\033[31mUnknown choice, please try again.\033[0m");
                         break;
                 }
             }
@@ -474,7 +477,7 @@ public class TaskModule extends Module {
                 }
                 choice = Application.inputInt("Assign to: ");
                 if (choice > Application.employeeDataHandler.getLength() || choice < 1) {
-                    System.out.println("Invalid choice, please try again.");
+                    System.out.println("\033[31mInvalid choice, please try again.\033[0m");
                     continue;
                 } else {
                     employee = Application.employeeDataHandler.get(choice - 1);
@@ -515,10 +518,10 @@ public class TaskModule extends Module {
                         Application.taskDataHandler.add(task);
                         project.getListOfTasks().add(task);
                         addExit = true;
-                        System.out.println("\nTask added successfully!");
+                        System.out.println("\n\033[32mTask added successfully!\033[0m");
                         break;
                     } else
-                        System.out.println("begin date can't be bigger than the end date");
+                        System.out.println("\033[31mStart date can't be bigger than the end date.\033[0m");
 
                 } catch (DateTimeException err) {
                     System.err.println(err.getMessage());
@@ -532,10 +535,13 @@ public class TaskModule extends Module {
         while (true) {
             viewTasks();
             System.out.println("0)Go Back");
-            String taskCode = Application.inputStringOneWord("Press 0 to go back or enter Code: ", "Input cannot be empty!\n");
+            String taskCode = Application.inputStringOneWord("Press 0 to go back or enter Code: ", "\033[31mInput cannot be empty!\033[0m\n");
             boolean found = false;
             if (taskCode.equals("0"))
+            {
+                System.out.println("Going to the previous page");
                 break;
+            }
 
             for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
                 if (taskCode.equals(Application.taskDataHandler.get(i).getCode())) {
@@ -551,12 +557,12 @@ public class TaskModule extends Module {
                         }
                     }
                     Application.taskDataHandler.delete(i);
-                    System.out.println("\nTask deleted successfully!");
+                    System.out.println("\n\033[32mTask deleted successfully!\033[0m");
                     break;
                 }
             }
             if (!found)
-                System.out.println("Task Code doesn't exist!");
+                System.out.println("\033[31mTask Code doesn't exist!\033[0m");
         }
     }
 
@@ -564,7 +570,7 @@ public class TaskModule extends Module {
         while (true) {
             viewTasks();
             System.out.println("0)Go Back");
-            String taskCode = Application.inputString("Press 0 to go back or enter Code: ", "Code cannot be empty!\n");
+            String taskCode = Application.inputString("Press 0 to go back or enter Code: ", "\033[31mCode cannot be empty!\033[0m\n");
             Task task = null;
             for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
                 if (taskCode.equals(Application.taskDataHandler.get(i).getCode())) {
@@ -574,9 +580,12 @@ public class TaskModule extends Module {
             }
 
             if (taskCode.equals("0"))
+            {
+                System.out.println("Going to the previous page");
                 break;
+            }
             if (task == null)
-                System.out.println("Task Code Doesn't exist!");
+                System.out.println("\033[31mTask Code Doesn't exist!\033[0m");
 
             else {
 
@@ -600,15 +609,15 @@ public class TaskModule extends Module {
                             break;
                         case 1:
                             System.out.println("\ncurrent title: " + task.getTitle());
-                            String newTitle = Application.inputString("Title: ", "Title cannot be empty!\n");
+                            String newTitle = Application.inputString("Title: ", "\033[31mTitle cannot be empty!\033[0m\n");
                             task.setTitle(newTitle);
-                            System.out.println("\nTask updated successfully!");
+                            System.out.println("\n\033[32mTask updated successfully!\033[0m");
                             break;
                         case 2:
                             System.out.println("\ncurrent descirption: " + task.getDescription());
-                            String newDescription = Application.inputString("Description: ", "Description cannot be empty!\n");
+                            String newDescription = Application.inputString("Description: ", "\033[31mDescription cannot be empty!\033[0m\n");
                             task.setDescription(newDescription);
-                            System.out.println("\nTask updated successfully!");
+                             System.out.println("\n\033[32mTask updated successfully!\033[0m");
                             break;
                         case 3:
                             Employee employee;
@@ -622,11 +631,11 @@ public class TaskModule extends Module {
                                 }
                                 choice = Application.inputInt("Assign to: ");
                                 if (choice > Application.employeeDataHandler.getLength() || choice < 1) {
-                                    System.out.println("Invalid choice, please try again.");
+                                    System.out.println("\033[31mInvalid choice, please try again.\033[0m");
                                 } else {
                                     employee = Application.employeeDataHandler.get(choice - 1);
                                     task.setAssignedEmployee(employee);
-                                    System.out.println("\nTask updated successfully!");
+                                    System.out.println("\n\033[32mTask updated successfully!\033[0m");
                                     employeeExit = true;
                                     break;
                                 }
@@ -634,9 +643,9 @@ public class TaskModule extends Module {
                             break;
                         case 4:
                             System.out.println("\ncurrent task phase: " + task.getTaskPhase());
-                            String newPhase = Application.inputString("Task phase: ", "Task phase cannot be empty!\n");
+                            String newPhase = Application.inputString("Task phase: ", "\033[31mTask phase cannot be empty!\033[0m\n");
                             task.setTaskPhase(newPhase);
-                            System.out.println("\nTask updated successfully!");
+                            System.out.println("\n\033[32mTask updated successfully!\033[0m");
                             break;
                         case 5:
                             boolean priorityExit = false;
@@ -646,21 +655,21 @@ public class TaskModule extends Module {
                                 switch (choice) {
                                     case 1:
                                         task.setPriority(Task.Priority.easy);
-                                        System.out.println("\nTask updated successfully!");
+                                        System.out.println("\n\033[32mTask updated successfully!\033[0m");
                                         priorityExit = true;
                                         break;
                                     case 2:
                                         task.setPriority(Task.Priority.normal);
-                                        System.out.println("\nTask updated successfully!");
+                                        System.out.println("\n\033[32mTask updated successfully!\033[0m");
                                         priorityExit = true;
                                         break;
                                     case 3:
                                         task.setPriority(Task.Priority.high);
-                                        System.out.println("\nTask updated successfully!");
+                                        System.out.println("\n\033[32mTask updated successfully!\033[0m");
                                         priorityExit = true;
                                         break;
                                     default:
-                                        System.out.println("Invalid choice, please try again.");
+                                        System.out.println("\033[31mInvalid choice, please try again.\033[0m");
                                         break;
                                 }
                             }
@@ -682,10 +691,10 @@ public class TaskModule extends Module {
                                                     * (5.0 / 7.0));
                                     task.setStartDate(startDate);
                                     task.setEST(taskEstStart);
-                                    System.out.println("\nTask updated successfully!");
+                                    System.out.println("\n\033[32mTask updated successfully!\033[0m");
                                     break;
                                 } else
-                                    System.out.println("\nstart date can't be bigger than the end date\n");
+                                    System.out.println("\n\033[31mStart date can't be bigger than the end date\033[0m\n");
                             }
 
                             break;
@@ -705,16 +714,16 @@ public class TaskModule extends Module {
                                                     * (5.0 / 7.0));
                                     task.setEndDate(endDate);
                                     task.setEST(taskEstEnd);
-                                    System.out.println("\nTask updated successfully!");
+                                    System.out.println("\n\033[32mTask updated successfully!\033[0m");
                                     break;
                                 } else
-                                    System.out.println("\nstart date can't be bigger than the end date\n");
+                                    System.out.println("\n\033[31mStart date can't be bigger than the end date\033[0m\n");
 
                             }
                             break;
 
                         default:
-                            System.out.println("Invalid option please choose again");
+                            System.out.println("\033[31mInvalid option please choose again\033[0m");
                             break;
                     }
                 }
