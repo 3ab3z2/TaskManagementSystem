@@ -785,16 +785,8 @@ public class AdminModule extends Module {
 											String newname;
 
 											System.out.print("\tNew Name: ");
-											newname = Application.input.nextLine().trim();
-											if (newname.isBlank()) {
-												System.out.print(
-														"\033[31mThe project must have a name!\033[0m\n" +
-																"\033[33mTry Again? [Y/N]: \033[0m");
-												String retry = Application.input.nextLine();
-												if (retry.equals("Y") || retry.equals("y"))
-													continue;
-												break;
-											}
+											newname = Application.inputString("\tNew Name: ");
+											
 											for (int k = 0; k < count_projects; ++k) {
 												Project compare = Application.projectDataHandler.get(k);
 												if (compare.getName().equals(newname)) {
@@ -819,17 +811,7 @@ public class AdminModule extends Module {
 										break;
 									case 2:// Modify Project Description
 										while (true) {
-											System.out.print("New Description: ");
-											String newdescription = Application.input.nextLine().trim();
-											if (newdescription.isBlank()) {
-												System.out.print(
-														"\033[31mThe project must have a brief description!\033[0m\n" +
-																"\033[33mTry Again? [Y/N]: \033[0m");
-												String retry = Application.input.nextLine();
-												if (retry.equals("Y") || retry.equals("y"))
-													continue;
-												break;
-											}
+											String newdescription = Application.inputString("New Description: ");
 											project.setDescription(newdescription);
 											Application.projectDataHandler.update(project_idx, project);
 											break;
@@ -993,10 +975,9 @@ public class AdminModule extends Module {
 							}
 						}
 						if (duplicate) {
-							System.out.print(
-									"\033[31mType with the same name already exists!\033[0m\n" +
+							String retry = Application.inputStringOneWord(
+											"\033[31mType with the same name already exists!\033[0m\n" +
 											"\033[33mTry again? [Y/N]: \033[0m");
-							String retry = Application.input.next();
 							if (retry.equals("Y") || retry.equals("y"))
 								continue;
 							else {
