@@ -618,7 +618,7 @@ public class AdminModule extends Module
 					System.out.print("\033[H\033[2J"); System.out.flush();
 					System.out.print(
 						"Registered Employees:\n"+
-						"IDX\tUSERNAME\tTYPE\n"
+						"IDX\tNAME\tTYPE\n"
 					);
 					for(int k=0;k<count_employees;++k)
 					{
@@ -778,27 +778,23 @@ public class AdminModule extends Module
 						for(int k=0;k<count_employees;++k)
 						{
 							Employee employee= Application.employeeDataHandler.get(k);
-							System.out.printf("%d.\t%s\t%s\n", k+1, employee.getUsername(), employee.getEmpType());
+							if (employee.getEmpType().isManager()) {
+								System.out.printf("%d.\t%s\t%s\n", k+1, employee.getUsername(), employee.getEmpType());
+							}
+							
 						}
 						System.out.println("0. Don\'t assign anyone yet");
 						while(true)
 						{
-							System.out.print("Input>> ");
-							try
-							{
-								leader_idx= Integer.parseInt(Application.input.nextLine())-1;
-							}
-							catch(NumberFormatException e)
-							{
-								System.out.println("\033[31mPlease select a valid number from the employees list!\033[0m");
-								continue;
-							}
+							leader_idx= Application.inputInt("Input>> ")-1;
+							
+							
 							if(leader_idx==-1)
 								break;
-							if(leader_idx<0||leader_idx>=count_employees)
+							if(leader_idx<0||leader_idx>=count_employees || !Application.employeeDataHandler.get(leader_idx).getEmpType().isManager())
 							{
-								System.out.println("\033[31mPlease select a valid number from the employees list!\033[0m");
-								continue;
+									System.out.println("\033[31mPlease select a valid number from the employees list!\033[0m");
+									continue;	
 							}
 							leader= Application.employeeDataHandler.get(leader_idx);
 							break;
@@ -955,6 +951,7 @@ public class AdminModule extends Module
 								break;
 							case 3://Modify Project Leader
 								{
+									Employee leader;
 									int
 										leader_idx= -1,
 										count_employees= Application.employeeDataHandler.getLength();
@@ -975,21 +972,24 @@ public class AdminModule extends Module
 									for(int k=0;k<count_employees;++k)
 									{
 										Employee employee= Application.employeeDataHandler.get(k);
-										System.out.printf("%d.\t%s\t%s\n", k+1, employee.getUsername(), employee.getEmpType());
+										if (employee.getEmpType().isManager())
+											System.out.printf("%d.\t%s\t%s\n", k+1, employee.getUsername(), employee.getEmpType());
 									}
 									System.out.println("0. Don\'t assign anyone");
 									while(true)
 									{
-										System.out.print("Input>> ");
-										try
+										leader_idx= Application.inputInt("Input>> ")-1;
+							
+							
+										if(leader_idx==-1)
+											break;
+										if(leader_idx<0||leader_idx>=count_employees || !Application.employeeDataHandler.get(leader_idx).getEmpType().isManager())
 										{
-											leader_idx= Integer.parseInt(Application.input.nextLine())-1;
+												System.out.println("\033[31mPlease select a valid number from the employees list!\033[0m");
+												continue;	
 										}
-										catch(NumberFormatException e)
-										{
-											System.out.println("\033[31mPlease select a valid number from the employees list!\033[0m");
-											continue;
-										}
+										leader= Application.employeeDataHandler.get(leader_idx);
+										
 										if(leader_idx==-1)
 										{
 											project.setLeader(null);
@@ -1084,7 +1084,6 @@ public class AdminModule extends Module
 	{
 		int choice= 0;
 		boolean exit= false;
-	menu_manageEmptype:
 		while(!exit)
 		{
 			System.out.print("\033[H\033[2J"); System.out.flush();
@@ -1136,8 +1135,10 @@ public class AdminModule extends Module
 							String retry= Application.input.next();
 							if(retry.equals("Y")||retry.equals("y"))
 								continue;
-							else
-								continue menu_manageEmptype;
+							else{
+								exit = true;
+								break;
+							}
 						}
 						break;
 					}
@@ -1156,8 +1157,8 @@ public class AdminModule extends Module
 				}
 				break;
 			case 2://Update Employee Type
-			menu_manageEmptype_update:
-				while(true)
+				boolean upexit = false;
+				while(!upexit)
 				{
 					EmpType emptype= null;
 					int emptype_idx= -1;
@@ -1185,48 +1186,40 @@ public class AdminModule extends Module
 					System.out.println("0. Cancel");
 					while(true)
 					{
-						System.out.print("Update>> ");
-						try
-						{
-							emptype_idx= Integer.parseInt(Application.input.nextLine())-1;
+						
+						
+							emptype_idx= Application.inputInt("Update>> ")-1;
+						
+						
+						if(emptype_idx==-1){
+							upexit = true;
+							break;
 						}
-						catch(NumberFormatException e)
-						{
-							System.out.println("\033[31mPlease select a valid number from the type list!\033[0m");
-							continue;
-						}
-						if(emptype_idx==-1)
-							continue menu_manageEmptype;
 						if(emptype_idx<0||emptype_idx>=count_emptype)
 						{
 							System.out.println("\033[31mPlease select a valid number from the type list!\033[0m");
 							continue;
 						}
 						emptype= Application.empTypeDataHandler.get(emptype_idx);
-						while(true)
+						boolean upexit_1 = false;
+						while(!upexit_1)
 						{
 							System.out.print("\033[H\033[2J"); System.out.flush();
-							System.out.printf(
-								"1. Type    : %s\n"+
-								"2. Manager?: %s\n"+
-								"0. Cancel\n"+
-								"Modify>> ",
-								emptype.getName(),
-								emptype.isManager()?"Yes":"No"
-							);
-							try
-							{
-								choice= Integer.parseInt(Application.input.nextLine());
-							}
-							catch(NumberFormatException e)
-							{
-								System.out.println("\033[31mInvalid Operation!\033[0m");
-								continue;
-							}
+							
+							
+								choice= Application.inputInt(
+									"1. Type    : "+ emptype.getName() +"\n"+
+									"2. Manager?: "+ (emptype.isManager()?"Yes":"No") +"\n"+
+									"0. Cancel\n"+
+									"Modify>> ");
+							
+							
 							switch(choice)
 							{
 							case 0:
-								continue menu_manageEmptype_update;
+								upexit_1 = true;
+								upexit = true;
+								continue;
 							case 1://Modify Type
 								while(true)
 								{
@@ -1303,6 +1296,7 @@ public class AdminModule extends Module
 						break;
 					}
 				}
+				break;
 			case 3://Delete Employee Type
 				{
 					EmpType emptype= null;
@@ -1397,25 +1391,18 @@ public class AdminModule extends Module
 			System.out.print("\033[H\033[2J"); System.out.flush();
 			System.out.print(
 				"Current Tasks:\n"+
-				"IDX\tCODE\tTITLE\tPROJECT\tPRIORITY\tPHASE\tDESCRIPTION\tSTARTS\tENDS\tEST\tCREATOR\tASSIGNED\n"
+				"IDX\tCODE\tTITLE\tPROJECT\tPHASE\n"
 			);
 			for(int k=0;k<count_tasks;++k)
 			{
 				task= Application.taskDataHandler.get(k);
 				System.out.printf(
-					"%d.\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%f\t%s\t%s\n",
+					"%d.\t%s\t%s\t%s\t%s\n",
 					k+1,
 					task.getCode(),
 					task.getTitle(),
 					task.getProject().getName(),
-					task.getPriority().toString(),
-					task.getTaskPhase(),
-					task.getDescription(),
-					task.getStartDate().toString(),
-					task.getEndDate().toString(),
-					task.getEST(),
-					task.getCreator().getUsername(),
-					task.getAssignedEmployee().getUsername()
+					task.getTaskPhase()
 				);
 			}
 			System.out.println("0. Cancel");

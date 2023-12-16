@@ -4,4 +4,4 @@ byas	afw	omg	1	wip	0	high	0	2022-12-12	2024-10-10	0.0
 sad	omg	OMG	1	WIP	0	high	0	2022-10-12	2023-10-12	0.0
 sd	sf	af	1	aw	0	easy	0	2022-10-10	2023-10-10	0.0
 s	aw	aw	1	a	0	normal	0	2022-10-10	2023-10-10	2085.714285714286
-fa	ad	awd	1	awd	0	normal	0	2022-10-10	2023-10-10	2086.0
+fa	ad	awd	1	approved	0	normal	0	2022-10-10	2023-10-10	2086.0
