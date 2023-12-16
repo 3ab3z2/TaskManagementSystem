@@ -1,1 +1,1 @@
-test	pending
+test	approved

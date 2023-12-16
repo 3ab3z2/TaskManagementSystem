@@ -548,7 +548,7 @@ public class EmployeeModule extends Module {
 						request = Application.requestDataHandler.get(ID);
 						System.out.println("╠╧═══════════════════════════════════════════════════════════════════════════════════╧╣");
 						System.out.print(	 "║ Please enter the approval of the request: (pending, rejected, approved)             ║\n" +
-											 "╠═════════════════════════════════════════════════════════════════════════════════════╣" +
+											 "╠═════════════════════════════════════════════════════════════════════════════════════╣\n" +
 											 "║ Approval: ");
 						Request.Approval approval = Request.Approval.valueOf(Application.input.next());
 						for(int i = 0; i < 74 - approval.toString().length(); i++){
