@@ -20,7 +20,7 @@ public class TaskModule extends Module {
         int choice;
         boolean exit = false;
         while (!exit) {
-            System.out.println(
+            System.out.print(
                     "╔═════════════════════════════════════════════════════════════════════════════════════╗\n" +
                             "║▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓║ █\n"
                             +
@@ -30,7 +30,11 @@ public class TaskModule extends Module {
                             +
                             "║╒═════════╝                                                              ╚══════════╕║ █\n"
                             +
-                            "║│                                  Hi " + currentEmployee.getUsername() + "\n" +
+                            "║│                                  Hi " + currentEmployee.getUsername() + "\n");
+            for(int i = 0; i < 46 - currentEmployee.getUsername().length(); i++){
+                System.out.print(" ");
+            };
+            System.out.print(
                             "║│                                                                                   │║ █\n"
                             +
                             "║╘═══════════════════════════════════════════════════════════════════════════════════╛║ █\n");
@@ -122,7 +126,7 @@ public class TaskModule extends Module {
             } else {
 
                 System.out.println(
-                        "║╭╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╮║ █\n"
+                                "║╭╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╴╮║ █\n"
                                 +
                                 "║│                                  🯅 Position: Employee                             │║ █\n"
                                 +
@@ -203,14 +207,22 @@ public class TaskModule extends Module {
         if (project.getLeader().toString().equals(currentEmployee.toString())) {
              System.out.println(
                 "║                              These are the project's tasks                          ║\n" +
-                        "║╒══╤════════════════════════════════════════════════════════════════════════════════╕║");
+                        "║╒╤══════════════════════════════════════════════════════════════════════════════════╕║");
             for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
                 Task task = Application.taskDataHandler.get(i);
                 if (task.getProject().toString().equals(project.toString())) {
 
-                    System.out.println("║│ Code:" + task.getCode());
-                    System.out.println("║│ Title: " + task.getTitle());
-                    System.out.println("║│------------------------------");
+                    System.out.print("║│ Code: " + task.getCode());
+                    for(int j = 0; j < 76 - task.getCode().length(); j++){
+                        System.out.print(" ");
+                    };
+                    System.out.println("│║");
+                    System.out.print("║│ Title: " + task.getTitle());
+                    for(int j = 0; j < 75 - task.getTitle().length(); j++){
+                        System.out.print(" ");
+                    };
+                    System.out.println("│║");
+                    System.out.println("║├┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤║");
                 }
             }
         }
@@ -218,13 +230,23 @@ public class TaskModule extends Module {
         else {
              System.out.println(
                 "║                              These are your assigned tasks                          ║\n" +
-                        "║╒══╤════════════════════════════════════════════════════════════════════════════════╕║");
+                        "║╒╤══════════════════════════════════════════════════════════════════════════════════╕║");
             for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
                 Task task = Application.taskDataHandler.get(i);
                 if (task.getProject().toString().equals(project.toString()) && task.getAssignedEmployee().toString().equals(currentEmployee.toString()))
-                    System.out.println("║│ Code:" + task.getCode() + "│Title: " + task.getTitle());
+                    System.out.print("║│ Code: " + task.getCode());
+                    for(int j = 0; j < 76 - task.getCode().length(); j++){
+                        System.out.print(" ");
+                    };
+                    System.out.println("│║");
+                    System.out.print("║│ Title: " + task.getTitle());
+                    for(int j = 0; j < 75 - task.getTitle().length(); j++){
+                        System.out.print(" ");
+                    };
+                    System.out.println("│║");
             }
         }
+        System.out.println("║│0)│Go back.                                                                        │║");
         System.out.println("╚╧══╧════════════════════════════════════════════════════════════════════════════════╧╝");
 
     }
@@ -232,8 +254,9 @@ public class TaskModule extends Module {
     public void viewTasksMenu() throws IOException {
         while (true) {
             viewTasks();
-            System.out.println("0)Go back");
-            String taskCode = Application.inputStringOneWord("Press 0 to go back or enter Code: ", "Input cannot be empty!\n");
+            String taskCode = Application.inputStringOneWord("Your choice:🮶", "\u001B[41m" + "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m" +
+            "\u001B[41m"+"║🮲🮳 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Empty Input 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 ║"+"\u001B[0m" +
+            "\n"+"\u001B[41m"+"╚═════════════════════════════════════════════════════════════════════════════════════╝\u001B[0m\n");
             boolean found = false;
             for (int i = 0; i < Application.taskDataHandler.getLength(); i++) {
                 Task task = Application.taskDataHandler.get(i);
@@ -243,42 +266,92 @@ public class TaskModule extends Module {
                 }
             }
             if (taskCode.equals("0")) {
-                System.out.println("Going to the previous page");
+                System.out.println("\u001B[42m" +       
+                            "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m" +
+                "\u001B[42m"+"║                                 Returning back🮴                                    ║"+"\u001B[0m" +
+                "\n"+
+                "\u001B[42m"+"╚═════════════════════════════════════════════════════════════════════════════════════╝\u001B[0m\n");
                 break;
             }
             if (!found)
-                System.out.println("\033[31mtask code doesn't exist\033[0m");
+            System.out.println("\u001B[41m" + "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m" +
+            "\u001B[41m"+"║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Invalid Choice, please try again 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 ║"+"\u001B[0m" +
+            "\n"+"\u001B[41m"+"╚═════════════════════════════════════════════════════════════════════════════════════╝\u001B[0m\n");
 
         }
     }
 
     public void viewTask(Task task) throws IOException {
 
-        System.out.println("\n-----------------");
-        System.out.println("Title: " + task.getTitle());
-        System.out.println("Code: " + task.getCode());
-        System.out.println("Description: " + task.getDescription());
-        System.out.println("Task phase: " + task.getTaskPhase());
-        System.out.println("Priority: " + task.getPriority().toString());
-        System.out.println("Assigned to: " + task.getAssignedEmployee().getUsername());
-        System.out.println("Start date: " + task.getStartDate().toString());
-        System.out.println("Due date: " + task.getEndDate().toString());
-        System.out.println("EST: " + task.getEST());
-        System.out.println("-----------------\n");
+        System.out.print("\n"+
+                         "╔══════════════╤══════════════════════════════════════════════════════════════════════╗"+
+                         "║ Title        │" + task.getTitle());
+        for(int i = 0; i < 69 - task.getTitle().length(); i++){
+            System.out.print(" ");
+        };
+        System.out.println("║");
+        System.out.print("║ Code         │" + task.getCode());
+        for(int i = 0; i < 69 - task.getCode().length(); i++){
+            System.out.print(" ");
+        };
+        System.out.println("║");
+        System.out.print("║ Description  │" + task.getDescription());
+        for(int i = 0; i < 69 - task.getDescription().length(); i++){
+            System.out.print(" ");
+        };
+        System.out.println("║");
+        System.out.print("║ Task phase   │" + task.getTaskPhase());
+        for(int i = 0; i < 69 - task.getTaskPhase().length(); i++){
+            System.out.print(" ");
+        };
+        System.out.println("║");
+        System.out.print("║ Priority     │" + task.getPriority().toString());
+        for(int i = 0; i < 69 - task.getPriority().toString().length(); i++){
+            System.out.print(" ");
+        };
+        System.out.println("║");
+        System.out.print("║ Assigned to  │" + task.getAssignedEmployee().getUsername());
+        for(int i = 0; i < 69 - task.getAssignedEmployee().getUsername().length(); i++){
+            System.out.print(" ");
+        };
+        System.out.println("║");
+        System.out.print("║ Start date   │" + task.getStartDate().toString());
+        for(int i = 0; i < 69 - task.getStartDate().toString().length(); i++){
+            System.out.print(" ");
+        };
+        System.out.println("║");
+
+        System.out.print("║ Due date     │" + task.getEndDate().toString());
+        for(int i = 0; i < 69 - task.getEndDate().toString().length(); i++){
+            System.out.print(" ");
+        };
+        System.out.println("║");
+        System.out.println("║ EST          │" + task.getEST());
+        System.out.println("╚══════════════╧══════════════════════════════════════════════════════════════════════╝");
 
     }
 
     public void viewTaskMenu(Task task) throws IOException {
+        LocalDateTime startdate = LocalDateTime.now();
+        LocalDateTime end_date_time = LocalDateTime.now();
         boolean exit = false;
         while (!exit) {
             viewTask(task);
-            System.out.println("1)View tasklogs");
-            System.out.println("2)Create tasklog");
-            System.out.println("0)Go Back");
-            int choice = Application.inputInt("Choice: ");
+            System.out.print(   "╔═════════════════════════════════════════════════════════════════════════════════════╗ \n"+
+                                "║                 🯇 Please choose one of the following options:🯈                     ║ \n"+
+                                "║╒══╤════════════════════════════════════════════════════════════════════════════════╕║ \n" +
+                                "║│1)│View tasklogs.                                                                  │║ \n" +
+                                "║│2)│Create tasklog.                                                                 │║ \n" +
+                                "║│0)│Logout.                                                                         │║ \n" +
+                                "╚╧══╧════════════════════════════════════════════════════════════════════════════════╧╝ \n");
+            int choice = Application.inputInt("Your choice:🮶 ");
             switch (choice) {
                 case 0:
-                    System.out.println("Going to the previous page");
+                System.out.println("\u001B[42m" +       
+                            "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m" +
+                "\u001B[42m"+"║                                 Returning back🮴                                    ║"+"\u001B[0m" +
+                "\n"+
+                "\u001B[42m"+"╚═════════════════════════════════════════════════════════════════════════════════════╝\u001B[0m\n");
                     exit = true;
                     break;
 
@@ -294,24 +367,54 @@ public class TaskModule extends Module {
 
                 case 2:
                     while (true) {
-                        // from time input
-                        System.out.println("\n---From Time--");
-                        int year = Application.inputInt("Enter the year: ");
-                        int month = Application.inputInt("Enter the month: ");
-                        int day = Application.inputInt("Enter the day: ");
-                        int hour = Application.inputInt("Enter the hour: ");
-                        int minute = Application.inputInt("Enter the minute: ");
-
-                        // to time input
-                        System.out.println("\n---To Time---");
-                        int hourTo = Application.inputInt("Enter the hour: ");
-                        int minuteTo = Application.inputInt("Enter the minute: ");
+                        System.out.println("╔═════════════════════════════════════════════════════════════════════════════════════╗\n" +
+                                    "║                     🯇 Please Enter the start date and time 🯈                        ║\n" +
+                                    "║╒═══════════════════════════════════════════════════════════════════════════════════╕║\n" +
+                                    "║│Example-> (yyyy-MM-dd)  and   (HH:mm:ss)                                           │║\n" +
+                                    "╠╧═══════════════════════════════════════════════════════════════════════════════════╧╣");
+                        
+                        try{
+                            System.out.print("║ Date: ");
+                            String date = Application.input.next();
+                            System.out.print("║ Time: ");
+                            String time = Application.input.next();
+                            String dateTime = date + "T" + time;
+                            startdate = LocalDateTime.parse(dateTime);
+                            System.out.println("╚═════════════════════════════════════════════════════════════════════════════════════╝");
+                            
+                        }    catch(Exception e){
+                                System.out.println("\u001B[41m" + "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m" +
+                                "\u001B[41m"+"║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Invalid Choice, please try again 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 ║"+"\u001B[0m" +
+                                "\n"+"\u001B[41m"+"╚═════════════════════════════════════════════════════════════════════════════════════╝\u001B[0m\n");
+                            continue;
+                        }
+                        System.out.println("╔═════════════════════════════════════════════════════════════════════════════════════╗\n" +
+                                    "║                     🯇 Please Enter the end date and time 🯈                          ║\n" +
+                                    "║╒═══════════════════════════════════════════════════════════════════════════════════╕║\n" +
+                                    "║│Example-> (yyyy-MM-dd)  and   (HH:mm:ss)                                           │║\n" +
+                                    "╠╧═══════════════════════════════════════════════════════════════════════════════════╧╣");
+                        
+                        try{
+                            System.out.print("║ Date: ");
+                            String end_date = Application.input.next();
+                            System.out.print("║ Time: ");
+                            String end_time = Application.input.next();
+                            String dateTime = end_date + "T" + end_time;
+                            end_date_time = LocalDateTime.parse(dateTime);
+                            System.out.println("╚═════════════════════════════════════════════════════════════════════════════════════╝");
+                            
+                        }    catch(Exception e){
+                                System.out.println("\u001B[41m" + "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m" +
+                                "\u001B[41m"+"║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Invalid Choice, please try again 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 ║"+"\u001B[0m" +
+                                "\n"+"\u001B[41m"+"╚═════════════════════════════════════════════════════════════════════════════════════╝\u001B[0m\n");
+                            continue;
+                        }
 
                         // try catch to handle DateTime Exceptions
                         try {
                             // Creating the tasklog
-                            TaskLog log = createTaskLog(task, LocalDateTime.of(year, month, day, hour, minute),
-                                    LocalDateTime.of(year, month, day, hourTo, minuteTo));
+                            TaskLog log = createTaskLog(task, startdate,
+                                    end_date_time);
                             if (log != null) {
                                 project.getListOfTaskLogs().add(log);
                                 break;
@@ -323,7 +426,9 @@ public class TaskModule extends Module {
                     break;
 
                 default:
-                    System.out.println("\033[31mInvalid choice, please try again.\033[0m");
+                System.out.println("\u001B[41m" + "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m" +
+                "\u001B[41m"+"║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Invalid Choice, please try again 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 ║"+"\u001B[0m" +
+                "\n"+"\u001B[41m"+"╚═════════════════════════════════════════════════════════════════════════════════════╝\u001B[0m\n");
                     break;
             }
         }
@@ -335,31 +440,52 @@ public class TaskModule extends Module {
             Application.taskLogDataHandler.add(newlog);
             return newlog;
         } else
-            System.err.println("\n\033[31mFrom time cant be bigger than the to time\033[0m");
+            System.err.println("\u001B[41m" + "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m" +
+                "\u001B[41m"+"║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 End date is later than start date 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 ║"+"\u001B[0m" +
+                "\n"+"\u001B[41m"+"╚═════════════════════════════════════════════════════════════════════════════════════╝\u001B[0m\n");
         return null;
     }
 
     public void viewTasklogs(ArrayList<TaskLog> tasklogs) {
-        for (int i = 0; i < tasklogs.size(); i++)
-            System.out.println(
-                    (i + 1) + ")From time: " + tasklogs.get(i).getFromTime().toString()
-                            + " To time: " +  tasklogs.get(i).getToTime().toString());
+        for (int i = 0; i < tasklogs.size(); i++){
+            System.out.print(   "╔═════════════════════════════════════════════════════════════════════════════════════╗ \n"+
+                                "║                             These are the tasklogs                                  ║ \n"+
+                                "║╒══╤════════════════════════════════════════════════════════════════════════════════╕║ \n"+
+                                "║│"+(i+1)+"│From time: " + tasklogs.get(i).getFromTime().toString());
+            for(int j = 0; j < 76 - tasklogs.get(i).getFromTime().toString().length(); j++){
+                System.out.print(" ");
+            };
+            System.out.println("║");
+            System.out.print("║│  │To time: " + tasklogs.get(i).getToTime().toString());
+            for(int j = 0; j < 76 - tasklogs.get(i).getToTime().toString().length(); j++){
+                System.out.print(" ");
+            };
+            System.out.println("║");
+            System.out.println("║├┄┄┼┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┤║");
+        }
+        System.out.println("║│0)│Go back.                                                                        │║");
+        System.out.println("╚╧══╧════════════════════════════════════════════════════════════════════════════════╧╝");
 
     }
 
     public void viewTasklogsMenu(Task task, ArrayList<TaskLog> tasklogs) {
         while (true) {
             viewTasklogs(tasklogs);
-            System.out.println("0)Go Back");
-            int choice = Application.inputInt("Tasklog number: ");
+            int choice = Application.inputInt("Your choice:🮶");
             if (choice == 0)
             {
-                System.out.println("Going to the previous page");
+                System.out.println("\u001B[42m" +       
+                            "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m" +
+                "\u001B[42m"+"║                                 Returning back🮴                                    ║"+"\u001B[0m" +
+                "\n"+
+                "\u001B[42m"+"╚═════════════════════════════════════════════════════════════════════════════════════╝\u001B[0m\n");
                 break;
             }
                 
             else if (choice < 1 || choice > tasklogs.size())
-                System.out.println("\033[31mChosen tasklog doesn't exist\033[0m\n");
+                                System.out.println("\u001B[41m" + "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m" +
+                                "\u001B[41m"+"║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Invalid Choice, please try again 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 ║"+"\u001B[0m" +
+                                "\n"+"\u001B[41m"+"╚═════════════════════════════════════════════════════════════════════════════════════╝\u001B[0m\n");
             else
                 viewTasklog(tasklogs.get(choice -1));
         }
