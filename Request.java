@@ -1,8 +1,8 @@
 public class Request implements LoadSave {
-    Employee employee;
-    String reason;
+    protected Employee employee;
+    protected String reason;
     public enum Approval{pending, rejected, approved};
-    Approval approval;
+    protected Approval approval;
     public Request(Employee employee, String reason, Request.Approval approval) {
         this.employee = employee;
         this.reason = reason;
@@ -28,13 +28,32 @@ public class Request implements LoadSave {
     }
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
-        return super.toString();
+        return reason+"\t"+approval;
     }
     @Override
     public LoadSave fromString(String s) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
-        return null;
+        String[] parts=s.split("\t");
+        if(parts.length>=2){
+            Approval cApproval;
+            switch (parts[1]) {
+                case "approved":
+                    cApproval=Approval.approved;
+                    break;
+                case "pending":
+                    cApproval=Approval.pending;
+                    break;
+                case "rejected":
+                    cApproval=Approval.rejected;
+                    break;
+                case "null":
+                    cApproval=null;
+                    break;
+                default:
+                    throw new IllegalArgumentException("unknown value "+parts[1]);
+            }
+            return new Request(null, parts[0], cApproval);
+        }
+        else throw new IllegalArgumentException("not enough arguments");
     }
     
 }

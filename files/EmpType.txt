@@ -1,0 +1,5 @@
+IT	true
+Regional Manager	true
+PM	false
+Human Resources	false
+typer	false

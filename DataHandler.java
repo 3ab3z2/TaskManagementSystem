@@ -10,6 +10,8 @@ public class DataHandler<T extends LoadSave> {
     private FileWriter fileWriter;
     private Scanner fileReader;
     private ArrayList<T> list;
+
+    @SuppressWarnings("unchecked")
     public DataHandler(String path, T oi) throws IOException{
         filePath=path;
         file=new File(filePath);
@@ -23,17 +25,21 @@ public class DataHandler<T extends LoadSave> {
                 list.add((T)oi.fromString(line));
         }  
         fileReader.close();
-        fileWriter = new FileWriter(file,false);
     }
     private void save() throws IOException{
+        fileWriter = new FileWriter(file,false);
         String fileContents="";
         for (T item : list) {
             fileContents+=item+"\n";
         }
         fileWriter.write(fileContents);
+        fileWriter.close();
     }
     public T get(int index){
         return list.get(index);
+    }
+    public int getIndex(T object){
+        return list.indexOf(object);
     }
     public int getLength(){
         return list.size();

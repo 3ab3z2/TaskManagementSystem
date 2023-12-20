@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
 public class Employee extends User {
-    EmpType empType;
-    ArrayList<Request> missionRequests;
-    ArrayList<Request> permissionRequests;
-    ArrayList<LeaveRequest> leaveRequests;
+    private EmpType empType;
+    private ArrayList<Request> missionRequests;
+    private ArrayList<Request> permissionRequests;
+    private ArrayList<LeaveRequest> leaveRequests;
     public Employee(String username, String password, User.utype userType, EmpType empType,
             ArrayList<Request> missionRequests, ArrayList<Request> permissionRequests,
             ArrayList<LeaveRequest> leaveRequests) {
@@ -43,12 +43,72 @@ public class Employee extends User {
     }
     @Override
     public LoadSave fromString(String s) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
-        return super.fromString(s);
+        String[] parts=s.split("\t");
+        if(parts.length>=4){
+            utype cUserType;
+            switch (parts[2]) {
+                case "admin":
+                    cUserType=utype.admin;
+                    break;
+                case "employee":
+                    cUserType=utype.employee;
+                    break;
+                case "null":
+                    cUserType=null;
+                    break;
+                default:
+                    throw new IllegalArgumentException("unknown value "+parts[2]);
+            }
+            EmpType cEmpType = (Integer.parseInt(parts[3])!=-1)?Application.empTypeDataHandler.get(Integer.parseInt(parts[3])):null;
+            Employee employee = new Employee(parts[0], parts[1], cUserType, cEmpType);
+            if(parts.length>=5){
+                for(String index : parts[4].split(",")){
+                    if(!index.isEmpty()&&(Integer.parseInt(index)!=-1)) {
+                        Request request=Application.requestDataHandler.get(Integer.parseInt(index));
+                        employee.getMissionRequests().add(request);
+                        request.setEmployee(employee);
+                    }
+                }
+            }
+            if(parts.length>=6){
+                for(String index : parts[5].split(",")){
+                    if(!index.isEmpty()&&(Integer.parseInt(index)!=-1)) {
+                        Request request=Application.requestDataHandler.get(Integer.parseInt(index));
+                        employee.getPermissionRequests().add(request);
+                        request.setEmployee(employee);
+                    }
+                }
+            }
+            if(parts.length>=7){
+                for(String index : parts[6].split(",")){
+                    if(!index.isEmpty()&&(Integer.parseInt(index)!=-1)) {
+                        LeaveRequest request=Application.leaveRequestDataHandler.get(Integer.parseInt(index));
+                        employee.getLeaveRequests().add(request);
+                        request.setEmployee(employee);
+                    }
+                }
+            }
+            return employee;
+        }
+        else throw new IllegalArgumentException("not enough arguments");
     }
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
-        return super.toString();
+        String s = username+"\t"+password+"\t"+userType+"\t"+Application.empTypeDataHandler.getIndex(empType)+"\t";
+        for (Request missionRequest : missionRequests) {
+            int missionRequestIndex=Application.requestDataHandler.getIndex(missionRequest);
+            s+=missionRequestIndex+",";
+        }
+        s+="\t";
+        for (Request permissionRequest : permissionRequests) {
+            int permissionRequestIndex=Application.requestDataHandler.getIndex(permissionRequest);
+            s+=permissionRequestIndex+",";
+        }
+        s+="\t";
+        for (LeaveRequest leaveRequest : leaveRequests) {
+            int leaveRequestIndex=Application.leaveRequestDataHandler.getIndex(leaveRequest);
+            s+=leaveRequestIndex+",";
+        }
+        return s;
     }
 }

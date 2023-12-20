@@ -1,11 +1,12 @@
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class TaskLog implements LoadSave {
     //include datetime package
-    LocalDateTime fromTime;
-    LocalDateTime toTime;
-    Employee assignedEmployee;
-    Task task;
+    private LocalDateTime fromTime;
+    private LocalDateTime toTime;
+    private Employee assignedEmployee;
+    private Task task;
     public TaskLog(LocalDateTime fromTime, LocalDateTime toTime, Employee assignedEmployee, Task task) {
         this.fromTime = fromTime;
         this.toTime = toTime;
@@ -37,17 +38,24 @@ public class TaskLog implements LoadSave {
         this.task = task;
     }
     @Override
-    public String toString() {
-        // TODO Auto-generated method stub
-        return super.toString();
+    public LoadSave fromString(String s) throws IllegalArgumentException {
+        String[] parts=s.split("\t");
+        if(parts.length>=4){
+            LocalDateTime cFromTime=parts[0].equals("null")?null:LocalDateTime.parse(parts[0]);
+            LocalDateTime cToTime=parts[1].equals("null")?null:LocalDateTime.parse(parts[1]);
+            Employee cAssignedEmployee=(Integer.parseInt(parts[2])!=-1)?Application.employeeDataHandler.get(Integer.parseInt(parts[2])):null;
+            Task cTask=(Integer.parseInt(parts[3])!=-1)?Application.taskDataHandler.get(Integer.parseInt(parts[3])):null;
+            TaskLog tasklog =  new TaskLog(cFromTime, cToTime, cAssignedEmployee, cTask);
+            cTask.getProject().getListOfTaskLogs().add(tasklog);
+            return tasklog;
+        }
+        else throw new IllegalArgumentException("not enough arguments");
     }
     @Override
-    public LoadSave fromString(String s) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
-        return null;
+    public String toString() {
+        return fromTime+"\t"+toTime+"\t"+Application.employeeDataHandler.getIndex(assignedEmployee)+"\t"+Application.taskDataHandler.getIndex(task);
     }
     public double calculateHours() {
-        // TODO
-        return 0;
+        return Duration.between(fromTime,toTime).toHours();
     }
 }

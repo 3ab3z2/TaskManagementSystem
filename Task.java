@@ -1,18 +1,18 @@
 import java.time.LocalDate;
 
 public class Task implements LoadSave {
-    String code;
-    String title;
-    String description;
-    Employee assignedEmployee;
-    String taskPhase;
-    Project project;
+    private String code;
+    private String title;
+    private String description;
+    private Employee assignedEmployee;
+    private String taskPhase;
+    private Project project;
     public enum Priority{easy,normal,high};
-    Priority priority;
-    Employee creator;
-    LocalDate startDate;
-    LocalDate endDate;
-    double EST;
+    private Priority priority;
+    private Employee creator;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private double EST;
     public Task(String code, String title, String description, Employee assignedEmployee, String taskPhase,
             Project project, Task.Priority priority, Employee creator, LocalDate startDate, LocalDate endDate,
             double eST) {
@@ -95,13 +95,40 @@ public class Task implements LoadSave {
         EST = eST;
     }
     @Override
-    public String toString() {
-        // TODO Auto-generated method stub
-        return super.toString();
+    public LoadSave fromString(String s) throws IllegalArgumentException {
+        String[] parts=s.split("\t");
+        if(parts.length>=11){
+            Priority cPriority;
+            switch (parts[6]) {
+                case "easy":
+                    cPriority=Priority.easy;
+                    break;
+                case "normal":
+                    cPriority=Priority.normal;
+                    break;
+                case "high":
+                    cPriority=Priority.high;
+                    break;
+                case "null":
+                    cPriority=null;
+                    break;
+                default:
+                    throw new IllegalArgumentException("unknown value "+parts[6]);
+            }
+            Employee cAssignedEmployee=(Integer.parseInt(parts[3])!=-1)?Application.employeeDataHandler.get(Integer.parseInt(parts[3])):null;
+            Project cProject=(Integer.parseInt(parts[3])!=-1)?Application.projectDataHandler.get(Integer.parseInt(parts[5])):null;
+            Employee cCreator=(Integer.parseInt(parts[7])!=-1)?Application.employeeDataHandler.get(Integer.parseInt(parts[7])):null;
+            LocalDate cStartDate=parts[8].equals("null")?null:LocalDate.parse(parts[8]);
+            LocalDate cEndDate=parts[9].equals("null")?null:LocalDate.parse(parts[9]);
+            
+            Task task =  new Task(parts[0], parts[1], parts[2], cAssignedEmployee, parts[4], cProject, cPriority, cCreator, cStartDate, cEndDate, Double.parseDouble(parts[10]));
+            cProject.getListOfTasks().add(task);
+            return task;
+        }
+        else throw new IllegalArgumentException("not enough arguments");
     }
     @Override
-    public LoadSave fromString(String s) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
-        return null;
+    public String toString() {
+        return code+"\t"+title+"\t"+description+"\t"+Application.employeeDataHandler.getIndex(assignedEmployee)+"\t"+taskPhase+"\t"+Application.projectDataHandler.getIndex(project)+"\t"+priority+"\t"+Application.employeeDataHandler.getIndex(creator)+"\t"+startDate+"\t"+endDate+"\t"+EST;
     }
 }

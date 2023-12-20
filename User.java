@@ -1,8 +1,8 @@
 public class User implements LoadSave {
-    private String username;
-    private String password;
+    protected String username;
+    protected String password;
     public enum utype{admin,employee};
-    private utype userType;
+    protected utype userType;
 
     public User(String username, String password, User.utype userType) {
         this.username = username;
@@ -30,13 +30,24 @@ public class User implements LoadSave {
     }
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
-        return super.toString();
+        return username+"\t"+password+"\t"+userType;
     }
     @Override
     public LoadSave fromString(String s) throws IllegalArgumentException {
-        // TODO Auto-generated method stub
-        return null;
+        String[] parts=s.split("\t");
+        if(parts.length>=3){
+            switch (parts[2]) {
+                case "admin":
+                    return new User(parts[0], parts[1], utype.admin);
+                case "employee":
+                    return new User(parts[0], parts[1], utype.employee);
+                case "null":
+                    return new User(parts[0], parts[1], null);
+                default:
+                    throw new IllegalArgumentException("unknown value "+parts[2]);
+            }
+        }
+        else throw new IllegalArgumentException("not enough arguments");
     }
     public boolean canlogin(String username, String password){
         return this.username.equals(username) && this.password.equals(password);
