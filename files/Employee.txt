@@ -1,2 +1,3 @@
 3b3z	12345678	employee	0		0,	
 Ali5	00000000	employee	1			
+Tarek	12345678	employee	3		1,	

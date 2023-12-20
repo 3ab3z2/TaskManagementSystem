@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Application {
@@ -42,7 +44,7 @@ public class Application {
 		username = inputString(
 			// prompt
 			"╔═════════════════════════════════════════════════════════════════════════════════════╗\n" +
-			"║                     🯇 Please Enter the Username and password🯈   	                 ║\n" +
+			"║                     🯇 Please Enter the Username and password🯈   	              ║\n" +
 			"║╒═══════════════════════════════════════════════════════════════════════════════════╕║\n" +
 			"║│🯅 🯆 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🮲🮳 🯇 🯉 🯉 🯉 🯉 🯉 🯉 🯈 🯇 🯈 🯇 🯈 🯇 🯈 🯇 │║\n"+
 			"╠╧═══════════════════════════════════════════════════════════════════════════════════╧╣\n" +
@@ -87,11 +89,7 @@ public class Application {
 		}
 		if (!foundUser)
 		{
-			System.out.println(
-				"\u001B[41m╔═════════════════════════════════════════════════════════════════════════════════════╗\u001B[0m\n"+
-				"\u001B[41m║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Username or password are wrong! 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀  ║\u001B[0m\n"+
-				"\u001B[41m╠═════════════════════════════════════════════════════════════════════════════════════╣\u001B[0m\n"
-			);
+			System.out.println(printInABoxError("Username or password are wrong!",85));
 			input.nextLine();
 		}
 	}
@@ -116,14 +114,7 @@ public class Application {
 				boolean exit = false;
 				while (!exit) {
 					System.out.print("\033[H\033[2J"); System.out.flush();
-					choice = inputInt(
-									"╔═════════════════════════════════════════════════════════════════════════════════════╗\n"+
-									"║                     🯇 Please choose one of the following options:🯈                  ║\n"+
-									"║╒══╤════════════════════════════════════════════════════════════════════════════════╕║\n"+
-									"║│1)│Employee Module.                                                                │║\n"+
-									"║│2)│Task Module.                                                                    │║\n"+
-									"║│0)│Sign Out.                                                                       │║\n"+
-									"╠╧══╧════════════════════════════════════════════════════════════════════════════════╧╣\n"+
+					choice = inputInt(printInABox("🯇 Please choose one of the following options:🯈","1)│Employee Module.\n2)│Task Module.\n0)│Sign Out.",3,85,true)+
 									"║ Please enter your choice: ");
 					for(int i = 0; i < 58 - String.valueOf(choice).length(); i++){
 						System.out.print(" ");
@@ -184,14 +175,7 @@ public class Application {
 							exit = true;
 							break;
 						default:
-							System.out.println("\u001B[41m"
-									+ "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m"
-									+
-									"\u001B[41m"
-									+ "║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Invalid Choice, please try again 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 ║"
-									+ "\u001B[0m" +
-									"\n" + "\u001B[41m"
-									+ "╚═════════════════════════════════════════════════════════════════════════════════════╝\u001B[0m\n");
+							System.out.println(printInABoxError("Invalid Choice, please try again", 85));
 							break;
 
 					}
@@ -213,40 +197,22 @@ public class Application {
 			boolean exit = false;
 
 			System.out.print("\033[H\033[2J");System.out.flush();
-
+			
 			while (!exit) {
-				System.out.println(
-								"╔═════════════════════════════════════════════════════════════════════════════════════╗\n" +
-								"║▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓║ █\n"+
-								"║▓▓▓▓▓▓▓▓▓▓▒▒▒▒▒▒▒▒▒▒▒░░░░░░░░░░Task Management System░░░░░░░░░░▒▒▒▒▒▒▒▒▒▒▒▓▓▓▓▓▓▓▓▓▓▓║ █\n"+
-								"║▓▓▓▓▓▓▓▓▓🮜╔══════════════════════════════════════════════════════════════╗🮝▓▓▓▓▓▓▓▓▓▓║ █\n"+
-								"║╒═════════╝                                                              ╚══════════╕║ █\n"+
-								"║│ A task management system made in Java for the PL2 course at Helwan University.    │║ █\n"+
-								"║│ This project made by: 3ab3z, Omar Atya, Omar Wagih, Ali, Mohammed, Tarek.         │║ █\n"+
-								"║╘═══════════════════════════════════════════════════════════════════════════════════╛║ █\n"+
-								"║                     🯇 Please choose one of the following options:🯈                  ║ █\n"+
-								"║╒══╤════════════════════════════════════════════════════════════════════════════════╕║ █\n"+
-								"║│1)│Sign in.                                                                        │║ █\n"+
-								"║│2)│Exit.                                                                           │║ █\n"+
-								"╚╧══╧════════════════════════════════════════════════════════════════════════════════╧╝ █\n"+
-								" ▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇█\n");
+				System.out.println(printInABoxMain("Task Management System","A task management system made in Java for the PL2 course at Helwan University.\nThis project made by: 3ab3z, Omar Atya, Omar Wagih, Ali, Mohammed, Tarek.","🯇 Please choose one of the following options:🯈","1)│Sign in.\n2)│Exit.",3,85,false,10,20));
+
 				choice = inputInt("Input:🮶  ");
 				switch (choice) {
 					case 1:
 						login();
 						break;
 					case 2:
+						System.out.print("\033[H\033[2J");System.out.flush();
+						System.out.print(printInABoxGreen("Thank you for using this program!",85));
 						exit = true;
 						break;
 					default:
-						System.out.println("\u001B[41m"
-								+ "╔═════════════════════════════════════════════════════════════════════════════════════╗\n\u001B[0m"
-								+
-								"\u001B[41m"
-								+ "║🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 Invalid Choice, please try again 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 🯀 ║"
-								+ "\u001B[0m" +
-								"\n" + "\u001B[41m"
-								+ "╚═════════════════════════════════════════════════════════════════════════════════════╝\u001B[0m\n");
+						System.out.println(printInABoxError("Invalid Choice, please try again",85));
 						break;
 				}
 			}
@@ -256,7 +222,7 @@ public class Application {
 	}
 
 	public static int inputInt(String print){
-		return inputInt(print, "\033[31mInput must be an integer!\033[0m\n");
+		return inputInt(print, printInABoxError("Input must be an integer!",85));
 	}
 
 	public static int inputIntln(String print) {
@@ -283,7 +249,7 @@ public class Application {
 	}
 
 	public static String inputString(String prompt) {
-		return inputString(prompt, "\033[31mInput must not be empty!\033[0m\n");
+		return inputString(prompt, printInABoxError("Input must not be empty!",85));
 	}
 
 	// Waits for the user to acknowledge message
@@ -341,7 +307,7 @@ public class Application {
 	}
 
 	public static double inputDouble(String print){
-		return inputDouble(print, "\033[31mInput must be an number!\033[0m\n");
+		return inputDouble(print, printInABoxError("Input must be an number!",85));
 	}
 
 	public static double inputDoubleln(String print) {
@@ -352,4 +318,241 @@ public class Application {
 		return inputDouble(print + "\n", error + "\n");
 	}
 
+	public static String printInABox(String title,String content,int gutterOffset,int width,boolean tailed){
+		StringBuilder value=new StringBuilder();
+		value.append("╔");
+		for(int i = 0;i<width;i++){
+			value.append("═");
+		}
+		value.append("╗\n");
+		value.append("║");
+		int space = width-title.length();
+		for(int i = 0;i<space/2;i++){
+			value.append(" ");
+		}
+		value.append(title);
+		for(int i = 0;i<(space/2)+(space%2);i++){
+			value.append(" ");
+		}
+		value.append("║\n");
+		value.append("║╒");
+		for(int i = 1;i<width-1;i++){
+			value.append(i==gutterOffset?"╤":"═");
+		}
+		value.append("╕║\n");
+		for(String ln : content.split("\n")){
+			value.append("║│");
+			int spaceIn = width-ln.length()-2;
+			value.append(ln);
+			for(int i = 0;i<spaceIn;i++){
+				value.append(" ");
+			}
+			value.append("│║\n");
+		}
+		value.append(tailed?"╠╧":"╚╧");
+		for(int i = 1;i<width-1;i++){
+			value.append(i==gutterOffset?"╧":"═");
+		}
+		value.append(tailed?"╧╣\n":"╧╝\n");
+		return value.toString();
+	}
+	public static String printInABox(String title,ArrayList<String> content,int gutterOffset,int width,boolean tailed){
+		StringBuilder value=new StringBuilder();
+		for(int i=0;i<content.size();i++){
+			value.append(content.get(i)+"\n");
+		}
+		return printInABox(title, value.toString(), gutterOffset, width, tailed);
+	}
+	public static String printInABox(String title,HashMap<Integer,String> content,int gutterOffset,int width,boolean tailed){
+		StringBuilder value=new StringBuilder();
+		for(Integer key:content.keySet()){
+			if(key==0) continue;
+			String keystr=key.toString();
+			for(int i=keystr.length();i<gutterOffset-2;i++){
+				keystr=" "+keystr;
+			}
+			value.append(keystr+")│"+content.get(key)+"\n");
+		}
+		if(content.containsKey(0)){
+			Integer key=0;
+			String keystr=key.toString();
+			for(int i=keystr.length();i<gutterOffset-2;i++){
+				keystr=" "+keystr;
+			}
+			value.append(keystr+")│"+content.get(key)+"\n");
+		}
+		return printInABox(title, value.toString(), gutterOffset, width, tailed);
+	}
+	public static String printInABoxError(String title,int width,boolean tailed){
+		StringBuilder value=new StringBuilder();
+		value.append("\23341m"+(tailed?"╠":"╔"));
+		for(int i = 0;i<width;i++){
+			value.append("═");
+		}
+		value.append((tailed?"╣":"╗")+"\2330m\n");
+		value.append("\23341m║");
+		int space = width-title.length()-2;
+		value.append(space%2==1?" ":"");
+		for(int i = 0;i<space/4;i++){
+			value.append("🯀 ");
+		}
+		value.append(" "+title+" ");
+		for(int i = 0;i<(space/4)+(space%4)/2;i++){
+			value.append("🯀 ");
+		}
+		value.append("║\2330m\n");
+		value.append("\23341m"+(tailed?"╠":"╚"));
+		for(int i = 0;i<width;i++){
+			value.append("═");
+		}
+		value.append((tailed?"╣":"╝")+"\2330m\n");
+		return value.toString();
+	}
+	public static String printInABoxError(String title,int width){
+		return printInABoxError(title,width,false);
+	}
+	public static String printInABoxGreen(String title,int width){
+		StringBuilder value=new StringBuilder();
+		value.append("\23342m╔");
+		for(int i = 0;i<width;i++){
+			value.append("═");
+		}
+		value.append("╗\2330m\n");
+		value.append("\23342m║\23330m");
+		int space = width-title.length();
+		for(int i = 0;i<space/2;i++){
+			value.append(" ");
+		}
+		value.append(title);
+		for(int i = 0;i<(space/2)+(space%2);i++){
+			value.append(" ");
+		}
+		value.append("\2330m\23342m║\2330m\n");
+		value.append("\23342m╚");
+		for(int i = 0;i<width;i++){
+			value.append("═");
+		}
+		value.append("╝\2330m\n");
+		return value.toString();
+	}
+	public static String printInABoxMain(String title,String description,String subtitle,String content,int gutterOffset,int width,boolean tailed,int firstMargin,int secondMargin){
+		StringBuilder value=new StringBuilder();
+		value.append("╔");
+		for(int i = 0;i<width;i++){
+			value.append("═");
+		}
+		value.append("╗\n");
+		value.append("║");
+		for(int i = 0;i<width;i++){
+			value.append("▓");
+		}
+		value.append("║ █\n");
+
+		value.append("║");
+		int space_title = width-title.length();
+		for(int i = 0;i<space_title/2;i++){
+			if(i<firstMargin)
+				value.append("▓");
+			else if(i<secondMargin)
+				value.append("▒");
+			else
+				value.append("░");
+		}
+		value.append(title);
+		for(int i = 0;i<(space_title/2)+(space_title%2);i++){
+			if(((space_title/2)+(space_title%2))-i<firstMargin)
+				value.append("▓");
+			else if(((space_title/2)+(space_title%2))-i<secondMargin)
+				value.append("▒");
+			else
+				value.append("░");
+		}
+		value.append("║ █\n");
+
+		value.append("║");
+		for(int i = 0;i<width;i++){
+			if(i<firstMargin-1)
+				value.append("▓");
+			else if(i==(firstMargin-1))
+				value.append("🮜");
+			else if(i==firstMargin)
+				value.append("╔");
+			else if(width-i<firstMargin-1)
+				value.append("▓");
+			else if(width-i>firstMargin&&i>firstMargin)
+				value.append("═");
+			else if(width-i==firstMargin-1)
+				value.append("🮝");
+			else if(width-i==firstMargin)
+				value.append("╗");
+			else
+				value.append(" ");
+		}
+		value.append("║ █\n");
+
+		value.append("║╒");
+		for(int i = 1;i<width-1;i++){
+			if(i<firstMargin)
+				value.append("═");
+			else if(i==firstMargin)
+				value.append("╝");
+			else if(width-i<firstMargin)
+				value.append("═");
+			else if(width-i==firstMargin)
+				value.append("╚");
+			else
+				value.append(" ");
+		}
+		value.append("╕║ █\n");
+		for(String ln : description.split("\n")){
+			value.append("║│ ");
+			int spaceIn = width-ln.length()-3;
+			value.append(ln);
+			for(int i = 0;i<spaceIn;i++){
+				value.append(" ");
+			}
+			value.append("│║ █\n");
+		}
+		value.append("║╘");
+		for(int i = 1;i<width-1;i++){
+			value.append("═");
+		}
+		value.append("╛║ █\n");
+
+		value.append("║  ");
+		int space_sub = width-subtitle.length();
+		for(int i = 0;i<space_sub/2;i++){
+			value.append(" ");
+		}
+		value.append(subtitle);
+		for(int i = 0;i<(space_sub/2)+(space_sub%2);i++){
+			value.append(" ");
+		}
+		value.append("║ █\n");
+		value.append("║╒");
+		for(int i = 1;i<width-1;i++){
+			value.append(i==gutterOffset?"╤":"═");
+		}
+		value.append("╕║ █\n");
+		for(String ln : content.split("\n")){
+			value.append("║│");
+			int spaceIn = width-ln.length()-2;
+			value.append(ln);
+			for(int i = 0;i<spaceIn;i++){
+				value.append(" ");
+			}
+			value.append("│║ █\n");
+		}
+		value.append(tailed?"╠╧":"╚╧");
+		for(int i = 1;i<width-1;i++){
+			value.append(i==gutterOffset?"╧":"═");
+		}
+		value.append(tailed?"╧╣ █\n":"╧╝ █\n");
+		value.append(" █");
+		for(int i = 0;i<width;i++){
+			value.append("█");
+		}
+		value.append("██\n");
+		return value.toString();
+	}
 }

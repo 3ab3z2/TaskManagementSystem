@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.HashMap;
 
 public class AdminModule extends Module {
 	AdminModule(User currentUser) {
@@ -11,15 +12,13 @@ public class AdminModule extends Module {
 		do {
 			System.out.print("\033[H\033[2J");
 			System.out.flush();
-			choice = Application.inputInt(
-					"Admin Module\n" +
-							"\t1.Manage Users\n" +
-							"\t2.Manage Employees\n" +
-							"\t3.Manage Projects\n" +
-							"\t4.Manage Employee Type\n" +
-							"\t5.Modify Task Phases\n" +
-							"\t0.Logout\n" +
-							"choose>> ");
+			choice = Application.inputInt(Application.printInABoxMain("Admin Module","Hi "+currentUser.getUsername(),"🯇 Please choose one of the following options:🯈","1)│Manage Users\n" +
+							"2)│Manage Employees\n" +
+							"3)│Manage Projects\n" +
+							"4)│Manage Employee Type\n" +
+							"5)│Modify Task Phases\n" +
+							"0)│Logout",3,85,true,10,20)+
+							"║choose🮶 ");
 			switch (choice) {
 				case 0:// exit module
 					break;
@@ -39,7 +38,9 @@ public class AdminModule extends Module {
 					manageTaskPhases();
 					break;
 				default:
-					System.err.println("\033[31mInvalid Operation!\033[0m");
+					System.err.println(Application.printInABoxError("Invalid Operation!",85,true)+"Press Enter to continue...");
+					Application.input.nextLine();
+					break;
 			}
 		} while (choice != 0);
 		System.out.print("\033[H\033[2J");
@@ -51,10 +52,8 @@ public class AdminModule extends Module {
 		menu_manageUsers: do {
 			System.out.print("\033[H\033[2J");
 			System.out.flush();
-			choice = Application.inputInt(
-					"Managing Users..\n" +
-							"1.Add 2.Update 3.Delete 0.Back\n" +
-							"choose>> ");
+			choice= Application.inputInt(Application.printInABox("Managing Users","1)│Add\n2)│Update\n3)│Delete\n0)│Back",3,85,true)+"║Choose🮶 ",Application.printInABoxError("Input must not be empty!",85,true));
+			
 			switch (choice) {
 				case 0:// Back
 					break;
@@ -334,10 +333,8 @@ public class AdminModule extends Module {
 		do {
 			System.out.print("\033[H\033[2J");
 			System.out.flush();
-			choice = Application.inputInt(
-					"Managing Employees..\n" +
-							"1.Add  2.Update  3.Delete  0.Back\n" +
-							"choose>> ");
+			choice= Application.inputInt(Application.printInABox("Managing Employees","1)│Add\n2)│Update\n3)│Delete\n0)│Back",3,85,true)+"║Choose🮶 ",Application.printInABoxError("Input must not be empty!",85,true));
+			
 			switch (choice) {
 				case 1:// Add Employees
 				{
@@ -628,11 +625,8 @@ public class AdminModule extends Module {
 		{
 			System.out.print("\033[H\033[2J");
 			System.out.flush();
-			choice = Application.inputInt(
-				"Managing Projects..\n" +
-				"1.Add 2.Update 3.Delete 0.Back\n" +
-				"choose>> "
-			);
+			choice= Application.inputInt(Application.printInABox("Managing Projects","1)│Add\n2)│Update\n3)│Delete\n0)│Back",3,85,true)+"║Choose🮶 ",Application.printInABoxError("Input must not be empty!",85,true));
+			
 			switch(choice)
 			{
 			case 0://Back
@@ -669,8 +663,7 @@ public class AdminModule extends Module {
 						if(duplicate)
 						{
 							System.err.print("\033[31mProject with the same name already in progress! try again or type \"exit\" to go back\033[0m\n");
-							exit_name= true;
-							break;
+							continue;
 						}
 						break;
 					}
@@ -924,7 +917,7 @@ public class AdminModule extends Module {
 							"%d.\t%s\t%s\t%s\n",
 							k+1,
 							project.getName(),
-							project.getLeader().getUsername(),
+							project.getLeader()==null?"\033[33mTBD\033[0m":project.getLeader().getUsername(),
 							project.getDescription()
 						);
 					}
@@ -963,11 +956,7 @@ public class AdminModule extends Module {
 		{
 			System.out.print("\033[H\033[2J");
 			System.out.flush();
-			choice= Application.inputInt(
-				"Managing Types of Employees..\n" +
-				"1.Add  2.Update  3.Delete  0.Back\n" +
-				"choose>> "
-			);
+			choice= Application.inputInt(Application.printInABox("Managing Types of Employees","1)│Add\n2)│Update\n3)│Delete\n0)│Back",3,85,true)+"║Choose🮶 ",Application.printInABoxError("Input must not be empty!",85,true));
 			switch(choice)
 			{
 			case 0://Back
@@ -981,7 +970,7 @@ public class AdminModule extends Module {
 					int count_emptypes= Application.empTypeDataHandler.getLength();
 					boolean duplicate= false;
 
-					name= Application.inputString("New Type of Employee: ");
+					name= Application.inputString("║Enter New Type of Employee or type \"exit\" to go back: ");
 					if(name.equals("exit"))
 						break;
 					for(int k=0;k<count_emptypes;++k)
@@ -995,20 +984,20 @@ public class AdminModule extends Module {
 					}
 					if(duplicate)
 					{
-						System.out.println("\033[31mType with the same name already exists! Try again or type \"exit\" to go back\033[0m\n");
+						System.out.println(Application.printInABoxError("Type with the same name already exists! Try again or type \"exit\" to go back",85,true));
 						continue;
 					}
-					manager= Application.inputString("Categorize as manager? [y/N]: ");
+					manager= Application.inputString("║Categorize as manager? [y/N]: ");
 					if(manager.equals("exit"))
 						break;
-					if(manager.equals("Y")||manager.equals("y"))
+					if(manager.equalsIgnoreCase("Y"))
 						empType= new EmpType(name, true);
 					else
 						empType= new EmpType(name, false);
 					Application.empTypeDataHandler.add(empType);
 					System.out.print(
-						"\033[32mSuccessfully added employee type \""+name+"\"!\033[0m\n"+
-						"Press enter to continue...\n"
+						Application.printInABoxGreen("Successfully added employee type \""+name+"\"!",85)+
+						"Press enter to continue..."
 					);
 					Application.input.nextLine();
 					break;
@@ -1026,41 +1015,40 @@ public class AdminModule extends Module {
 					if(count_emptype==0)
 					{
 						System.out.print(
-							"\033[33mNo Employee Types Defined Yet!\033[0m\n"+
-							"Press enter to continue...\n"
+							Application.printInABoxError("No Employee Types Defined Yet!",85)+
+							"Press enter to continue..."
 						);
 						Application.input.nextLine();
 						break;
 					}
 					System.out.print("\033[H\033[2J"); System.out.flush();
-					System.out.print(
-						"Defined Employee Types:\n" +
-						"IDX\tTYPE\tMANAGER?\n"
-					);
-					for(int k=0;k<count_emptype;++k)
-					{
-						emptype= Application.empTypeDataHandler.get(k);
-						System.out.printf("%d.\t%s\t%s\n", k+1, emptype.getName(), emptype.isManager()?"Yes":"No");
+					HashMap<Integer,String> tp=new HashMap<>();
+					for (int k = 0; k < count_emptype; ++k) {
+						String ln="";
+						emptype = Application.empTypeDataHandler.get(k);
+						ln+="Name:"+emptype.getName()+", Manager:"+(emptype.isManager()?"Yes":"No");
+						tp.put(k+1, ln);
 					}
-					System.out.println("0. Cancel");
-					emptype_idx= Application.inputInt("Update>> ")-1;
+					tp.put(0,"Cancel");
+					System.out.print(Application.printInABox("Defined Employee Types:", tp, 3, 85, true));
+					emptype_idx= Application.inputInt("║Update🮶 ")-1;
 					if(emptype_idx==-1)
 						break;
 					if(emptype_idx<0||emptype_idx>=count_emptype)
 					{
-						System.out.println("\033[31mPlease select a valid number from the type list!\033[0m");
+						System.out.println(Application.printInABoxError("Please select a valid number from the type list!",85,true));
 						continue;
 					}
 					emptype= Application.empTypeDataHandler.get(emptype_idx);
 					while(!exit_update_selected)
 					{
 						System.out.print("\033[H\033[2J"); System.out.flush();
-						System.out.print(
-							"1. Type    : "+emptype.getName()+"\n"+
-							"2. Manager?: "+(emptype.isManager()?"Yes":"No")+"\n"+
-							"0. Cancel\n"
+						System.out.print(Application.printInABox("Choose Attribute:",
+							"1)│Type    : "+emptype.getName()+"\n"+
+							"2)│Manager?: "+(emptype.isManager()?"Yes":"No")+"\n"+
+							"0)│Cancel",3,85,true)
 						);
-						choice= Application.inputInt("Modify>> ");
+						choice= Application.inputInt("║Modify🮶 ");
 						switch(choice)
 						{
 						case 0://Cancel
@@ -1073,7 +1061,7 @@ public class AdminModule extends Module {
 								int count_employees= Application.employeeDataHandler.getLength();
 								boolean duplicate = false;
 
-								newtype= Application.inputString("New Type: ");
+								newtype= Application.inputString("║New Type: ");
 								for(int k=0;k<count_emptype;++k)
 								{
 									EmpType compare= Application.empTypeDataHandler.get(k);
@@ -1085,7 +1073,7 @@ public class AdminModule extends Module {
 								}
 								if(duplicate)
 								{
-									System.out.print("\033[31mType with the same name already in exists! Try again or type \"exit\" to go back\033[0m\n");
+									System.out.print(Application.printInABoxError("Type with the same name already in exists! Try again",85,true));
 									continue;
 								}
 								emptype.setName(newtype);
@@ -1099,12 +1087,12 @@ public class AdminModule extends Module {
 									{
 										employee.setEmpType(emptype);
 										Application.employeeDataHandler.update(k, employee);
-										System.out.printf("\033[33m\"%s\" has been promoted to \"%s\"!\033[0m\n", employee.getUsername(), newtype);
+										System.out.print(Application.printInABoxGreen("\""+employee.getUsername()+"\" has been promoted to \""+newtype+"\"!",85));
 									}
 								}
 								System.out.print(
-									"\033[33mSuccessfully updated employee type!\033[0m\n"+
-									"Press enter to continue...\n"
+									Application.printInABoxGreen("Successfully updated employee type!",85)+
+									"Press enter to continue..."
 								);
 								Application.input.nextLine();
 								break;
@@ -1115,10 +1103,10 @@ public class AdminModule extends Module {
 								String manager= "";
 								int count_projects= Application.projectDataHandler.getLength();
 
-								manager= Application.inputString("Categorize as manager? [y/N]: ");
+								manager= Application.inputString("║Categorize as manager? [y/N]: ");
 								if(manager.equals("exit"))
 									break;
-								if(manager.equals("Y")||manager.equals("y"))
+								if(manager.equalsIgnoreCase("Y"))
 									emptype.setManager(true);
 								else
 								{
@@ -1138,14 +1126,14 @@ public class AdminModule extends Module {
 								}
 								Application.empTypeDataHandler.update(emptype_idx, emptype);
 								System.out.print(
-									"\033[32mSuccessfully modified managerial position!\033[0m\n"+
+									Application.printInABoxGreen("Successfully modified managerial position!",85)+
 									"Press enter key to continue...\n"
 								);
 								Application.input.nextLine();
 							}
 							break;
 						default:
-							System.out.println("\033[31mInvalid Operation!\033[0m");
+							System.out.println(Application.printInABoxError("Invalid Operation!",85));
 						}
 					}
 				}
@@ -1162,29 +1150,28 @@ public class AdminModule extends Module {
 					if(count_emptypes==0)
 					{
 						System.out.print(
-							"\033[33mNo Employee Types Defined!\033[0m\n"+
-							"Press enter to continue...\n"
+							Application.printInABoxError("No Employee Types Defined!",85)+
+							"Press enter to continue..."
 						);
 						Application.input.nextLine();
 						break;
 					}
 					System.out.print("\033[H\033[2J"); System.out.flush();
-					System.out.print(
-						"Defined Employee Types:\n"+
-						"IDX\tTYPE\tMANAGER?\n"
-					);
-					for(int k=0;k<count_emptypes;++k)
-					{
+					HashMap<Integer,String> tp=new HashMap<>();
+					for (int k = 0; k < count_emptypes; ++k) {
+						String ln="";
 						emptype= Application.empTypeDataHandler.get(k);
-						System.out.printf("%d.\t%s\t%s\n", k+1, emptype.getName(), emptype.isManager()?"Yes":"No");
+						ln+="Name:"+emptype.getName()+", Manager:"+(emptype.isManager()?"Yes":"No");
+						tp.put(k+1, ln);
 					}
-					System.out.println("0. Cancel");
-					emptype_idx= Application.inputInt("Delete>> ")-1;
+					tp.put(0,"Cancel");
+					System.out.print(Application.printInABox("Defined Employee Types:", tp, 3, 85, true));
+					emptype_idx= Application.inputInt("║Delete🮶 ")-1;
 					if(emptype_idx==-1)
 						break;
 					if(emptype_idx<0||emptype_idx>=count_emptypes)
 					{
-						System.out.println("\033[31mPlease select a valid number from the type list!\033[0m");
+						System.out.println(Application.printInABoxError("Please select a valid number from the type list!",85));
 						continue;
 					}
 					emptype= Application.empTypeDataHandler.get(emptype_idx);
@@ -1207,7 +1194,7 @@ public class AdminModule extends Module {
 				}
 				break;
 			default:
-				System.out.println("\033[31mInvalid Operation!\033[0m");
+				System.out.println(Application.printInABoxError("Invalid Operation!",85));
 			}
 		}
 	}
@@ -1220,7 +1207,7 @@ public class AdminModule extends Module {
 
 		if (count_tasks == 0) {
 			System.out.print(
-					"\033[33mNo Tasks Yet!\033[0m\n" +
+					Application.printInABoxError("No Tasks Yet!",85) +
 							"Press enter to continue...");
 			Application.input.nextLine();
 			return;// to menu
@@ -1228,29 +1215,26 @@ public class AdminModule extends Module {
 		while (true) {
 			System.out.print("\033[H\033[2J");
 			System.out.flush();
-			System.out.print(
-					"Current Tasks:\n" +
-							"IDX\tCODE\tTITLE\tPROJECT\tPHASE\n");
+			HashMap<Integer,String> tp=new HashMap<>();
 			for (int k = 0; k < count_tasks; ++k) {
+				String ln="";
 				task = Application.taskDataHandler.get(k);
-				System.out.printf(
-						"%d.\t%s\t%s\t%s\t%s\n",
-						k + 1,
-						task.getCode(),
-						task.getTitle(),
-						task.getProject().getName(),
-						task.getTaskPhase());
+				ln+="Code:"+task.getCode()+", Title:"+task.getTitle()+", Project:"+task.getProject().getName()+", Phase:"+task.getTaskPhase();
+				tp.put(k+1, ln);
 			}
-			System.out.println("0. Cancel");
-			task_idx = Application.inputInt("Modify>> ") - 1;
+			tp.put(0,"Cancel");
+			System.out.print(Application.printInABox("Current Tasks:",tp,3,85,true));
+			task_idx = Application.inputInt("║Modify🮶 ") - 1;
 			if (task_idx == -1)
 				break;
 			if (task_idx < 0 || task_idx >= count_tasks) {
-				System.err.println("\033[31mPlease select a valid number from the tasks list!\033[0m");
+				System.err.print(Application.printInABoxError("Please select a valid number from the tasks list!",85));
+				System.out.print("Press enter to continue...");
+				Application.input.nextLine();
 				continue;
 			}
 			task = Application.taskDataHandler.get(task_idx);
-			String phase = Application.inputString("New Task Phase: ");
+			String phase = Application.inputString("║New Task Phase: ");
 			task.setTaskPhase(phase);
 			Application.taskDataHandler.update(task_idx, task);
 		}

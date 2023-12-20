@@ -1,4 +1,5 @@
 IT	true
-Marketing	true
+Regional Manager	true
 PM	false
-Janitorial	false
+Human Resources	false
+typer	false
